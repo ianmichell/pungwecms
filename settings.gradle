@@ -1,0 +1,4 @@
+rootProject.name = 'Pungwe CMS Parent'
+
+include 'app'
+include 'core'
