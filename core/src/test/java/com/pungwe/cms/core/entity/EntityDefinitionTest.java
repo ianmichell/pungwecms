@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.entity;
 
 import com.pungwe.cms.core.entity.impl.EntityDefinitionImpl;
+import com.pungwe.cms.core.entity.impl.EntityTypeInfoImpl;
 import com.pungwe.cms.core.entity.impl.FieldConfigImpl;
 import com.pungwe.cms.core.entity.impl.FieldGroupConfigImpl;
 import org.junit.Test;
@@ -16,28 +17,6 @@ import static org.junit.Assert.*;
  * Created by ian on 03/12/2015.
  */
 public class EntityDefinitionTest {
-
-    @Test
-    public void testGettersAndSetters() throws Exception {
-        EntityDefinition e = new EntityDefinitionImpl();
-
-        // id
-        e.setId(UUID.randomUUID());
-        assertNotNull(e.getId());
-
-        e.setDateCreated(new Date());
-        assertNotNull(e.getDateCreated());
-
-        e.setDateModified(new Date());
-        assertNotNull(e.getDateModified());
-
-        e.setName("Entity");
-        assertNotNull(e.getName());
-
-        e.setConfig(new HashMap<String, String>());
-        assertNotNull(e.getConfig());
-
-    }
 
     @Test
     public void testAddFieldGroup() {

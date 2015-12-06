@@ -29,6 +29,23 @@ public class FieldConfigTest {
     }
 
     @Test
+    public void testAddUniqueNameAndWeightToTreeSet() {
+        FieldConfigImpl one = new FieldConfigImpl();
+        one.setName("one");
+        one.setWeight(1);
+        FieldConfigImpl two = new FieldConfigImpl();
+        two.setName("two");
+        two.setWeight(2);
+
+        SortedSet<FieldConfigImpl> set = new TreeSet<FieldConfigImpl>();
+        set.add(one);
+        set.add(two);
+
+        assertEquals(2, set.size());
+        assertEquals(one, set.first());
+    }
+
+    @Test
     public void testAddUniqueWeightAndEqualName() {
         FieldConfigImpl one = new FieldConfigImpl();
         one.setName("one");

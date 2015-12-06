@@ -6,19 +6,10 @@ import java.util.stream.Collectors;
 /**
  * Created by ian on 01/12/2015.
  */
-public interface EntityDefinition<T extends EntityDefinition> {
+public interface EntityDefinition<ET extends EntityTypeInfo> {
 
-    /**
-     * Primary identifier of the entity
-     * @return the ID UUID of the entity
-     */
-    UUID getId();
-
-    /**
-     * Sets the UUID of the entity
-     * @param id The UUID to be used
-     */
-    void setId(UUID id);
+    ET getId();
+    void setId(ET type);
 
     /**
      * Date the entity was created
@@ -43,18 +34,6 @@ public interface EntityDefinition<T extends EntityDefinition> {
      * @param date
      */
     void setDateModified(Date date);
-
-    /**
-     * The entity name
-     * @return the name of the entity
-     */
-    String getName();
-
-    /**
-     * Sets the name of the entity
-     * @param name of the entity
-     */
-    void setName(String name);
 
     /**
      * Fetches entity configuration or settings for this entity type

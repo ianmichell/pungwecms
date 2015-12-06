@@ -1,27 +1,39 @@
-package com.pungwe.cms.core.entity;
+package com.pungwe.cms.jpa.entity;
 
-import java.util.*;
+import com.pungwe.cms.core.entity.EntityDefinition;
+import com.pungwe.cms.core.entity.FieldConfig;
+import com.pungwe.cms.core.entity.FieldGroupConfig;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.Date;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
- * Created by ian on 03/12/2015.
+ * Created by ian on 05/12/2015.
  */
-public abstract class AbstractEntityDefinition<T extends EntityDefinition> implements EntityDefinition<T> {
-    protected UUID id;
+@Entity
+@Table(name = "entity_definition")
+public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl> {
+
+    protected EntityTypeInfoImpl id;
     protected Date dateCreated;
     protected Date dateModified;
-    protected String name;
-    protected Class<T> type;
     protected Map<String, ?> config;
     protected SortedSet<FieldGroupConfig> fieldGroups;
     protected SortedSet<FieldConfig> fields;
 
     @Override
-    public UUID getId() {
+    @EmbeddedId
+    public EntityTypeInfoImpl getId() {
         return id;
     }
 
     @Override
-    public void setId(UUID id) {
+    public void setId(EntityTypeInfoImpl id) {
         this.id = id;
     }
 
@@ -43,16 +55,6 @@ public abstract class AbstractEntityDefinition<T extends EntityDefinition> imple
     @Override
     public void setDateModified(Date dateModified) {
         this.dateModified = dateModified;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

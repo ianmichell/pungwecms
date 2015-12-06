@@ -7,19 +7,19 @@ import java.util.UUID;
 /**
  * Created by ian on 01/12/2015.
  */
-public interface EntityInstance {
+public interface EntityInstance<ID extends EntityInstanceId> {
 
     /**
-     * Primary identifier of the entity
-     * @return the ID UUID of the entity
+     * The id of entity instance is made up of a UUID and and entity type information.
+     * This guarantees the ability to find instances of a particular type very efficiently as it's stored
+     * in the primary index as a compound key.
+     *
+     * Entity instances can be retrieved as a list by type information (both partially by type, bundle or by it's UUID)
+     *
+     * @return The id of the entity made of UUID,EntityTypeInfo
      */
-    UUID getId();
-
-    /**
-     * Sets the UUID of the entity
-     * @param id The UUID to be used
-     */
-    void setId(UUID id);
+    ID getId();
+    void setEntityId(ID id);
 
     /**
      * Date the entity was created

@@ -1,14 +1,87 @@
-group 'com.pungwe.cms'
-version '1.0.0-SNAPSHOT'
+buildscript {
+    repositories {
+        jcenter();
+        mavenCentral();
+    }
 
-apply plugin: 'java'
+    ext {
+        springBootVersion = '1.3.0.RC1'
+    }
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+allprojects {
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    group 'com.pungwe.cms'
+    version '0.0.1-SNAPSHOT'
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '2.7'
+    }
+
+    eclipse {
+        classpath {
+            containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+            containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+        }
+    }
+
+}
+
+subprojects {
+
+    repositories {
+        jcenter()
+        mavenCentral();
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'spring-boot'
+    apply plugin: "jacoco"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    ext {
+        springPlatformVersion = "2.0.0.RELEASE"
+        hibernateVersion = "5.0.5.Final"
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "io.spring.platform:platform-bom:${springPlatformVersion}"
+        }
+
+        dependencies {
+
+            // MongoDB
+            dependency "org.mongodb:mongodb-driver:3.1.1"
+
+            // JPA
+            dependency "org.hibernate:hibernate-core:${hibernateVersion}"
+            dependency "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
+            dependency 'mysql:mysql-connector-java:5.1.37'
+        }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination "${buildDir}/jacocoHtml"
+        }
+    }
 }
