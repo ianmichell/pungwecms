@@ -27,6 +27,11 @@ allprojects {
     group 'com.pungwe.cms'
     version '0.0.1-SNAPSHOT'
 
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
+    }
+
     task wrapper(type: Wrapper) {
         gradleVersion = '2.7'
     }
