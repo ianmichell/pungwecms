@@ -18,6 +18,11 @@ allprojects {
     apply plugin: "io.spring.dependency-management"
     apply plugin: 'eclipse'
     apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: "jacoco"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     group 'com.pungwe.cms'
     version '0.0.1-SNAPSHOT'
@@ -43,12 +48,6 @@ subprojects {
         maven { url "https://repo.spring.io/snapshot" }
         maven { url "https://repo.spring.io/milestone" }
     }
-
-    apply plugin: 'java'
-    apply plugin: "jacoco"
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
 
     ext {
         springPlatformVersion = "2.0.0.RELEASE"
