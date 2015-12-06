@@ -2,6 +2,8 @@ jar {
     baseName = 'app'
 }
 
+apply plugin: 'spring-boot'
+
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-cache')
     compile('org.springframework.boot:spring-boot-devtools')
