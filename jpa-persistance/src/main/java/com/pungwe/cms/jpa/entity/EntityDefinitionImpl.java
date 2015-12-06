@@ -3,10 +3,10 @@ package com.pungwe.cms.jpa.entity;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.FieldGroupConfig;
+import com.pungwe.cms.jpa.converter.HashMapBinaryJSONConverter;
+import com.pungwe.cms.jpa.converter.TreeSetBinaryJSONConverter;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Map;
 import java.util.SortedSet;
@@ -58,6 +58,9 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     }
 
     @Override
+    @Lob
+    @Column(name = "config")
+    @Convert(converter = HashMapBinaryJSONConverter.class)
     public Map<String, ?> getConfig() {
         return config;
     }
@@ -68,20 +71,37 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     }
 
     @Override
+    @Lob
+    @Column(name = "field_groups")
+    @Convert(converter = TreeSetBinaryJSONConverter.class)
     public SortedSet<? extends FieldGroupConfig> getFieldGroups() {
+        if (fieldGroups == null) {
+            fieldGroups = new TreeSet<>();
+        }
         return fieldGroups;
     }
 
+    public void setFieldGroups(SortedSet<FieldGroupConfig> fieldGroups) {
+        this.fieldGroups = fieldGroups;
+    }
+
     @Override
+    @Lob
+    @Column(name = "fields")
+    @Convert(converter = TreeSetBinaryJSONConverter.class)
     public SortedSet<? extends FieldConfig> getFields() {
+        if (fields == null) {
+            fields = new TreeSet<>();
+        }
         return fields;
+    }
+
+    public void setFields(SortedSet<FieldConfig> fields) {
+        this.fields = fields;
     }
 
     @Override
     public void addFieldGroup(FieldGroupConfig... fieldGroup) {
-        if (this.fieldGroups == null) {
-            this.fieldGroups = new TreeSet<>();
-        }
         for (FieldGroupConfig f : fieldGroup) {
             if (hasChild(f.getName())) {
                 throw new IllegalArgumentException("Name already exists as either a field group or a field");
@@ -92,10 +112,6 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
 
     @Override
     public void addField(FieldConfig... field) {
-        if (this.fields == null) {
-            this.fields = new TreeSet<>();
-        }
-
         for (FieldConfig f : field) {
             if (hasChild(f.getName())) {
                 throw new IllegalArgumentException("Name already exists as either a field group or a field");

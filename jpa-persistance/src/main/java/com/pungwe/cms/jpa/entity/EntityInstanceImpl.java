@@ -1,11 +1,14 @@
 package com.pungwe.cms.jpa.entity;
 
 import com.pungwe.cms.core.entity.EntityInstance;
+import com.pungwe.cms.jpa.converter.HashMapBinaryJSONConverter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,54 +18,76 @@ import java.util.Map;
 @Table(name = "entity_instance")
 public class EntityInstanceImpl implements EntityInstance<EntityInstanceIdImpl> {
 
+    protected EntityInstanceIdImpl id;
+    protected Date dateCreated;
+    protected Date dateModified;
+    protected Map<String, ?> attributes;
+    protected Map<String, ?> data;
+
     @Override
     @EmbeddedId
     public EntityInstanceIdImpl getId() {
-        return null;
+        return id;
     }
 
     @Override
     public void setEntityId(EntityInstanceIdImpl id) {
-
+        this.id = id;
     }
 
     @Override
+    @Column(name="date_created")
+    @CreatedDate
     public Date getDateCreated() {
-        return null;
+        return dateCreated;
     }
 
     @Override
     public void setDateCreated(Date date) {
-
+        this.dateCreated = date;
     }
 
     @Override
+    @Column(name="date_modified")
+    @LastModifiedDate
     public Date getDateModified() {
-        return null;
+        return dateModified;
     }
 
     @Override
     public void setDateModified(Date date) {
-
+        this.dateModified = date;
     }
 
     @Override
+    @Lob
+    @Column(name = "attributes")
+    @Convert(converter = HashMapBinaryJSONConverter.class)
     public Map<String, ?> getAttributes() {
-        return null;
+        if (attributes == null) {
+            this.attributes = new HashMap<>();
+        }
+        return attributes;
     }
 
     @Override
     public void setAttributes(Map<String, ?> attribute) {
-
+        this.attributes = attribute;
     }
 
     @Override
+    @Lob
+    @Column(name = "data")
+    @Convert(converter = HashMapBinaryJSONConverter.class)
     public Map<String, ?> getData() {
-        return null;
+        if (data == null) {
+            return new HashMap<>();
+        }
+        return data;
     }
 
     @Override
     public void setData(Map<String, ?> data) {
-
+        this.data = data;
     }
 }

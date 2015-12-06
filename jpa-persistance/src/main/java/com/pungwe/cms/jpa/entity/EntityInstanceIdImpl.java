@@ -12,20 +12,20 @@ import java.util.UUID;
  * Created by ian on 05/12/2015.
  */
 @Embeddable
-public class EntityInstanceIdImpl implements EntityInstanceId<EntityTypeInfoImpl> {
-    private UUID id;
+public class EntityInstanceIdImpl implements EntityInstanceId<String, EntityTypeInfoImpl> {
+    private String id;
     private EntityTypeInfoImpl entityType;
 
     @Override
     @Column(name="entity_instance_id", columnDefinition = "CHAR(32)")
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
     @Override
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
