@@ -1,7 +1,6 @@
 package com.pungwe.cms.core.entity.impl;
 
 import com.pungwe.cms.core.entity.FieldGroupConfig;
-import com.pungwe.cms.core.entity.FieldGroupType;
 
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +14,7 @@ public class FieldGroupConfigImpl implements FieldGroupConfig<FieldGroupConfigIm
     private int weight;
     private String name;
     private Map<String, ?> settings;
-    private Class<? extends FieldGroupType> fieldGroupType;
+    private String fieldGroupType;
     private Set<String> children;
 
     @Override
@@ -49,12 +48,12 @@ public class FieldGroupConfigImpl implements FieldGroupConfig<FieldGroupConfigIm
     }
 
     @Override
-    public Class<? extends FieldGroupType> getFieldGroupType() {
+    public String getFieldGroupType() {
         return fieldGroupType;
     }
 
     @Override
-    public void setFieldGroupType(Class<? extends FieldGroupType> type) {
+    public void setFieldGroupType(String type) {
         this.fieldGroupType = fieldGroupType;
     }
 

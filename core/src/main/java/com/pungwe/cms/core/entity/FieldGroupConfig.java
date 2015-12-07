@@ -20,9 +20,9 @@ public interface FieldGroupConfig<T extends FieldGroupConfig> extends Comparable
 
     void setSettings(Map<String, ?> settings);
 
-    Class<? extends FieldGroupType> getFieldGroupType();
+    String getFieldGroupType();
 
-    void setFieldGroupType(Class<? extends FieldGroupType> type);
+    void setFieldGroupType(String fieldGroupType);
 
     Set<String> getChildren();
 

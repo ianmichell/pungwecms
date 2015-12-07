@@ -1,8 +1,6 @@
 package com.pungwe.cms.core.entity.impl;
 
 import com.pungwe.cms.core.entity.FieldConfig;
-import com.pungwe.cms.core.entity.FieldStorageType;
-import com.pungwe.cms.core.entity.FieldType;
 
 import java.util.Map;
 
@@ -13,9 +11,10 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
 
     private int weight;
     private String name;
+    private int cardinality;
     private Map<String, ?> settings;
-    private Class<? extends FieldType> fieldType;
-    private Class<? extends FieldStorageType> fieldStorageType;
+    private String fieldType;
+    private String storageType;
 
     @Override
     public int getWeight() {
@@ -38,6 +37,16 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     }
 
     @Override
+    public int getCardinality() {
+        return cardinality;
+    }
+
+    @Override
+    public void setCardinality(int cardinality) {
+        this.cardinality = cardinality;
+    }
+
+    @Override
     public Map<String, ?> getSettings() {
         return settings;
     }
@@ -48,22 +57,22 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     }
 
     @Override
-    public Class<? extends FieldType> getFieldType() {
+    public String getFieldType() {
         return fieldType;
     }
 
     @Override
-    public void setFieldType(Class<? extends FieldType> fieldType) {
+    public void setFieldType(String fieldType) {
         this.fieldType = fieldType;
     }
 
     @Override
-    public Class<? extends FieldStorageType> getStorageType() {
-        return fieldStorageType;
+    public String getStorageType() {
+        return storageType;
     }
 
     @Override
-    public void setStorageType(Class<? extends FieldStorageType> fieldStorageType) {
-        this.fieldStorageType = fieldStorageType;
+    public void setStorageType(String fieldStorageType) {
+        this.storageType = fieldStorageType;
     }
 }

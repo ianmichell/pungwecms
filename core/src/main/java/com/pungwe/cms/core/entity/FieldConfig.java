@@ -15,17 +15,21 @@ public interface FieldConfig<T extends FieldConfig> extends Comparable<T> {
 
     void setName(String name);
 
+    public int getCardinality();
+
+    void setCardinality(int cardinality);
+
     Map<String, ?> getSettings();
 
     void setSettings(Map<String, ?> settings);
 
-    Class<? extends FieldType> getFieldType();
+    String getFieldType();
 
-    void setFieldType(Class<? extends FieldType> type);
+    void setFieldType(String type);
 
-    Class<? extends FieldStorageType> getStorageType();
+    String getStorageType();
 
-    void setStorageType(Class<? extends FieldStorageType> storageType);
+    void setStorageType(String storageType);
 
     /**
      * Compared by weight, if they are equal they are sorted by name.
