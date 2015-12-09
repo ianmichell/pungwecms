@@ -1,0 +1,15 @@
+spring.profiles.active: jpa
+
+jpa:
+  driver:
+    class: "org.h2.Driver"
+    url: "jdbc:h2:mem:test"
+#    class: com.mysql.jdbc.Driver
+#    url: "jdbc:mysql://localhost:3306/pungwe_cms"
+#    username: root
+  properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+#        dialect: org.hibernate.dialect.MySQLDialect
+        hbm2ddl.auto: update
+        show_sql: true

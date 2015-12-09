@@ -79,11 +79,16 @@ subprojects {
             dependency "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
             dependency "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:${jacksonVersion}"
 
+            // Test
+            dependency 'com.h2database:h2:1.4.182'
+            dependency 'mysql:mysql-connector-java:5.1.6'
+
         }
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.springframework:spring-test'
     }
 
     jacocoTestReport {

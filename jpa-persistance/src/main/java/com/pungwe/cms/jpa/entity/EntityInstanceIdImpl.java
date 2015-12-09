@@ -16,10 +16,16 @@ public class EntityInstanceIdImpl implements EntityInstanceId<String, EntityType
     private String id;
     private EntityTypeInfoImpl entityType;
 
+    public EntityInstanceIdImpl(String id, EntityTypeInfoImpl entityType) {
+        this.id = id;
+        this.entityType = entityType;
+    }
+
+    public EntityInstanceIdImpl() {
+    }
+
     @Override
-    @Column(name="entity_instance_id", columnDefinition = "CHAR(32)")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name="entity_instance_id")
     public String getId() {
         return id;
     }

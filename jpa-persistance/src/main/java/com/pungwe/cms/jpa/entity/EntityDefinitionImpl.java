@@ -5,6 +5,7 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.FieldGroupConfig;
 import com.pungwe.cms.jpa.converter.HashMapBinaryJSONConverter;
 import com.pungwe.cms.jpa.converter.TreeSetBinaryJSONConverter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -58,7 +59,6 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     }
 
     @Override
-    @Lob
     @Column(name = "config")
     @Convert(converter = HashMapBinaryJSONConverter.class)
     public Map<String, ?> getConfig() {
@@ -71,7 +71,6 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     }
 
     @Override
-    @Lob
     @Column(name = "field_groups")
     @Convert(converter = TreeSetBinaryJSONConverter.class)
     public SortedSet<? extends FieldGroupConfig> getFieldGroups() {
@@ -86,7 +85,6 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     }
 
     @Override
-    @Lob
     @Column(name = "fields")
     @Convert(converter = TreeSetBinaryJSONConverter.class)
     public SortedSet<? extends FieldConfig> getFields() {

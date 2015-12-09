@@ -31,7 +31,7 @@ public class EntityInstanceImpl implements EntityInstance<EntityInstanceIdImpl> 
     }
 
     @Override
-    public void setEntityId(EntityInstanceIdImpl id) {
+    public void setId(EntityInstanceIdImpl id) {
         this.id = id;
     }
 
@@ -60,7 +60,6 @@ public class EntityInstanceImpl implements EntityInstance<EntityInstanceIdImpl> 
     }
 
     @Override
-    @Lob
     @Column(name = "attributes")
     @Convert(converter = HashMapBinaryJSONConverter.class)
     public Map<String, ?> getAttributes() {
@@ -76,7 +75,6 @@ public class EntityInstanceImpl implements EntityInstance<EntityInstanceIdImpl> 
     }
 
     @Override
-    @Lob
     @Column(name = "data")
     @Convert(converter = HashMapBinaryJSONConverter.class)
     public Map<String, ?> getData() {

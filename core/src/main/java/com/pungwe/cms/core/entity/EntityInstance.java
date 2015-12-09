@@ -19,7 +19,7 @@ public interface EntityInstance<ID extends EntityInstanceId> {
      * @return The id of the entity made of UUID,EntityTypeInfo
      */
     ID getId();
-    void setEntityId(ID id);
+    void setId(ID id);
 
     /**
      * Date the entity was created

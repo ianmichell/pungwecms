@@ -8,6 +8,7 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
  * Converts a HashMap to and from binary JSON (smile format)
  * Created by ian on 06/12/2015.
  */
+@Converter()
 public class HashMapBinaryJSONConverter implements AttributeConverter<Map<?, ?>, byte[]> {
 
     /**

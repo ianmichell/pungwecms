@@ -6,7 +6,7 @@ import java.util.UUID;
 /**
  * Created by ian on 05/12/2015.
  */
-public interface EntityInstanceId<ID extends Serializable, ET extends EntityTypeInfo> {
+public interface EntityInstanceId<ID extends Serializable, ET extends EntityTypeInfo> extends Serializable {
 
     ID getId();
     void setId(ID id);

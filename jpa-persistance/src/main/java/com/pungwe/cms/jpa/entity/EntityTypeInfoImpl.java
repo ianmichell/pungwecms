@@ -10,6 +10,14 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class EntityTypeInfoImpl implements EntityTypeInfo {
 
+    public EntityTypeInfoImpl(String type, String bundle) {
+        this.type = type;
+        this.bundle = bundle;
+    }
+
+    public EntityTypeInfoImpl() {
+    }
+
     private String type;
     private String bundle;
 
