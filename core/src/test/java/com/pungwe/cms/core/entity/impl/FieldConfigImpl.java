@@ -15,6 +15,8 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     private Map<String, ?> settings;
     private String fieldType;
     private String storageType;
+    private String formatter;
+    private String widget;
 
     @Override
     public int getWeight() {
@@ -74,5 +76,25 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     @Override
     public void setStorageType(String fieldStorageType) {
         this.storageType = fieldStorageType;
+    }
+
+    @Override
+    public String getFormatter() {
+        return formatter;
+    }
+
+    @Override
+    public void setFormatter(String formatter) {
+        this.formatter = formatter;
+    }
+
+    @Override
+    public String getWidget() {
+        return widget;
+    }
+
+    @Override
+    public void setWidget(String widget) {
+        this.widget = widget;
     }
 }

@@ -10,6 +10,14 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-validation')
     compile('org.springframework.boot:spring-boot-starter-web')
+
+    // Projects
+    compile project(':api')
+    compile project(':core')
+    runtime project(':jpa-persistance')
+    runtime project(':mongodb-persistance')
+
+    // Test
     testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
 

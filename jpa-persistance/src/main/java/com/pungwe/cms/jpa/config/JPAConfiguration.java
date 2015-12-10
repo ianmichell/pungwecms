@@ -23,7 +23,7 @@ import java.util.*;
 @ComponentScan("com.pungwe.cms.jpa")
 @EnableTransactionManagement
 @ConfigurationProperties(prefix = "jpa")
-//@Profile("JPA")
+@Profile("JPA")
 public class JPAConfiguration {
 
     @Value("${jpa.driver.class}")

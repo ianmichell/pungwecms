@@ -31,6 +31,12 @@ public interface FieldConfig<T extends FieldConfig> extends Comparable<T> {
 
     void setStorageType(String storageType);
 
+    String getWidget();
+    void setWidget(String widget);
+
+    String getFormatter();
+    void setFormatter(String formatter);
+
     /**
      * Compared by weight, if they are equal they are sorted by name.
      *
