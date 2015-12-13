@@ -44,6 +44,12 @@ public class JPAConfiguration {
         return new HashMap<String, String>();
     }
 
+    @Bean()
+    @ConfigurationProperties(prefix="jpa.properties.datasource")
+    public Map<String, String> datasourceConfiguration() {
+        return new HashMap<String, String>();
+    }
+
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -65,7 +71,11 @@ public class JPAConfiguration {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName(driverClassName);
         ds.setUrl(databaseUrl);
-//        ds.setConnectionProperties(properties);
+
+        Properties p = new Properties();
+        Map<String, String> datasourceProperties = mapPropertyNames("datasource", hibernateConfiguration());
+        p.putAll(datasourceProperties);
+        ds.setConnectionProperties(p);
         if (!StringUtils.isEmpty(username)) {
             ds.setUsername(username);
         }
