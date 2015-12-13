@@ -12,7 +12,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
 
     // Projects
-    compile project(':api')
     compile project(':core')
     runtime project(':jpa-persistance')
     runtime project(':mongodb-persistance')

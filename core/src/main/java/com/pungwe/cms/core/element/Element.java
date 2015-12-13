@@ -1,8 +1,7 @@
-package com.pungwe.cms.api.element;
+package com.pungwe.cms.core.element;
 
 import java.util.AbstractMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
