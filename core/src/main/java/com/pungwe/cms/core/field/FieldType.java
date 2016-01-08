@@ -6,9 +6,7 @@ package com.pungwe.cms.core.field;
 public interface FieldType {
 
     String getName();
-    void setName(String name);
 
     String getLabel();
-    void setLabel(String label);
 
 }
