@@ -2,8 +2,8 @@ package com.pungwe.cms.core.entity;
 
 import com.pungwe.cms.core.entity.impl.EntityDefinitionImpl;
 import com.pungwe.cms.core.entity.impl.EntityTypeInfoImpl;
-import com.pungwe.cms.core.entity.impl.FieldConfigImpl;
-import com.pungwe.cms.core.entity.impl.FieldGroupConfigImpl;
+import com.pungwe.cms.core.entity.FieldConfig;
+import com.pungwe.cms.core.entity.FieldGroupConfig;
 import org.junit.Test;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ public class EntityDefinitionTest {
 
     @Test
     public void testAddFieldGroup() {
-        FieldGroupConfigImpl g = new FieldGroupConfigImpl();
+        FieldGroupConfig g = new FieldGroupConfig();
         g.setName("test");
 
         EntityDefinition e = new EntityDefinitionImpl();
@@ -32,7 +32,7 @@ public class EntityDefinitionTest {
 
     @Test
     public void testAddField() {
-        FieldConfigImpl fieldConfig = new FieldConfigImpl();
+        FieldConfig fieldConfig = new FieldConfig();
         fieldConfig.setName("test");
 
         EntityDefinition e = new EntityDefinitionImpl();
@@ -43,10 +43,10 @@ public class EntityDefinitionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddTwoFieldsSameName() {
-        FieldConfigImpl fieldConfig1 = new FieldConfigImpl();
+        FieldConfig fieldConfig1 = new FieldConfig();
         fieldConfig1.setName("test");
 
-        FieldConfigImpl fieldConfig2 = new FieldConfigImpl();
+        FieldConfig fieldConfig2 = new FieldConfig();
         fieldConfig2.setName("test");
 
         EntityDefinition e = new EntityDefinitionImpl();
@@ -56,10 +56,10 @@ public class EntityDefinitionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddTwoFieldGroupsSameName() {
-        FieldGroupConfigImpl fieldConfig1 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig1 = new FieldGroupConfig();
         fieldConfig1.setName("test");
 
-        FieldGroupConfigImpl fieldConfig2 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig2 = new FieldGroupConfig();
         fieldConfig2.setName("test");
 
         EntityDefinition e = new EntityDefinitionImpl();
@@ -69,10 +69,10 @@ public class EntityDefinitionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddFieldAndFieldGroupSameName() {
-        FieldGroupConfigImpl fieldConfig1 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig1 = new FieldGroupConfig();
         fieldConfig1.setName("test");
 
-        FieldConfigImpl fieldConfig2 = new FieldConfigImpl();
+        FieldConfig fieldConfig2 = new FieldConfig();
         fieldConfig2.setName("test");
 
         EntityDefinition e = new EntityDefinitionImpl();
@@ -94,10 +94,10 @@ public class EntityDefinitionTest {
 
     @Test
     public void testCreateFieldInsideGroup() {
-        FieldGroupConfigImpl fieldConfig1 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig1 = new FieldGroupConfig();
         fieldConfig1.setName("group");
 
-        FieldConfigImpl fieldConfig2 = new FieldConfigImpl();
+        FieldConfig fieldConfig2 = new FieldConfig();
         fieldConfig2.setName("field");
         fieldConfig1.addChild(fieldConfig2.getName());
 
@@ -111,7 +111,7 @@ public class EntityDefinitionTest {
 
     @Test
     public void testGetFieldByNonExistantGroup() {
-        FieldConfigImpl fieldConfig2 = new FieldConfigImpl();
+        FieldConfig fieldConfig2 = new FieldConfig();
         fieldConfig2.setName("field");
         EntityDefinition e = new EntityDefinitionImpl();
         e.addField(fieldConfig2);
@@ -120,7 +120,7 @@ public class EntityDefinitionTest {
 
     @Test
     public void testGetNoFieldsByGroup() {
-        FieldGroupConfigImpl fieldConfig1 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig1 = new FieldGroupConfig();
         fieldConfig1.setName("group");
         EntityDefinition e = new EntityDefinitionImpl();
         e.addFieldGroup(fieldConfig1);
@@ -129,10 +129,10 @@ public class EntityDefinitionTest {
 
     @Test
     public void testGetFieldsByIncorrectGroupName() {
-        FieldGroupConfigImpl fieldConfig1 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig1 = new FieldGroupConfig();
         fieldConfig1.setName("group");
 
-        FieldConfigImpl fieldConfig2 = new FieldConfigImpl();
+        FieldConfig fieldConfig2 = new FieldConfig();
         fieldConfig2.setName("field");
         fieldConfig1.addChild(fieldConfig2.getName());
 
@@ -146,10 +146,10 @@ public class EntityDefinitionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddFieldByIncorrectGroupName() {
-        FieldGroupConfigImpl fieldConfig1 = new FieldGroupConfigImpl();
+        FieldGroupConfig fieldConfig1 = new FieldGroupConfig();
         fieldConfig1.setName("group");
 
-        FieldConfigImpl fieldConfig2 = new FieldConfigImpl();
+        FieldConfig fieldConfig2 = new FieldConfig();
         fieldConfig2.setName("field");
         fieldConfig1.addChild(fieldConfig2.getName());
 
@@ -160,11 +160,11 @@ public class EntityDefinitionTest {
 
     @Test
     public void testAddFieldGroupToGroup() {
-        FieldGroupConfigImpl one = new FieldGroupConfigImpl();
+        FieldGroupConfig one = new FieldGroupConfig();
         one.setName("group");
         one.setWeight(5);
 
-        FieldGroupConfigImpl two = new FieldGroupConfigImpl();
+        FieldGroupConfig two = new FieldGroupConfig();
         two.setName("child");
         two.setWeight(6);
 
@@ -183,10 +183,10 @@ public class EntityDefinitionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddFieldGroupToInvalidGroup() {
-        FieldGroupConfigImpl one = new FieldGroupConfigImpl();
+        FieldGroupConfig one = new FieldGroupConfig();
         one.setName("group");
 
-        FieldGroupConfigImpl two = new FieldGroupConfigImpl();
+        FieldGroupConfig two = new FieldGroupConfig();
         two.setName("child");
 
         EntityDefinition e = new EntityDefinitionImpl();

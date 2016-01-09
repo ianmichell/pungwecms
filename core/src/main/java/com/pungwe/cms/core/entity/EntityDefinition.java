@@ -54,12 +54,12 @@ public interface EntityDefinition<ET extends EntityTypeInfo> {
      *
      * @return The field groups for this entity
      */
-    SortedSet<? extends FieldGroupConfig> getFieldGroups();
+    SortedSet<FieldGroupConfig> getFieldGroups();
 
-    void addFieldGroup(FieldGroupConfig<? extends FieldGroupConfig>... fieldGroup);
+    void addFieldGroup(FieldGroupConfig... fieldGroup);
 
-    default void addFieldGroup(String group, FieldGroupConfig<? extends FieldGroupConfig>... fieldGroups) {
-        Optional<? extends FieldGroupConfig> g = getFieldGroupByName(group);
+    default void addFieldGroup(String group, FieldGroupConfig... fieldGroups) {
+        Optional<FieldGroupConfig> g = getFieldGroupByName(group);
         if (!g.isPresent()) {
             throw new IllegalArgumentException("Entity definition does have field group: " + group);
         }
@@ -74,12 +74,12 @@ public interface EntityDefinition<ET extends EntityTypeInfo> {
      *
      * @return the fields for this entity definition
      */
-    SortedSet<? extends FieldConfig> getFields();
+    SortedSet<FieldConfig> getFields();
 
-    void addField(FieldConfig<? extends FieldConfig>... field);
+    void addField(FieldConfig... field);
 
-    default void addField(String group, FieldConfig<? extends FieldConfig>... fields) {
-        Optional<? extends FieldGroupConfig> g = getFieldGroupByName(group);
+    default void addField(String group, FieldConfig... fields) {
+        Optional<FieldGroupConfig> g = getFieldGroupByName(group);
         if (!g.isPresent()) {
             throw new IllegalArgumentException("Entity definition does have field group: " + group);
         }
@@ -101,12 +101,12 @@ public interface EntityDefinition<ET extends EntityTypeInfo> {
         return hasField(name) || hasFieldGroup(name);
     }
 
-    default SortedSet<? extends FieldConfig> getFieldsByGroup(String group) {
+    default SortedSet<FieldConfig> getFieldsByGroup(String group) {
         if (getFields() == null || getFieldGroups() == null) {
             return new TreeSet<>();
         }
         // Get the field group
-        Optional<? extends FieldGroupConfig> fieldGroup = getFieldGroupByName(group);
+        Optional<FieldGroupConfig> fieldGroup = getFieldGroupByName(group);
         // If the field group is not there, then return an empty optional
         if (!fieldGroup.isPresent()) {
             return new TreeSet<>();
@@ -116,19 +116,19 @@ public interface EntityDefinition<ET extends EntityTypeInfo> {
         return getFields().parallelStream().filter(f -> fieldGroup.get().getChildren().contains(f.getName())).collect(Collectors.toCollection(TreeSet::new));
     }
 
-    default SortedSet<? extends FieldGroupConfig> getFieldGroupsByParent(String group) {
-        Optional<? extends FieldGroupConfig> fg = getFieldGroupByName(group);
+    default SortedSet<FieldGroupConfig> getFieldGroupsByParent(String group) {
+        Optional<FieldGroupConfig> fg = getFieldGroupByName(group);
         if (!fg.isPresent()) {
             return new TreeSet<>();
         }
         return getFieldGroups().parallelStream().filter(g -> fg.get().getChildren().contains(g.getName())).collect(Collectors.toCollection(TreeSet::new));
     }
 
-    default Optional<? extends FieldGroupConfig> getFieldGroupByName(String name) {
+    default Optional<FieldGroupConfig> getFieldGroupByName(String name) {
         return getFieldGroups() != null ? getFieldGroups().parallelStream().filter(g -> g.getName().equals(name)).findFirst() : Optional.empty();
     }
 
-    default Optional<? extends FieldConfig> getFieldByName(String name) {
+    default Optional<FieldConfig> getFieldByName(String name) {
         return getFields() != null ? getFields().parallelStream().filter(f -> f.getName().equals(name)).findFirst() : Optional.empty();
     }
 

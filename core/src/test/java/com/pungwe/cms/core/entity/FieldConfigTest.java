@@ -1,6 +1,5 @@
 package com.pungwe.cms.core.entity;
 
-import com.pungwe.cms.core.entity.impl.FieldConfigImpl;
 import org.junit.Test;
 
 import java.util.SortedSet;
@@ -15,12 +14,12 @@ public class FieldConfigTest {
 
     @Test
     public void testAddUniqueNameAndEqualWeightToTreeSet() {
-        FieldConfigImpl one = new FieldConfigImpl();
+        FieldConfig one = new FieldConfig();
         one.setName("one");
-        FieldConfigImpl two = new FieldConfigImpl();
+        FieldConfig two = new FieldConfig();
         two.setName("two");
 
-        SortedSet<FieldConfigImpl> set = new TreeSet<FieldConfigImpl>();
+        SortedSet<FieldConfig> set = new TreeSet<FieldConfig>();
         set.add(one);
         set.add(two);
 
@@ -30,14 +29,14 @@ public class FieldConfigTest {
 
     @Test
     public void testAddUniqueNameAndWeightToTreeSet() {
-        FieldConfigImpl one = new FieldConfigImpl();
+        FieldConfig one = new FieldConfig();
         one.setName("one");
         one.setWeight(1);
-        FieldConfigImpl two = new FieldConfigImpl();
+        FieldConfig two = new FieldConfig();
         two.setName("two");
         two.setWeight(2);
 
-        SortedSet<FieldConfigImpl> set = new TreeSet<FieldConfigImpl>();
+        SortedSet<FieldConfig> set = new TreeSet<FieldConfig>();
         set.add(one);
         set.add(two);
 
@@ -47,14 +46,14 @@ public class FieldConfigTest {
 
     @Test
     public void testAddUniqueWeightAndEqualName() {
-        FieldConfigImpl one = new FieldConfigImpl();
+        FieldConfig one = new FieldConfig();
         one.setName("one");
         one.setWeight(1);
-        FieldConfigImpl two = new FieldConfigImpl();
+        FieldConfig two = new FieldConfig();
         two.setName("one");
         two.setWeight(2);
 
-        SortedSet<FieldConfigImpl> set = new TreeSet<FieldConfigImpl>();
+        SortedSet<FieldConfig> set = new TreeSet<FieldConfig>();
         set.add(one);
         set.add(two);
 

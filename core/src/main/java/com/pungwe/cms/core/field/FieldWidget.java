@@ -13,7 +13,9 @@ import java.util.List;
  */
 public interface FieldWidget {
 
-    void buildWidgetForm(List<RenderedElement> elements, FieldConfig<?> field, FieldType fieldType, int delta, Form form, FormState sate);
+    String getName();
+
+    void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, FieldType fieldType, int delta, Form form, FormState sate);
 
     void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state);
 

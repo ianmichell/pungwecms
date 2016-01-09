@@ -73,7 +73,7 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     @Override
     @Column(name = "field_groups")
     @Convert(converter = TreeSetBinaryJSONConverter.class)
-    public SortedSet<? extends FieldGroupConfig> getFieldGroups() {
+    public SortedSet<FieldGroupConfig> getFieldGroups() {
         if (fieldGroups == null) {
             fieldGroups = new TreeSet<>();
         }
@@ -87,7 +87,7 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     @Override
     @Column(name = "fields")
     @Convert(converter = TreeSetBinaryJSONConverter.class)
-    public SortedSet<? extends FieldConfig> getFields() {
+    public SortedSet<FieldConfig> getFields() {
         if (fields == null) {
             fields = new TreeSet<>();
         }

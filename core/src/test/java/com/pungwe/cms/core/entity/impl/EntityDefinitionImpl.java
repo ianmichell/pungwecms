@@ -60,12 +60,12 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     }
 
     @Override
-    public SortedSet<? extends FieldGroupConfig> getFieldGroups() {
+    public SortedSet<FieldGroupConfig> getFieldGroups() {
         return fieldGroups;
     }
 
     @Override
-    public SortedSet<? extends FieldConfig> getFields() {
+    public SortedSet<FieldConfig> getFields() {
         return fields;
     }
 

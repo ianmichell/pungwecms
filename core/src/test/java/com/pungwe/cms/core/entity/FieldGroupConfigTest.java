@@ -1,6 +1,5 @@
 package com.pungwe.cms.core.entity;
 
-import com.pungwe.cms.core.entity.impl.FieldGroupConfigImpl;
 import org.junit.Test;
 
 import java.util.SortedSet;
@@ -16,9 +15,9 @@ public class FieldGroupConfigTest {
 
     @Test
     public void testAddUniqueNameAndEqualWeightToTreeSet() {
-        FieldGroupConfigImpl one = new FieldGroupConfigImpl();
+        FieldGroupConfig one = new FieldGroupConfig();
         one.setName("one");
-        FieldGroupConfigImpl two = new FieldGroupConfigImpl();
+        FieldGroupConfig two = new FieldGroupConfig();
         two.setName("two");
 
         SortedSet<FieldGroupConfig> set = new TreeSet<FieldGroupConfig>();
@@ -31,10 +30,10 @@ public class FieldGroupConfigTest {
 
     @Test
     public void testAddUniqueWeightAndEqualName() {
-        FieldGroupConfigImpl one = new FieldGroupConfigImpl();
+        FieldGroupConfig one = new FieldGroupConfig();
         one.setName("one");
         one.setWeight(1);
-        FieldGroupConfigImpl two = new FieldGroupConfigImpl();
+        FieldGroupConfig two = new FieldGroupConfig();
         two.setName("one");
         two.setWeight(2);
 
@@ -50,7 +49,7 @@ public class FieldGroupConfigTest {
 
     @Test
     public void testAddChild() {
-        FieldGroupConfigImpl one = new FieldGroupConfigImpl();
+        FieldGroupConfig one = new FieldGroupConfig();
         one.setName("one");
         one.setWeight(1);
         one.addChild("two");
