@@ -15,13 +15,16 @@ public interface FieldConfig<T extends FieldConfig> extends Comparable<T> {
 
     void setName(String name);
 
+    String getLabel();
+    void setLabel(String label);
+
     public int getCardinality();
 
     void setCardinality(int cardinality);
 
-    Map<String, ?> getSettings();
+    Map<String, Object> getSettings();
 
-    void setSettings(Map<String, ?> settings);
+    void setSettings(Map<String, Object> settings);
 
     String getFieldType();
 
@@ -36,6 +39,9 @@ public interface FieldConfig<T extends FieldConfig> extends Comparable<T> {
 
     String getFormatter();
     void setFormatter(String formatter);
+
+    boolean isRequired();
+    void setRequired(boolean required);
 
     /**
      * Compared by weight, if they are equal they are sorted by name.

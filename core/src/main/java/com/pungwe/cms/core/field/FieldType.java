@@ -9,4 +9,10 @@ public interface FieldType {
 
     String getLabel();
 
+    String getDefaultWidget();
+
+    String getDefaultFormatter();
+
+    String getDefaultFieldStorageType();
+
 }

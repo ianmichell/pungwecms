@@ -11,12 +11,14 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
 
     private int weight;
     private String name;
+    private String label;
     private int cardinality;
-    private Map<String, ?> settings;
+    private Map<String, Object> settings;
     private String fieldType;
     private String storageType;
     private String formatter;
     private String widget;
+    private boolean required;
 
     @Override
     public int getWeight() {
@@ -39,6 +41,16 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     }
 
     @Override
+    public String getLabel() {
+        return label;
+    }
+
+    @Override
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    @Override
     public int getCardinality() {
         return cardinality;
     }
@@ -49,12 +61,12 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     }
 
     @Override
-    public Map<String, ?> getSettings() {
+    public Map<String, Object> getSettings() {
         return settings;
     }
 
     @Override
-    public void setSettings(Map<String, ?> settings) {
+    public void setSettings(Map<String, Object> settings) {
         this.settings = settings;
     }
 
@@ -96,5 +108,15 @@ public class FieldConfigImpl implements FieldConfig<FieldConfigImpl> {
     @Override
     public void setWidget(String widget) {
         this.widget = widget;
+    }
+
+    @Override
+    public boolean isRequired() {
+        return required;
+    }
+
+    @Override
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 }
