@@ -1,8 +1,11 @@
-package com.pungwe.cms.core.services;
+package com.pungwe.cms.core.entity.services;
 
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.EntityType;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Created by ian on 09/01/2016.
@@ -19,7 +22,9 @@ public interface EntityDefinitionService<ED extends EntityDefinition> {
 
     ED get(String type, String bundle);
 
-    void save(ED instance);
+    Page<List<ED>> list(Pageable page);
+
+    void create(ED instance);
 
     void remove(String type, String bundle);
 

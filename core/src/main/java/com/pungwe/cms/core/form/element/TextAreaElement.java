@@ -6,7 +6,7 @@ import com.pungwe.cms.core.element.RenderedElement;
 /**
  * Created by ian on 09/01/2016.
  */
-public class TextAreaElement extends AbstractFormElement<String> {
+public class TextareaElement extends StringElement {
 
     protected int rows;
 

@@ -1,6 +1,0 @@
-name: "Node"
-description: "Node entity type definition"
-group: "Content"
-
-dependencies:
-  - text

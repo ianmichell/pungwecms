@@ -2,5 +2,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-cache')
     compile('org.springframework.boot:spring-boot-devtools')
     compile('org.springframework.boot:spring-boot-starter-validation')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.data:spring-data-commons')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

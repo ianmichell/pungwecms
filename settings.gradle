@@ -1,10 +1,8 @@
 rootProject.name = 'Pungwe CMS Parent'
 
-include 'app'
 include 'core'
 include 'mongodb-persistance'
 include 'jpa-persistance'
-include 'api'
 include 'modules'
 include 'modules:node'
 include 'modules:text'

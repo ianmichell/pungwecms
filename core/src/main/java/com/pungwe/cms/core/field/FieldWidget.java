@@ -15,10 +15,10 @@ public interface FieldWidget {
 
     String getName();
 
-    void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, FieldType fieldType, int delta, Form form, FormState sate);
+    void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate);
 
     void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state);
 
-    boolean supports(Class<? extends FieldType> fieldType);
+    boolean supports(String fieldType);
 
 }

@@ -23,7 +23,7 @@ public @interface Module {
      *
      * @return The machine name of the module
      */
-    String value() default "";
+    String name() default "";
 
     String label() default "";
     String description() default "";

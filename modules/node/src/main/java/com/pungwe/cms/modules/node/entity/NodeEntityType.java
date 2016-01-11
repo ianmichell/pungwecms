@@ -1,4 +1,4 @@
-package com.pungwe.cms.modules.node;
+package com.pungwe.cms.modules.node.entity;
 
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.EntityType;
@@ -29,9 +29,9 @@ public class NodeEntityType implements EntityType {
         title.setLabel("Title");
         title.setRequired(true);
         title.setCardinality(1);
-        title.setWidget("text");
-        title.setFormatter("text");
-        title.setFieldType("text");
+        title.setWidget("string_textfield");
+        title.setFormatter("string");
+        title.setFieldType("string");
         title.addSetting("size", 200);
 
         FieldConfig body = new FieldConfig();
@@ -40,7 +40,7 @@ public class NodeEntityType implements EntityType {
         body.setLabel("Body");
         body.setCardinality(1);
         body.setWidget("textarea_and_summary");
-        body.setFormatter("filtered_html");
+        body.setFormatter("text_default");
         body.setFieldType("text");
         body.addSetting("rows", 10);
 

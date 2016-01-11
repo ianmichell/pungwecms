@@ -1,19 +1,19 @@
-package com.pungwe.cms.modules.text.widget;
+package com.pungwe.cms.core.field.widgets;
 
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
-import com.pungwe.cms.core.field.FieldType;
+import com.pungwe.cms.core.field.FieldWidget;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.form.element.IntegerElement;
-import com.pungwe.cms.core.form.element.TextAreaElement;
+import com.pungwe.cms.core.form.element.TextareaElement;
 
 import java.util.List;
 
 /**
  * Created by ian on 08/01/2016.
  */
-public class TextAreaWidget extends TextFieldWidget {
+public class TextareaWidget implements FieldWidget {
 
     @Override
     public String getName() {
@@ -21,23 +21,22 @@ public class TextAreaWidget extends TextFieldWidget {
     }
 
     @Override
-    public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, FieldType fieldType, int delta, Form form, FormState sate) {
+    public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
 
         // Text Field is a type of String element
-        TextAreaElement element = new TextAreaElement();
+        TextareaElement element = new TextareaElement();
         element.setLabel(field.getLabel());
-        element.setName(field.getName());
-        element.setDetla(delta);
+        element.setName("value");
         element.setRequired(field.isRequired());
-        element.setDefaultValue((String) field.getSettings().getOrDefault("defaultValue", ""));
-        element.setRows((int) field.getSettings().getOrDefault("rows", 60));
+        element.setDefaultValue((String) ((List<String>) field.getSettings().getOrDefault("defaultValue", "")).get(delta));
+        element.setRows((int) field.getSettings().getOrDefault("rows", 10));
+        element.setSize(-1); // unlimted
 
         elements.add(element);
     }
 
     @Override
     public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
-        super.buildWidgetSettingsForm(elements, form, state);
 
         IntegerElement rows = new IntegerElement();
         rows.setName("rows");
@@ -47,5 +46,10 @@ public class TextAreaWidget extends TextFieldWidget {
         rows.setWeight(6);
 
         elements.add(rows);
+    }
+
+    @Override
+    public boolean supports(String fieldType) {
+        return "string".equals(fieldType);
     }
 }
