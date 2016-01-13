@@ -1,7 +1,5 @@
 # Pungwe CMS
 
-## Introduction
-
 The current state of popular open source java cms is pretty dire... The most popular being 
 licensed under both commercial and proprietry licenses; such as magnolia.
 

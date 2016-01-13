@@ -11,6 +11,12 @@ public interface EntityDefinition<ET extends EntityTypeInfo> {
     ET getId();
     void setId(ET type);
 
+    String getTitle();
+    void setTitle(String title);
+
+    String getDescription();
+    void setDescription(String description);
+
     /**
      * Date the entity was created
      * @return the creation date of the entity

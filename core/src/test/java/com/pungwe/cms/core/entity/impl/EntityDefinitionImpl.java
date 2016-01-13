@@ -13,6 +13,8 @@ import java.util.TreeSet;
 public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl> {
 
     protected EntityTypeInfoImpl id;
+    protected String title;
+    protected String description;
     protected Date dateCreated;
     protected Date dateModified;
     protected Map<String, ?> config;
@@ -27,6 +29,26 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
     @Override
     public void setId(EntityTypeInfoImpl id) {
         this.id = id;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
