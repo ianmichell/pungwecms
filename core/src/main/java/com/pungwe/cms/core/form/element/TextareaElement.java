@@ -18,4 +18,8 @@ public class TextareaElement extends StringElement {
         this.rows = rows;
     }
 
+    @Override
+    public String getTheme() {
+        return "form_textarea_element";
+    }
 }

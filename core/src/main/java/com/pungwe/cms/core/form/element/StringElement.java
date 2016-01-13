@@ -17,4 +17,9 @@ public class StringElement extends AbstractFormElement<String> {
     public void setSize(int size) {
         this.size = size;
     }
+
+    @Override
+    public String getTheme() {
+        return "form_string_element";
+    }
 }

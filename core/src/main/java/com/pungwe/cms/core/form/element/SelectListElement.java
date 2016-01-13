@@ -18,4 +18,9 @@ public class SelectListElement<T> extends AbstractFormElement<T> {
     public void setItems(Set<T> items) {
         this.items = items;
     }
+
+    @Override
+    public String getTheme() {
+        return "form_select_list_element";
+    }
 }

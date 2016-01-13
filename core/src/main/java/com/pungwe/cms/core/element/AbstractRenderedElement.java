@@ -10,7 +10,9 @@ public abstract class AbstractRenderedElement implements RenderedElement {
     protected String htmlId;
     protected String name;
     protected int weight;
+    // FIXME: Should this be here?
     protected Map<String, Object> settings;
+    protected String theme;
 
     @Override
     public String getHtmlId() {

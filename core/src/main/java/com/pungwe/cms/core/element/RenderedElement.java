@@ -19,4 +19,6 @@ public interface RenderedElement {
     Map<String, Object> getSettings();
     void setSettings(Map<String, Object> settings);
 
+    String getTheme();
+
 }

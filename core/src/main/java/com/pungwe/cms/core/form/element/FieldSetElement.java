@@ -28,4 +28,9 @@ public class FieldSetElement extends AbstractRenderedElement {
     public void setChildren(List<RenderedElement> children) {
         this.children = children;
     }
+
+    @Override
+    public String getTheme() {
+        return "fieldset";
+    }
 }

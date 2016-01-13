@@ -1,6 +1,7 @@
 package com.pungwe.cms.modules.node.controllers;
 
 import com.pungwe.cms.core.annotations.MenuItem;
+import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.concurrent.Callable;
@@ -33,7 +37,6 @@ public class NodeTypeController {
     @RequestMapping(value="/")
     public Callable<String> list(Model model, int pageNumber, int maxRows) {
         return () -> {
-            model.addAttribute("entities", entityDefinitionService.list(new PageRequest(pageNumber, maxRows)));
             return "node_type_list";
         };
     }
@@ -43,15 +46,22 @@ public class NodeTypeController {
             parent = "system.admin.structure.node.content-types",
             title = "Add a new Content Type"
     )
-    @RequestMapping(value="/add")
+    @RequestMapping(value="/add", method = RequestMethod.GET)
     public Callable<String> add(Model model) {
         return () -> {
             return "node_type_add";
         };
     }
 
+    @RequestMapping(value="/add", method = RequestMethod.POST)
+    public Callable<String> add(Model model, BindingResult result) {
+        return () -> {
+            return "node_type_add";
+        };
+    }
+
     @RequestMapping(value="/edit/{id}")
-    public Callable edit(@PathVariable("id") String id) {
+    public Callable<String> edit(@PathVariable("id") String id) {
         return () -> {
             return "node_type_edit";
         };
@@ -60,13 +70,14 @@ public class NodeTypeController {
     @RequestMapping(value="/delete/{id}")
     public Callable<String> delete(@PathVariable("id") String id) {
         return () -> {
-            return "redirect:/admin/structure/content-types/delete";
+            return "redirect:/admin/structure/content-types";
         };
     }
 
-    public Callable<String> deleteConfirm(String id) {
+    @RequestMapping(value="/delete_confirm/{id}")
+    public Callable<String> deleteConfirm(@PathVariable("id") String id, Model model) {
         return () -> {
-            return "node_type_delete_confirm";
+            return "delete_confirm";
         };
     }
 }
