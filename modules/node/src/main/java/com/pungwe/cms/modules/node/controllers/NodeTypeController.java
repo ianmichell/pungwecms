@@ -2,6 +2,9 @@ package com.pungwe.cms.modules.node.controllers;
 
 import com.pungwe.cms.core.annotations.MenuItem;
 import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.element.basic.LinkElement;
+import com.pungwe.cms.core.element.basic.PlainTextElement;
+import com.pungwe.cms.core.element.basic.TableElement;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.concurrent.Callable;
+import java.util.ArrayList;
 
 /**
  * Created by ian on 11/01/2016.
@@ -28,6 +32,7 @@ public class NodeTypeController {
     @Autowired
     protected EntityDefinitionService entityDefinitionService;
 
+    // FIXME: Inject a hook service, this will allow module developers to modify this module
     @MenuItem(
             name = "content-types",
             parent = "system.admin.structure",
@@ -37,6 +42,10 @@ public class NodeTypeController {
     @RequestMapping(value="/")
     public Callable<String> list(Model model, int pageNumber, int maxRows) {
         return () -> {
+            Page<EntityDefinition> entities = entityDefinitionService.list("node_type", new PageRequest(pageNumber, maxRows));
+	    model.addAttribute("actions", new ArrayList());
+	    model.addAttribute("entities", entities);
+
             return "node_type_list";
         };
     }

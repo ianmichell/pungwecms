@@ -11,7 +11,7 @@ public abstract class AbstractRenderedElement implements RenderedElement {
     protected String name;
     protected int weight;
     // FIXME: Should this be here?
-    protected Map<String, Object> settings;
+    protected Map<String, Object> attributes;
     protected String theme;
 
     @Override
@@ -45,12 +45,12 @@ public abstract class AbstractRenderedElement implements RenderedElement {
     }
 
     @Override
-    public Map<String, Object> getSettings() {
-        return settings;
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     @Override
-    public void setSettings(Map<String, Object> settings) {
-        this.settings = settings;
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 }

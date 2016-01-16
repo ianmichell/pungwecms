@@ -16,8 +16,8 @@ public interface RenderedElement {
     int getWeight();
     void setWeight(int weight);
 
-    Map<String, Object> getSettings();
-    void setSettings(Map<String, Object> settings);
+    Map<String, Object> getAttributes();
+    void setAttributes(Map<String, Object> settings);
 
     String getTheme();
 
