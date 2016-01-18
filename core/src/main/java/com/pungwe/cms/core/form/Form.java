@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface Form<T> {
 
-    String getFormId();
+	String getFormId();
 
-    void buildForm(List<RenderedElement> form, FormState<T> formState);
+	void buildForm(List<RenderedElement> form, FormState<T> formState);
 
-    void validateForm(List<RenderedElement> form, FormState<T> state);
+	void validateForm(List<RenderedElement> form, FormState<T> state);
 
-    void submitForm(List<RenderedElement> form, FormState<T> state);
+	void submitForm(List<RenderedElement> form, FormState<T> state);
 }

@@ -11,9 +11,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface MenuItem {
-    String name();
-    String title();
-    String description() default "";
-    String parent() default "";
-    String route() default "";
+	String name();
+
+	String title();
+
+	String description() default "";
+
+	String parent() default "";
+
+	String route() default "";
 }

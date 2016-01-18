@@ -15,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.sql.DataSource;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,36 +30,35 @@ import static org.junit.Assert.assertNotNull;
 @SpringApplicationConfiguration(TestEntityDefinitionImpl.AppConfig.class)
 public class TestEntityDefinitionImpl {
 
-    @Configuration
-    @EnableAutoConfiguration
-    @ComponentScan(basePackages = "com.pungwe.cms.jpa")
-    public static class AppConfig {
+	@PersistenceUnit
+	protected EntityManagerFactory entityManagerFactory;
+	@Autowired
+	DataSource ds;
+	@Autowired
+	Environment env;
 
-    }
-    @PersistenceUnit
-    protected EntityManagerFactory entityManagerFactory;
+	@Test
+	public void testCreateAndStoreDefinition() throws Exception {
+		EntityDefinitionImpl d = new EntityDefinitionImpl();
+		d.setId(new EntityTypeInfoImpl("node", "basic_page"));
+		Map<String, String> settings = new HashMap<String, String>();
+		settings.put("setting", "setting_value");
+		d.setConfig(settings);
+		String[] profiles = env.getActiveProfiles();
+		EntityManager em = entityManagerFactory.createEntityManager();
+		em.getTransaction().begin();
+		em.persist(d);
+		em.getTransaction().commit();
 
-    @Autowired
-    DataSource ds;
+		EntityDefinitionImpl result = em.find(EntityDefinitionImpl.class, new EntityTypeInfoImpl("node", "basic_page"));
+		assertNotNull(result);
+		assertEquals("setting_value", result.getConfig().get("setting"));
+	}
 
-    @Autowired
-    Environment env;
+	@Configuration
+	@EnableAutoConfiguration
+	@ComponentScan(basePackages = "com.pungwe.cms.jpa")
+	public static class AppConfig {
 
-    @Test
-    public void testCreateAndStoreDefinition() throws Exception {
-        EntityDefinitionImpl d = new EntityDefinitionImpl();
-        d.setId(new EntityTypeInfoImpl("node", "basic_page"));
-        Map<String, String> settings = new HashMap<String, String>();
-        settings.put("setting", "setting_value");
-        d.setConfig(settings);
-        String[] profiles = env.getActiveProfiles();
-        EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(d);
-        em.getTransaction().commit();
-
-        EntityDefinitionImpl result = em.find(EntityDefinitionImpl.class, new EntityTypeInfoImpl("node", "basic_page"));
-        assertNotNull(result);
-        assertEquals("setting_value", result.getConfig().get("setting"));
-    }
+	}
 }

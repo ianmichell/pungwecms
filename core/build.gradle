@@ -4,5 +4,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-validation')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.data:spring-data-commons')
+    compile('com.lyncode:jtwig-spring')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -10,26 +10,26 @@ import java.util.List;
  */
 public interface EntityType {
 
-    /**
-     * The entity type name.
-     *
-     * @return the type of entity
-     */
-    String getType();
+	/**
+	 * The entity type name.
+	 *
+	 * @return the type of entity
+	 */
+	String getType();
 
-    /**
-     * Creates a list of base fields for the entity type. These are added automatically when a new
-     * entity is created...
-     *
-     * @return the base fields for the entity type
-     */
-    List<FieldConfig> getBaseFields();
+	/**
+	 * Creates a list of base fields for the entity type. These are added automatically when a new
+	 * entity is created...
+	 *
+	 * @return the base fields for the entity type
+	 */
+	List<FieldConfig> getBaseFields();
 
-    /**
-     * Builds an entity settings form.
-     *
-     * @param elements the list of elements for the form
-     * @param state the current form state.
-     */
-    void buildSettingsForm(List<RenderedElement> elements, FormState state);
+	/**
+	 * Builds an entity settings form.
+	 *
+	 * @param elements the list of elements for the form
+	 * @param state    the current form state.
+	 */
+	void buildSettingsForm(List<RenderedElement> elements, FormState state);
 }

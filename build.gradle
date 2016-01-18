@@ -79,6 +79,9 @@ subprojects {
             dependency "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
             dependency "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:${jacksonVersion}"
 
+            // Templating
+            dependency 'com.lyncode:jtwig-spring:3.1.1'
+
             // Test
             dependency 'com.h2database:h2:1.4.182'
             dependency 'mysql:mysql-connector-java:5.1.6'

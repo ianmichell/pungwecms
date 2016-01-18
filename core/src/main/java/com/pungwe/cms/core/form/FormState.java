@@ -7,16 +7,16 @@ import org.springframework.validation.Errors;
  */
 public interface FormState<T> {
 
-    T getFormData();
+	T getFormData();
 
-    void setFormData(T data);
+	void setFormData(T data);
 
-    Errors getErrors();
+	Errors getErrors();
 
-    void setErrors(Errors errors);
+	void setErrors(Errors errors);
 
-    boolean needsRebuild();
+	boolean needsRebuild();
 
-    void setRebuild(boolean rebuild);
+	void setRebuild(boolean rebuild);
 
 }

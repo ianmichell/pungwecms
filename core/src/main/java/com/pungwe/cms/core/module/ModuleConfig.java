@@ -7,23 +7,23 @@ import java.util.Map;
  */
 public interface ModuleConfig {
 
-    public String getName();
+	public String getName();
 
-    public void setName(String name);
+	public void setName(String name);
 
-    public String getVersion();
+	public String getVersion();
 
-    public void setVersion(String version);
+	public void setVersion(String version);
 
-    public Class<?> getEntryPoint();
+	public Class<?> getEntryPoint();
 
-    public void setEntryPoint(Class<?> entryPoint);
+	public void setEntryPoint(Class<?> entryPoint);
 
-    public boolean isEnabled();
+	public boolean isEnabled();
 
-    public void setEnabled(boolean enabled);
+	public void setEnabled(boolean enabled);
 
-    Map<String, Object> getSettings();
+	Map<String, Object> getSettings();
 
-    void setSettings(Map<String, Object> settings);
+	void setSettings(Map<String, Object> settings);
 }

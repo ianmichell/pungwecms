@@ -1,0 +1,21 @@
+<table{{ attributes }}>
+    {%  if summary %}
+    <summary>{{ summary }}</summary>
+    {%  endif %}
+    <thead>
+        <tr>
+            {% for header in headers %}
+                <th{{ attributes }}>{{ header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {%  for row in rows %}
+        <tr>
+            {%  for col in row.columns %}
+            <td{{ attributes }}>{{ col }}</td>
+            {%  endfor %}
+        </tr>
+        {%  endfor %}
+    </tbody>
+</table>

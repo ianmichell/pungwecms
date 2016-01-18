@@ -5,8 +5,8 @@ package com.pungwe.cms.core.form.element;
  */
 public class IntegerElement extends AbstractFormElement<Integer> {
 
-    @Override
-    public String getTheme() {
-        return "form_integer_element";
-    }
+	@Override
+	public String getTheme() {
+		return "form_integer_element";
+	}
 }

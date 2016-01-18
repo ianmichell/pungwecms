@@ -13,44 +13,44 @@ import java.util.List;
  */
 public class NodeEntityType implements EntityType {
 
-    @Override
-    public String getType() {
-        return "node";
-    }
+	@Override
+	public String getType() {
+		return "node";
+	}
 
-    @Override
-    public List<FieldConfig> getBaseFields() {
+	@Override
+	public List<FieldConfig> getBaseFields() {
 
-        List<FieldConfig> fields = new ArrayList<>();
+		List<FieldConfig> fields = new ArrayList<>();
 
-        FieldConfig title = new FieldConfig();
-        title.setName("title");
-        title.setWeight(-100);
-        title.setLabel("Title");
-        title.setRequired(true);
-        title.setCardinality(1);
-        title.setWidget("string_textfield");
-        title.setFormatter("string");
-        title.setFieldType("string");
-        title.addSetting("size", 200);
+		FieldConfig title = new FieldConfig();
+		title.setName("title");
+		title.setWeight(-100);
+		title.setLabel("Title");
+		title.setRequired(true);
+		title.setCardinality(1);
+		title.setWidget("string_textfield");
+		title.setFormatter("string");
+		title.setFieldType("string");
+		title.addSetting("size", 200);
 
-        FieldConfig body = new FieldConfig();
-        body.setName("body");
-        body.setWeight(0);
-        body.setLabel("Body");
-        body.setCardinality(1);
-        body.setWidget("textarea_and_summary");
-        body.setFormatter("text_default");
-        body.setFieldType("text");
-        body.addSetting("rows", 10);
+		FieldConfig body = new FieldConfig();
+		body.setName("body");
+		body.setWeight(0);
+		body.setLabel("Body");
+		body.setCardinality(1);
+		body.setWidget("textarea_and_summary");
+		body.setFormatter("text_default");
+		body.setFieldType("text");
+		body.addSetting("rows", 10);
 
-        fields.add(title);
-        fields.add(body);
+		fields.add(title);
+		fields.add(body);
 
-        return fields;
-    }
+		return fields;
+	}
 
-    @Override
-    public void buildSettingsForm(List<RenderedElement> elements, FormState state) {
-    }
+	@Override
+	public void buildSettingsForm(List<RenderedElement> elements, FormState state) {
+	}
 }

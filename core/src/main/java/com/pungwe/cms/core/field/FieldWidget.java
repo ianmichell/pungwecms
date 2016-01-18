@@ -4,7 +4,6 @@ import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
-import org.springframework.validation.Errors;
 
 import java.util.List;
 
@@ -13,12 +12,12 @@ import java.util.List;
  */
 public interface FieldWidget {
 
-    String getName();
+	String getName();
 
-    void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate);
+	void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate);
 
-    void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state);
+	void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state);
 
-    boolean supports(String fieldType);
+	boolean supports(String fieldType);
 
 }

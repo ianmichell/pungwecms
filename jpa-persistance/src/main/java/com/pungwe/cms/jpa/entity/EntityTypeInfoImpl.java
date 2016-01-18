@@ -10,34 +10,33 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class EntityTypeInfoImpl implements EntityTypeInfo {
 
-    public EntityTypeInfoImpl(String type, String bundle) {
-        this.type = type;
-        this.bundle = bundle;
-    }
+	private String type;
+	private String bundle;
 
-    public EntityTypeInfoImpl() {
-    }
+	public EntityTypeInfoImpl(String type, String bundle) {
+		this.type = type;
+		this.bundle = bundle;
+	}
+	public EntityTypeInfoImpl() {
+	}
 
-    private String type;
-    private String bundle;
+	@Override
+	public String getType() {
+		return type;
+	}
 
-    @Override
-    public String getType() {
-        return type;
-    }
+	@Override
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }
+	@Override
+	public String getBundle() {
+		return bundle;
+	}
 
-    @Override
-    public String getBundle() {
-        return bundle;
-    }
-
-    @Override
-    public void setBundle(String bundle) {
-        this.bundle = bundle;
-    }
+	@Override
+	public void setBundle(String bundle) {
+		this.bundle = bundle;
+	}
 }

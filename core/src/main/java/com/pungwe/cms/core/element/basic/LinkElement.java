@@ -8,61 +8,58 @@ import com.pungwe.cms.core.element.RenderedElement;
  */
 public class LinkElement extends AbstractRenderedElement {
 
-    public LinkElement() {
-    }
+	protected String title;
+	protected String href;
+	protected String target;
+	protected RenderedElement content;
+	public LinkElement() {
+	}
+	public LinkElement(String title, String href, RenderedElement content) {
+		this.title = title;
+		this.href = href;
+		this.content = content;
+	}
+	public LinkElement(String title, String href, String target, RenderedElement content) {
+		this.title = title;
+		this.href = href;
+		this.target = target;
+		this.content = content;
+	}
 
-    public LinkElement(String title, String href, RenderedElement content) {
-        this.title = title;
-        this.href = href;
-        this.content = content;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public LinkElement(String title, String href, String target, RenderedElement content) {
-        this.title = title;
-        this.href = href;
-        this.target = target;
-        this.content = content;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    protected String title;
-    protected String href;
-    protected String target;
-    protected RenderedElement content;
+	public String getHref() {
+		return href;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setHref(String href) {
+		this.href = href;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getTarget() {
+		return target;
+	}
 
-    public String getHref() {
-        return href;
-    }
+	public void setTarget(String target) {
+		this.target = target;
+	}
 
-    public void setHref(String href) {
-        this.href = href;
-    }
+	public RenderedElement getContent() {
+		return content;
+	}
 
-    public String getTarget() {
-        return target;
-    }
+	public void setContent(RenderedElement content) {
+		this.content = content;
+	}
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public RenderedElement getContent() {
-        return content;
-    }
-
-    public void setContent(RenderedElement content) {
-        this.content = content;
-    }
-
-    @Override
-    public String getTheme() {
-        return "link";
-    }
+	@Override
+	public String getTheme() {
+		return "link";
+	}
 }

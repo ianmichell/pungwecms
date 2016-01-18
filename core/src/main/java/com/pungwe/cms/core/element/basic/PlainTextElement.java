@@ -7,26 +7,26 @@ import com.pungwe.cms.core.element.AbstractRenderedElement;
  */
 public class PlainTextElement extends AbstractRenderedElement {
 
-    public PlainTextElement() {
+	protected String text;
 
-    }
+	public PlainTextElement() {
 
-    public PlainTextElement(String text) {
-        this.text = text;
-    }
+	}
 
-    protected String text;
+	public PlainTextElement(String text) {
+		this.text = text;
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    @Override
-    public String getTheme() {
-        return "plain_text";
-    }
+	@Override
+	public String getTheme() {
+		return "plain_text";
+	}
 }

@@ -5,8 +5,8 @@ package com.pungwe.cms.core.utils;
  */
 public interface CommonHooks {
 
-    String INSTALL = "install";
-    String UNINSTALL = "uninstall";
-    String UPDATE = "update_";
+	String INSTALL = "install";
+	String UNINSTALL = "uninstall";
+	String UPDATE = "update_";
 
 }

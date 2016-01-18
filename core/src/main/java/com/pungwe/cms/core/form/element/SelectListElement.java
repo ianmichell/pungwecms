@@ -1,7 +1,5 @@
 package com.pungwe.cms.core.form.element;
 
-import com.pungwe.cms.core.element.AbstractRenderedElement;
-
 import java.util.Set;
 
 /**
@@ -9,18 +7,18 @@ import java.util.Set;
  */
 public class SelectListElement<T> extends AbstractFormElement<T> {
 
-    protected Set<T> items;
+	protected Set<T> items;
 
-    public Set<T> getItems() {
-        return items;
-    }
+	public Set<T> getItems() {
+		return items;
+	}
 
-    public void setItems(Set<T> items) {
-        this.items = items;
-    }
+	public void setItems(Set<T> items) {
+		this.items = items;
+	}
 
-    @Override
-    public String getTheme() {
-        return "form_select_list_element";
-    }
+	@Override
+	public String getTheme() {
+		return "form_select_list_element";
+	}
 }

@@ -16,18 +16,20 @@ import java.util.Map;
  */
 public interface ModuleDefinition {
 
-    /**
-     * Default module settings
-     * @return the default module settings
-     */
-    Map<String, Object> getDefaultSettings();
+	/**
+	 * Default module settings
+	 *
+	 * @return the default module settings
+	 */
+	Map<String, Object> getDefaultSettings();
 
-    /**
-     * Builds a settings form for the admin ui.
-     * @param elements the form elements
-     * @param form the settings form
-     * @param state the form state
-     */
-    void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state);
+	/**
+	 * Builds a settings form for the admin ui.
+	 *
+	 * @param elements the form elements
+	 * @param form     the settings form
+	 * @param state    the form state
+	 */
+	void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state);
 
 }

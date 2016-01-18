@@ -7,18 +7,22 @@ import java.util.Map;
  */
 public interface RenderedElement {
 
-    String getHtmlId();
-    void setHtmlId(String htmlId);
+	String getHtmlId();
 
-    String getName();
-    void setName(String name);
+	void setHtmlId(String htmlId);
 
-    int getWeight();
-    void setWeight(int weight);
+	String getName();
 
-    Map<String, Object> getAttributes();
-    void setAttributes(Map<String, Object> settings);
+	void setName(String name);
 
-    String getTheme();
+	int getWeight();
+
+	void setWeight(int weight);
+
+	Map<String, Object> getAttributes();
+
+	void setAttributes(Map<String, Object> settings);
+
+	String getTheme();
 
 }

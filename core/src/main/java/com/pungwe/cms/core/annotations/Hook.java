@@ -10,12 +10,12 @@ import java.lang.annotation.Target;
 /**
  * Used to define a hook implementation. This can be applied directly to methods on any class. When a hook is being executed
  * methods with this annotation will be found on the class path (provided they are in modules that are enabled) and executed.
- *
+ * <p>
  * Created by ian on 07/12/2015.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Autowired
 public @interface Hook {
-    String value();
+	String value();
 }

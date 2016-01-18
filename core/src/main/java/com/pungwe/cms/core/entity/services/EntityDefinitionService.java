@@ -12,20 +12,21 @@ import java.util.List;
  */
 public interface EntityDefinitionService<ED extends EntityDefinition> {
 
-    /**
-     * Instantiates the EntityDefinition class
-     * @param type The type of entity
-     * @param bundle The entity bundle
-     * @return
-     */
-    ED newInstance(EntityType type, String bundle);
+	/**
+	 * Instantiates the EntityDefinition class
+	 *
+	 * @param type   The type of entity
+	 * @param bundle The entity bundle
+	 * @return
+	 */
+	ED newInstance(EntityType type, String bundle);
 
-    ED get(String type, String bundle);
+	ED get(String type, String bundle);
 
-    Page<List<ED>> list(String type, Pageable page);
+	Page<List<ED>> list(String type, Pageable page);
 
-    void create(ED instance);
+	void create(ED instance);
 
-    void remove(String type, String bundle);
+	void remove(String type, String bundle);
 
 }

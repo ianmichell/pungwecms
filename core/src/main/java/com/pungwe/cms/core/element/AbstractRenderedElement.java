@@ -7,50 +7,50 @@ import java.util.Map;
  */
 public abstract class AbstractRenderedElement implements RenderedElement {
 
-    protected String htmlId;
-    protected String name;
-    protected int weight;
-    // FIXME: Should this be here?
-    protected Map<String, Object> attributes;
-    protected String theme;
+	protected String htmlId;
+	protected String name;
+	protected int weight;
+	// FIXME: Should this be here?
+	protected Map<String, Object> attributes;
+	protected String theme;
 
-    @Override
-    public String getHtmlId() {
-        return htmlId;
-    }
+	@Override
+	public String getHtmlId() {
+		return htmlId;
+	}
 
-    @Override
-    public void setHtmlId(String htmlId) {
-        this.htmlId = htmlId;
-    }
+	@Override
+	public void setHtmlId(String htmlId) {
+		this.htmlId = htmlId;
+	}
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public int getWeight() {
-        return weight;
-    }
+	@Override
+	public int getWeight() {
+		return weight;
+	}
 
-    @Override
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+	@Override
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
-    @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
+	@Override
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
 
-    @Override
-    public void setAttributes(Map<String, Object> attributes) {
-        this.attributes = attributes;
-    }
+	@Override
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
+	}
 }

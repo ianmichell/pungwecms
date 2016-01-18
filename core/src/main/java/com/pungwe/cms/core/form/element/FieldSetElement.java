@@ -10,27 +10,27 @@ import java.util.List;
  */
 public class FieldSetElement extends AbstractRenderedElement {
 
-    protected String legend;
-    protected List<RenderedElement> children;
+	protected String legend;
+	protected List<RenderedElement> children;
 
-    public String getLegend() {
-        return legend;
-    }
+	public String getLegend() {
+		return legend;
+	}
 
-    public void setLegend(String legend) {
-        this.legend = legend;
-    }
+	public void setLegend(String legend) {
+		this.legend = legend;
+	}
 
-    public List<RenderedElement> getChildren() {
-        return children;
-    }
+	public List<RenderedElement> getChildren() {
+		return children;
+	}
 
-    public void setChildren(List<RenderedElement> children) {
-        this.children = children;
-    }
+	public void setChildren(List<RenderedElement> children) {
+		this.children = children;
+	}
 
-    @Override
-    public String getTheme() {
-        return "fieldset";
-    }
+	@Override
+	public String getTheme() {
+		return "fieldset";
+	}
 }

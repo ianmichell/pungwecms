@@ -16,53 +16,53 @@ import java.util.List;
  */
 public class TextfieldWidget implements FieldWidget {
 
-    @Override
-    public String getName() {
-        return "textfield";
-    }
+	@Override
+	public String getName() {
+		return "textfield";
+	}
 
-    @Override
-    public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
+	@Override
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
 
-        // Text Field is a type of String element
-        StringElement element = new StringElement();
-        element.setLabel(field.getLabel());
-        element.setName("value");
-        element.setRequired(field.isRequired());
-        element.setDefaultValue((String)((List<String>)field.getSettings().getOrDefault("defaultValue", "")).get(delta));
-        element.setSize((int)field.getSettings().getOrDefault("size", 60));
+		// Text Field is a type of String element
+		StringElement element = new StringElement();
+		element.setLabel(field.getLabel());
+		element.setName("value");
+		element.setRequired(field.isRequired());
+		element.setDefaultValue((String) ((List<String>) field.getSettings().getOrDefault("defaultValue", "")).get(delta));
+		element.setSize((int) field.getSettings().getOrDefault("size", 60));
 
-        elements.add(element);
-    }
+		elements.add(element);
+	}
 
-    @Override
-    public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	@Override
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
 
-        IntegerElement size = new IntegerElement();
-        size.setName("size");
-        size.setLabel("Size");
-        size.setDefaultValue(60);
-        size.setWeight(4);
+		IntegerElement size = new IntegerElement();
+		size.setName("size");
+		size.setLabel("Size");
+		size.setDefaultValue(60);
+		size.setWeight(4);
 
-        // Add Size to element list
-        elements.add(size);
+		// Add Size to element list
+		elements.add(size);
 
-        // Text Field is a type of String element
-        StringElement defaultValue = new StringElement();
-        defaultValue.setLabel("Default Value");
-        defaultValue.setName("defaultValue");
-        defaultValue.setDefaultValue("");
-        defaultValue.setSize(60);
-        defaultValue.setWeight(5);
+		// Text Field is a type of String element
+		StringElement defaultValue = new StringElement();
+		defaultValue.setLabel("Default Value");
+		defaultValue.setName("defaultValue");
+		defaultValue.setDefaultValue("");
+		defaultValue.setSize(60);
+		defaultValue.setWeight(5);
 
-        // Add Default Value to element list
-        elements.add(defaultValue);
+		// Add Default Value to element list
+		elements.add(defaultValue);
 
-    }
+	}
 
 
-    @Override
-    public boolean supports(String type) {
-        return "string".equals(type);
-    }
+	@Override
+	public boolean supports(String type) {
+		return "string".equals(type);
+	}
 }
