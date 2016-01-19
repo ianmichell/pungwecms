@@ -25,4 +25,15 @@ public interface RenderedElement {
 
 	String getTheme();
 
+	default String preProcessAttributes() {
+		StringBuilder b = new StringBuilder();
+
+		if (getAttributes() != null) {
+			getAttributes().forEach((String key, Object value) -> {
+				b.append(" ").append(key).append("=\"").append(value.toString()).append("\"");
+			});
+		}
+
+		return b.toString();
+	}
 }

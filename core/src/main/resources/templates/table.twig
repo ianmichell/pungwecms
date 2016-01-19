@@ -1,19 +1,21 @@
 <table{{ attributes }}>
     {%  if summary %}
-    <summary>{{ summary }}</summary>
+    <summary>{{ summary | render }}</summary>
     {%  endif %}
     <thead>
-        <tr>
-            {% for header in headers %}
-                <th{{ attributes }}>{{ header }}</th>
+    {%  for row in header %}
+        <tr{{ row.attributes }}>
+            {% for col in row.columns %}
+                <th{{ col.attributes }}>{{ col | render }}</th>
             {% endfor %}
         </tr>
+    {% endfor %}
     </thead>
     <tbody>
         {%  for row in rows %}
-        <tr>
+        <tr{{ row.attributes }}>
             {%  for col in row.columns %}
-            <td{{ attributes }}>{{ col }}</td>
+            <td{{ col.attributes }}>{{ col | render }}</td>
             {%  endfor %}
         </tr>
         {%  endfor %}

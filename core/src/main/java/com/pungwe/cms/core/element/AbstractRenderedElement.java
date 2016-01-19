@@ -53,4 +53,5 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	public void setAttributes(Map<String, Object> attributes) {
 		this.attributes = attributes;
 	}
+
 }

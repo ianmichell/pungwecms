@@ -12,4 +12,14 @@ of what drupal has to offer and provide something similar based on java. This do
 a Drupal clone... This just means it's similar and heavily based on my point of view (which means 
 lost of type safety, spring oriented design and of course denormalised data, without JCR).
 
+## Things to do
+
+- Should probably start populating the wiki with documentation
+- Design how Rest API will work with everything (pretty much, should run headless if need be)
+- Rest API should override views, so that developers can use pure client side apps
+- Get swagger on the go for rest api documentation
+- Need to finish designing how themes and templates will work
+- Look into app packaging, so that desktop class apps can be built and run locally
+- Change / revision system for entities
+
 More to come...

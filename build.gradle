@@ -5,7 +5,7 @@ buildscript {
     }
 
     ext {
-        springBootVersion = '1.3.0.RC1'
+        springBootVersion = '1.3.1.RELEASE'
     }
 
     dependencies {
@@ -55,7 +55,7 @@ subprojects {
     }
 
     ext {
-        springPlatformVersion = "2.0.0.RELEASE"
+        springPlatformVersion = "2.0.1.RELEASE"
         hibernateVersion = "5.0.5.Final"
         jacksonVersion = "2.6.3"
     }

@@ -12,13 +12,16 @@ public class LinkElement extends AbstractRenderedElement {
 	protected String href;
 	protected String target;
 	protected RenderedElement content;
+
 	public LinkElement() {
 	}
+
 	public LinkElement(String title, String href, RenderedElement content) {
 		this.title = title;
 		this.href = href;
 		this.content = content;
 	}
+
 	public LinkElement(String title, String href, String target, RenderedElement content) {
 		this.title = title;
 		this.href = href;
@@ -61,5 +64,15 @@ public class LinkElement extends AbstractRenderedElement {
 	@Override
 	public String getTheme() {
 		return "link";
+	}
+
+	@Override
+	public String preProcessAttributes() {
+		StringBuilder b = new StringBuilder();
+		b.append(" href=\"").append(href).append("\"");
+		b.append(" target=\"").append(target).append("\"");
+		b.append(" title=\"").append(title).append("\"");
+		b.append(super.preProcessAttributes());
+		return b.toString();
 	}
 }
