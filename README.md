@@ -12,6 +12,14 @@ of what drupal has to offer and provide something similar based on java. This do
 a Drupal clone... This just means it's similar and heavily based on my point of view (which means 
 lost of type safety, spring oriented design and of course denormalised data, without JCR).
 
+## Modules / Themes
+
+For the time being, it has been decided that we will not support a plugin system like OSGI, due to how it complicates lives
+for the developers... It is for this reason that modules have to be included on the classpath as part of your project builds.
+When time permits we will look into alternative methods of dynamically loading these...
+
+
+
 ## Things to do
 
 - Should probably start populating the wiki with documentation
@@ -21,5 +29,6 @@ lost of type safety, spring oriented design and of course denormalised data, wit
 - Need to finish designing how themes and templates will work
 - Look into app packaging, so that desktop class apps can be built and run locally
 - Change / revision system for entities
+- Modules should use @ComponentScan or @Bean to create beans.
 
 More to come...

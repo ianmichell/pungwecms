@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,8 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = "jpa")
 @SpringApplicationConfiguration(TestEntityDefinitionImpl.AppConfig.class)
+@IntegrationTest
+@Transactional
 public class TestEntityDefinitionImpl {
 
 	@PersistenceUnit

@@ -1,31 +1,44 @@
 package com.pungwe.cms.jpa.config;
 
+import com.pungwe.cms.core.annotations.PersistenceDriver;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+// FIXME: This should become a module
+
 /**
  * Created by ian on 09/12/2015.
  */
-@Configuration
+@PersistenceDriver("jpa")
 @ComponentScan("com.pungwe.cms.jpa")
 @EnableTransactionManagement
 @ConfigurationProperties(prefix = "jpa")
-@Profile("JPA")
+@EnableJpaRepositories("com.pungwe.cms.jpa")
+@Import({
+		DataSourceAutoConfiguration.class,
+		DataSourceTransactionManagerAutoConfiguration.class,
+		HibernateJpaAutoConfiguration.class
+})
 public class JPAConfiguration {
 
 	@Value("${jpa.driver.class}")
@@ -52,23 +65,20 @@ public class JPAConfiguration {
 		return new HashMap<String, String>();
 	}
 
-	@Bean(name = "entityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(dataSource());
-		em.setPackagesToScan(new String[]{"com.pungwe.cms.jpa.entity"});
-
-		JpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		em.setJpaVendorAdapter(adapter);
-		Properties p = new Properties();
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+			EntityManagerFactoryBuilder factoryBuilder, DataSource dataSource) {
 		Map<String, String> hibernateProperties = mapPropertyNames("hibernate", hibernateConfiguration());
-		p.putAll(hibernateProperties);
-		em.setJpaProperties(p);
-		em.setPersistenceUnitName("pungweEM");
-		return em;
+		return factoryBuilder.dataSource(dataSource).packages("com.pungwe.cms.jpa.entity", "com.pungwe.cms.jpa.module")
+				.properties(hibernateProperties).build();
 	}
 
 	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+		return new JpaTransactionManager(entityManagerFactory);
+	}
+
+	@Bean(name = "dataSource")
 	public DataSource dataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName(driverClassName);
@@ -88,7 +98,7 @@ public class JPAConfiguration {
 	}
 
 	private Map<String, String> mapPropertyNames(String prefix, Map<String, ?> map) {
-		Map<String, String> toMap = new HashMap<String, String>();
+		Map<String, String> toMap = new HashMap<>();
 		for (String key : map.keySet()) {
 			Object value = map.get(key);
 			if (value instanceof Map) {

@@ -6,3 +6,6 @@ include 'jpa-persistance'
 include 'modules'
 include 'modules:node'
 include 'modules:text'
+include 'modules:actuator'
+include 'webapp'
+

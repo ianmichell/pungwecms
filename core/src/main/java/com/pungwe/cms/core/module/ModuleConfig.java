@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.module;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -7,21 +8,24 @@ import java.util.Map;
  */
 public interface ModuleConfig {
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
 	public String getVersion();
 
-	public void setVersion(String version);
+	void setVersion(String version);
 
-	public Class<?> getEntryPoint();
+	String getEntryPoint();
 
-	public void setEntryPoint(Class<?> entryPoint);
+	void setEntryPoint(String entryPoint);
 
-	public boolean isEnabled();
+	boolean isEnabled();
 
-	public void setEnabled(boolean enabled);
+	void setEnabled(boolean enabled);
+
+	String getModuleLocation();
+	void setModuleLocation(String url);
 
 	Map<String, Object> getSettings();
 

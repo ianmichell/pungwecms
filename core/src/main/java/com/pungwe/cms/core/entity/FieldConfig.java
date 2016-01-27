@@ -123,7 +123,7 @@ public final class FieldConfig implements Comparable<FieldConfig> {
 	 * Compared by weight, if they are equal they are sorted by name.
 	 *
 	 * @param o
-	 * @return
+	 * @return the comparison
 	 */
 
 	public int compareTo(FieldConfig o) {

@@ -1,4 +1,5 @@
-spring.profiles.active: jpa
+# Database
+cms.data.type: jpa
 
 jpa:
   driver:
@@ -11,5 +12,11 @@ jpa:
       hibernate:
 #        dialect: org.hibernate.dialect.H2Dialect
         dialect: org.hibernate.dialect.MySQLDialect
-        hbm2ddl.auto: create
+        hbm2ddl.auto: update
         show_sql: true
+
+modules:
+  enabled:
+    - node
+    - text
+    - actuator
