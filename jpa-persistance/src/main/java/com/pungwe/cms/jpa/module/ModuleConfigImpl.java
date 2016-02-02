@@ -26,6 +26,7 @@ public class ModuleConfigImpl implements ModuleConfig {
 	protected String moduleLocation;
 	@Convert(converter = HashMapBinaryJSONConverter.class)
 	protected Map<String, Object> settings = new HashMap<>();
+	boolean installed;
 
 	@Override
 	public String getName() {
@@ -85,6 +86,16 @@ public class ModuleConfigImpl implements ModuleConfig {
 	@Override
 	public void setSettings(Map<String, Object> settings) {
 		this.settings = settings;
+	}
+
+	@Override
+	public boolean isInstalled() {
+		return installed;
+	}
+
+	@Override
+	public void setInstalled(boolean installed) {
+		this.installed = installed;
 	}
 
 	@Override

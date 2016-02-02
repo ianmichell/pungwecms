@@ -30,4 +30,8 @@ public interface ModuleConfig {
 	Map<String, Object> getSettings();
 
 	void setSettings(Map<String, Object> settings);
+
+	boolean isInstalled();
+
+	void setInstalled(boolean installed);
 }

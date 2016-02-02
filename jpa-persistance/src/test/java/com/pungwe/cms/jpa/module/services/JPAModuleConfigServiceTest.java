@@ -1,5 +1,6 @@
 package com.pungwe.cms.jpa.module.services;
 
+import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
 import com.pungwe.cms.jpa.config.JPAConfiguration;
 import com.pungwe.cms.modules.TestModule;
@@ -28,9 +29,9 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.TransactionManager;
 import javax.transaction.Transactional;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by ian on 22/01/2016.
@@ -51,7 +52,7 @@ public class JPAModuleConfigServiceTest {
 	@Test
 	@Rollback
 	public void testRegisterModule() {
-		configService.registerModule(TestModule.class, TestModule.class.getResource("/"));
+		configService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
 		entityManager.flush();
 		assertNotNull("Test Module was null", configService.getModuleConfig("test_module"));
 	}
@@ -60,7 +61,7 @@ public class JPAModuleConfigServiceTest {
 	@Rollback
 	public void testRegisterAndDelete() throws Exception {
 
-		configService.registerModule(TestModule.class, TestModule.class.getResource("/"));
+		configService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
 		entityManager.flush();
 
 		assertNotNull("Test Module was null", configService.getModuleConfig("test_module"));
@@ -71,4 +72,35 @@ public class JPAModuleConfigServiceTest {
 
 		assertNull("Module still exists", configService.getModuleConfig("test_module"));
 	}
+
+	/*
+
+	Set<M> listAllModules();
+
+	M getModuleConfig(String module);
+	*/
+
+	@Test
+	@Rollback
+	public void testListModules() {
+		configService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
+		entityManager.flush();
+		assertEquals("Module was not registered", 1, configService.listAllModules().size());
+	}
+
+	@Test
+	@Rollback
+	public void testSetModuleEnabled() {
+		configService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
+		entityManager.flush();
+		assertNotNull("Test Module was null", configService.getModuleConfig("test_module"));
+		configService.setModuleEnabled("test_module", true);
+		entityManager.flush();
+		assertTrue("Module was not enabled", configService.getModuleConfig("test_module").isEnabled());
+		assertTrue("Module was not enabled", configService.isEnabled("test_module"));
+		Set<ModuleConfig> modules = configService.listEnabledModules();
+		assertEquals("Module was not enabled", 1, modules.size());
+	}
+
+
 }

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 /**
  * Created by ian on 20/01/2016.
  */
-@Configuration
+@Configuration()
 @Import({
 		EmbeddedServletContainerAutoConfiguration.class,
 		// Web MVC
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Import;
 		AopAutoConfiguration.class,
 })
 // We only want to scan the core package
-@ComponentScan(basePackages = "com.pungwe.cms.core")
+@ComponentScan(basePackages = {"com.pungwe.cms.core"})
 public class BaseApplicationConfig {
 
 }

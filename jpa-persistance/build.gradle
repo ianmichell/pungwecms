@@ -7,6 +7,6 @@ dependencies {
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-smile"
     compile "org.springframework.boot:spring-boot-configuration-processor"
 
-    testCompile 'com.h2database:h2'
-    testCompile 'mysql:mysql-connector-java'
+    compile 'com.h2database:h2'
+    compile 'mysql:mysql-connector-java'
 }

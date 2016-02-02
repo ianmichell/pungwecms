@@ -3,7 +3,6 @@ package com.pungwe.cms.core.module.services;
 import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.impl.ModuleConfigImpl;
 import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
-import com.pungwe.cms.core.persistence.services.PersistenceManagmentService;
 import com.pungwe.cms.modules.dependency.ModuleWithDependency;
 import com.pungwe.cms.modules.test.TestComponent;
 import com.pungwe.cms.modules.test.TestModule;

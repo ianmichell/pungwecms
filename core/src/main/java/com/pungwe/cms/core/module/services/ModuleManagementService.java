@@ -3,40 +3,58 @@ package com.pungwe.cms.core.module.services;
 import com.pungwe.cms.core.annotations.Module;
 import com.pungwe.cms.core.annotations.ModuleDependency;
 import com.pungwe.cms.core.module.ModuleConfig;
-import com.pungwe.cms.core.persistence.services.PersistenceManagmentService;
-import org.apache.naming.factory.BeanFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.ListableBeanFactory;
+import com.pungwe.cms.core.utils.CommonHooks;
+import com.pungwe.cms.core.utils.services.HookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.*;
-import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+// FIXME: Move this to the parent application context if need be
 /**
  * Service for managing installed modules. This allows the enabling, disabling and scanning of modules
  * <p>
  * Created by ian on 20/01/2016.
  */
 @Service
+
 public class ModuleManagementService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(ModuleManagementService.class);
 
 	private AnnotationConfigApplicationContext moduleContext;
 
+	// FIXME: Never going to work on a different application context :(
 	@Autowired
-	private ModuleConfigService<ModuleConfig> configService;
+	private ModuleConfigService moduleConfigService;
 
 	@Autowired
-	private PersistenceManagmentService persistenceManagmentService;
+	private ApplicationContext applicationContext;
+
+	@Autowired
+	HookService hookService;
+
+
+//	@PostConstruct
+//	public void postContruct() {
+//		LOG.info("Scanning for modules");
+//		this.scan();
+//		this.startEnabledModules();
+//	}
+
+	protected ModuleConfigService<ModuleConfig> getModuleConfigService() {
+		return moduleConfigService;
+	}
 
 	/**
 	 * Enables a module with the given name. If it is already enabled, it will do nothing.
@@ -49,7 +67,7 @@ public class ModuleManagementService {
 	public boolean enable(String module) {
 
 		// Fetch the module config
-		ModuleConfig config = configService.getModuleConfig(module);
+		ModuleConfig config = getModuleConfigService().getModuleConfig(module);
 
 		// Fetch the module class
 		try {
@@ -66,7 +84,7 @@ public class ModuleManagementService {
 				}
 			}
 
-			configService.setModuleEnabled(module, true);
+			getModuleConfigService().setModuleEnabled(module, true);
 
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -88,14 +106,16 @@ public class ModuleManagementService {
 		// Create a new events
 		moduleContext = new AnnotationConfigApplicationContext();
 		// Set the parent to the root application events
-		moduleContext.setParent(persistenceManagmentService.getPersistenceContext());
+		moduleContext.setParent(applicationContext);
 
 		// Get a list of enabled modules
-		Set<ModuleConfig> enabled = configService.listEnabledModules();
+		Set<ModuleConfig> enabled = getModuleConfigService().listEnabledModules();
 		enabled.forEach(config -> {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
 				moduleContext.register(c);
+
+				// Execute hook install
 			} catch (ClassNotFoundException e) {
 				return;
 			}
@@ -103,6 +123,25 @@ public class ModuleManagementService {
 
 		// Refresh the events
 		moduleContext.refresh();
+
+		// Execute hook install
+		enabled.forEach(config -> {
+			try {
+				Class<?> c = Class.forName(config.getEntryPoint());
+				String name = c.getAnnotation(Module.class).name();
+				// Execute hook install
+				hookService.executeHook(c, CommonHooks.INSTALL);
+
+				moduleConfigService.setInstalled(name, true);
+
+			} catch (ClassNotFoundException e) {
+				return;
+			} catch (IllegalAccessException e) {
+				throw new IllegalArgumentException(e);
+			} catch (InvocationTargetException e) {
+				throw new IllegalArgumentException(e);
+			}
+		});
 	}
 
 	public ApplicationContext getModuleContext() {
@@ -116,7 +155,7 @@ public class ModuleManagementService {
 	 * @return true if the module exists and is enabled
 	 */
 	public boolean exists(String module) {
-		ModuleConfig config = configService.getModuleConfig(module);
+		ModuleConfig config = getModuleConfigService().getModuleConfig(module);
 		if (config != null) {
 			try {
 				Class c = Class.forName(config.getEntryPoint());
@@ -144,16 +183,17 @@ public class ModuleManagementService {
 		modules.forEach(b -> {
 			try {
 				Class c = Class.forName(b.getBeanClassName());
-				configService.registerModule(c, c.getResource("/"));
+				getModuleConfigService().registerModule(c, c.getProtectionDomain().getCodeSource().getLocation());
 			} catch (ClassNotFoundException e) {
 				// We shouldn't have an issue with this.
 				// FIXME: We should add logging this, but it should not be a case of killing the app
 			}
 		});
+
 	}
 
 	public void removeMissingModules() {
-		Set<String> missing = configService.listAllModules().stream().filter(m -> {
+		Set<String> missing = getModuleConfigService().listAllModules().stream().filter(m -> {
 			try {
 				Class c = Class.forName(m.getEntryPoint());
 				// If annotation is present, then we return false.
@@ -162,7 +202,7 @@ public class ModuleManagementService {
 				return true;
 			}
 		}).map(m -> m.getName()).collect(Collectors.toSet());
-		configService.removeModules(missing);
+		getModuleConfigService().removeModules(missing);
 	}
 
 }

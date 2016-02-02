@@ -26,6 +26,8 @@ public interface ModuleConfigService<M extends ModuleConfig> {
 
 	void setModuleEnabled(String moduleName, boolean enabled);
 
+	void setInstalled(String module, boolean installed);
+
 	boolean isEnabled(String module);
 
 	Set<M> listAllModules();

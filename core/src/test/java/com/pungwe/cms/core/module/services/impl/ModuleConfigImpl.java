@@ -15,6 +15,7 @@ public class ModuleConfigImpl implements ModuleConfig {
 	String version;
 	String entryPoint;
 	boolean enabled;
+	boolean installed;
 	String moduleLocation;
 	Map<String, Object> settings = new HashMap<>();
 
@@ -74,6 +75,16 @@ public class ModuleConfigImpl implements ModuleConfig {
 	@Override
 	public void setSettings(Map<String, Object> settings) {
 		this.settings = settings;
+	}
+
+	@Override
+	public boolean isInstalled() {
+		return installed;
+	}
+
+	@Override
+	public void setInstalled(boolean installed) {
+		this.installed = installed;
 	}
 
 	@Override

@@ -70,6 +70,11 @@ public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfig
 	}
 
 	@Override
+	public void setInstalled(String module, boolean installed) {
+		getModuleConfig(module).setInstalled(installed);
+	}
+
+	@Override
 	public Set<ModuleConfigImpl> listAllModules() {
 		return modules;
 	}

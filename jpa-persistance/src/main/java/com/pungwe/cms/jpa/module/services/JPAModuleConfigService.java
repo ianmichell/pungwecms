@@ -33,6 +33,11 @@ public class JPAModuleConfigService implements ModuleConfigService<ModuleConfigI
 
 		Module moduleInfo = entryPoint.getAnnotation(Module.class);
 
+		// Check if the module is enabled
+		if (isEnabled(moduleInfo.name())) {
+			return;
+		}
+
 		/// Set the name of the module
 		config.setName(StringUtils.isEmpty(moduleInfo.name()) ? entryPoint.getSimpleName().toLowerCase() : moduleInfo.name());
 		config.setEntryPoint(entryPoint.getName()); // class and package
@@ -65,8 +70,16 @@ public class JPAModuleConfigService implements ModuleConfigService<ModuleConfigI
 
 	@Override
 	@Transactional
+	public void setInstalled(String module, boolean installed) {
+		ModuleConfigImpl config = getModuleConfig(module);
+		config.setInstalled(installed);
+		moduleConfigRepository.save(config);
+	}
+
+	@Override
+	@Transactional
 	public boolean isEnabled(String module) {
-		ModuleConfigImpl config = moduleConfigRepository.getOne(module);
+		ModuleConfigImpl config = moduleConfigRepository.findOne(module);
 		return config != null && config.isEnabled();
 	}
 
