@@ -1,7 +1,6 @@
 package com.pungwe.cms.core.module.services.impl;
 
 import com.pungwe.cms.core.annotations.Module;
-import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

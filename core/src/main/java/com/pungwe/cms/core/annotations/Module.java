@@ -30,32 +30,4 @@ public @interface Module {
 	String description() default "";
 
 	ModuleDependency[] dependencies() default {};
-
-	/**
-	 * Used to define which packages will be searched for module definitions...
-	 *
-	 * @return
-	 */
-	String[] includePackages() default "";
-
-	/**
-	 * Used to define which packages will be excluded from module definitions...
-	 *
-	 * @return
-	 */
-	String[] excludePackages() default "";
-
-	/**
-	 * Used to directly include classes in package definition
-	 *
-	 * @return
-	 */
-	Class<?> includeClasses() default Void.class;
-
-	/**
-	 * Used to directly exclude classes in package definitions
-	 *
-	 * @return
-	 */
-	Class<?> excludeClasses() default Void.class;
 }

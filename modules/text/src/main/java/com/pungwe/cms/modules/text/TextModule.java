@@ -7,7 +7,6 @@ import com.pungwe.cms.core.annotations.Module;
  */
 @Module(
 		name = "text",
-		description = "Extension to the spring field type. Provides formatted text",
-		includePackages = {"com.pungwe.cms.modules.text"})
+		description = "Extension to the spring field type. Provides formatted text")
 public class TextModule {
 }

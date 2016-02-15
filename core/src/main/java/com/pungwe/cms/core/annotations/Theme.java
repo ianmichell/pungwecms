@@ -1,5 +1,7 @@
 package com.pungwe.cms.core.annotations;
 
+import org.springframework.context.annotation.Configuration;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,6 +12,19 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Configuration
 public @interface Theme {
-	String value() default "";
+
+	String name();
+
+	String label() default "";
+
+	String description() default "";
+
+	/**
+	 * Used to specify the parent theme. This is to allow sub-theme creation
+	 *
+	 * @return the name of the parent theme
+	 */
+	String parent() default "";
 }

@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Import;
  */
 @Module(
 		name = "actuator",
-		description = "A module for production deployment based on spring boot actuator",
-		includePackages = {"com.pungwe.cms.modules.actuator"}
+		description = "A module for production deployment based on spring boot actuator"
 )
 @Import({
 		// Actuator

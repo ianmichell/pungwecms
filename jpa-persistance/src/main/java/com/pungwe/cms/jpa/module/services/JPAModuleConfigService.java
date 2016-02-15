@@ -35,14 +35,15 @@ public class JPAModuleConfigService implements ModuleConfigService<ModuleConfigI
 
 		// Check if the module is enabled
 		if (isEnabled(moduleInfo.name())) {
-			return;
+			config = getModuleConfig(moduleInfo.name());
+		} else {
+			config.setEnabled(false);
 		}
 
 		/// Set the name of the module
 		config.setName(StringUtils.isEmpty(moduleInfo.name()) ? entryPoint.getSimpleName().toLowerCase() : moduleInfo.name());
-		config.setEntryPoint(entryPoint.getName()); // class and package
-		config.setEnabled(false);
 		config.setModuleLocation(moduleLocation.getFile());
+		config.setEntryPoint(entryPoint.getName()); // class and package
 
 		moduleConfigRepository.save(config);
 	}

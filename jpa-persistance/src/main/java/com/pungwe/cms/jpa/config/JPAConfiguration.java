@@ -67,7 +67,7 @@ public class JPAConfiguration {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
 			EntityManagerFactoryBuilder factoryBuilder, DataSource dataSource) {
 		Map<String, String> hibernateProperties = mapPropertyNames("hibernate", hibernateConfiguration());
-		return factoryBuilder.dataSource(dataSource).packages("com.pungwe.cms.jpa.entity", "com.pungwe.cms.jpa.module")
+		return factoryBuilder.dataSource(dataSource).packages("com.pungwe.cms.jpa.entity", "com.pungwe.cms.jpa.module", "com.pungwe.cms.jpa.theme")
 				.properties(hibernateProperties).build();
 	}
 

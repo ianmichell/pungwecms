@@ -2,7 +2,6 @@ package com.pungwe.cms.core.module.services.impl;
 
 import com.pungwe.cms.core.module.ModuleConfig;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 

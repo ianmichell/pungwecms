@@ -10,7 +10,6 @@ import com.pungwe.cms.core.annotations.ModuleDependency;
 @Module(
 		name = "node",
 		description = "A module for content editing",
-		includePackages = {"com.pungwe.cms.modules.node"},
 		dependencies = { @ModuleDependency("text") }
 )
 public class NodeModule {

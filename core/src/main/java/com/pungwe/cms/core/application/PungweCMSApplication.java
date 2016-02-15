@@ -3,6 +3,7 @@ package com.pungwe.cms.core.application;
 import com.pungwe.cms.core.annotations.PersistenceDriver;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
+import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -59,10 +60,17 @@ public class PungweCMSApplication {
 			}
 		}).listeners(event -> {
 			/* Scan for modules and enable them */
-			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent)event).getApplicationContext().getId().equalsIgnoreCase("parent-application-context")) {
-				ModuleManagementService moduleManagementService = ((ContextRefreshedEvent)event).getApplicationContext().getBean(ModuleManagementService.class);
+			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("parent-application-context")) {
+				ModuleManagementService moduleManagementService = ((ContextRefreshedEvent) event).getApplicationContext().getBean(ModuleManagementService.class);
 				moduleManagementService.scan();
 				moduleManagementService.startEnabledModules();
+			}
+		}).listeners(event -> {
+			// do something for themes
+			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("parent-application-context")) {
+				ThemeManagementService themeManagementService = ((ContextRefreshedEvent)event).getApplicationContext().getBean(ThemeManagementService.class);
+				themeManagementService.scan();
+				themeManagementService.startEnabledThemes();
 			}
 		}).sources(BaseApplicationConfig.class).registerShutdownHook(true).run(args);
 	}

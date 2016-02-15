@@ -44,14 +44,6 @@ public class ModuleManagementService {
 	@Autowired
 	HookService hookService;
 
-
-//	@PostConstruct
-//	public void postContruct() {
-//		LOG.info("Scanning for modules");
-//		this.scan();
-//		this.startEnabledModules();
-//	}
-
 	protected ModuleConfigService<ModuleConfig> getModuleConfigService() {
 		return moduleConfigService;
 	}
@@ -79,7 +71,7 @@ public class ModuleManagementService {
 			for (ModuleDependency dependency : ma.dependencies()) {
 				// Enable the dependency
 				if (!enable(dependency.value())) {
-					// FIXME: Add logging as to why it could not enable the dependency
+					LOG.error("Cannot enable module: " + ma.name() + " due to missing dependencies");
 					return false;
 				}
 			}
@@ -88,7 +80,7 @@ public class ModuleManagementService {
 
 			return true;
 		} catch (ClassNotFoundException e) {
-			// FIXME: Add logging here
+			LOG.error("Cannot find module class: " + config.getEntryPoint(), e);
 			return false;
 		}
 	}
@@ -185,8 +177,7 @@ public class ModuleManagementService {
 				Class c = Class.forName(b.getBeanClassName());
 				getModuleConfigService().registerModule(c, c.getProtectionDomain().getCodeSource().getLocation());
 			} catch (ClassNotFoundException e) {
-				// We shouldn't have an issue with this.
-				// FIXME: We should add logging this, but it should not be a case of killing the app
+				LOG.error("Could not load a module found on the class path, due to it's class not being found. This should never happen and usually means something is wrong with the environment", e);
 			}
 		});
 

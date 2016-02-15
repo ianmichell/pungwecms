@@ -61,9 +61,10 @@ public class HookService {
 			methods.putAll(getHookMethods(moduleManagementService.getModuleContext(), c, name));
 		}
 
-		if (themeManagementService.getThemeContext() != null) {
-			methods.putAll(getHookMethods(themeManagementService.getThemeContext(), c, name));
-		}
+//      // FIXME: This needs to be sorted out to get the default theme and it's parents...
+//		if (themeManagementService.getThemeContext() != null) {
+//			methods.putAll(getHookMethods(themeManagementService.getThemeContext(), c, name));
+//		}
 
 		// Execute hooks
 		for (Method m : methods.keySet()) {

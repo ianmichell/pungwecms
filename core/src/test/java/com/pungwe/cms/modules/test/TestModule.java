@@ -2,7 +2,6 @@ package com.pungwe.cms.modules.test;
 
 import com.pungwe.cms.core.annotations.Module;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by ian on 21/01/2016.

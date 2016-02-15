@@ -1,7 +1,6 @@
 package com.pungwe.cms.core.module.services;
 
 import com.pungwe.cms.core.module.ModuleConfig;
-import com.pungwe.cms.core.module.services.impl.ModuleConfigImpl;
 import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
 import com.pungwe.cms.modules.dependency.ModuleWithDependency;
 import com.pungwe.cms.modules.test.TestComponent;
@@ -15,14 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -62,7 +60,7 @@ public class ModuleManagementServiceTest {
 		// Ensure that the module we're looking for exists
 		Set<ModuleConfig> modules = configService.listAllModules();
 
-		assertEquals("There should be only one module found", 2, modules.size());
+		assertEquals("There should be only two modules found", 2, modules.size());
 
 		Optional<ModuleConfig> module = modules.stream().filter(m -> {
 			System.out.println(m);
@@ -78,16 +76,17 @@ public class ModuleManagementServiceTest {
 		// Scan for modules
 		configService.registerModule(TestModule.class, TestModule.class.getResource("/"));
 
-		// Start the module management events
-		managementService.startEnabledModules();
-
 		// Assert that we have a created the appropriate application events
 		assertTrue("Could not enable module", managementService.enable("test_module"));
+
+		// Start the module management events
+		managementService.startEnabledModules();
 
 		// Application events for module
 		ApplicationContext ctx = managementService.getModuleContext();
 		TestComponent tc = ctx.getBean(TestComponent.class);
-		System.out.println(tc);
+
+		assertNotNull("Test Component was null", tc);
 	}
 
 	@Test
