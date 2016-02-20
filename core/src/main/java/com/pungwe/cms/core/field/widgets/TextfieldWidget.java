@@ -6,7 +6,6 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidget;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
-import com.pungwe.cms.core.form.element.IntegerElement;
 import com.pungwe.cms.core.form.element.StringElement;
 
 import java.util.List;
@@ -38,10 +37,10 @@ public class TextfieldWidget implements FieldWidget {
 	@Override
 	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
 
-		IntegerElement size = new IntegerElement();
+		StringElement size = new StringElement();
 		size.setName("size");
 		size.setLabel("Size");
-		size.setDefaultValue(60);
+		size.setDefaultValue(60 + "");
 		size.setWeight(4);
 
 		// Add Size to element list
