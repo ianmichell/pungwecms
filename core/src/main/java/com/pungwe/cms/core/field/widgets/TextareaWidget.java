@@ -6,6 +6,7 @@ import com.pungwe.cms.core.field.FieldWidget;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.form.element.IntegerElement;
+import com.pungwe.cms.core.form.element.StringElement;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
 import java.util.List;
@@ -38,10 +39,10 @@ public class TextareaWidget implements FieldWidget {
 	@Override
 	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
 
-		IntegerElement rows = new IntegerElement();
+		StringElement rows = new StringElement();
 		rows.setName("rows");
 		rows.setLabel("Rows");
-		rows.setDefaultValue(5);
+		rows.setDefaultValue(5 + "");
 		rows.setRequired(true);
 		rows.setWeight(6);
 
