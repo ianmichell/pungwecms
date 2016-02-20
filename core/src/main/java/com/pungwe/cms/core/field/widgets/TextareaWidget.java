@@ -5,7 +5,6 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidget;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
-import com.pungwe.cms.core.form.element.IntegerElement;
 import com.pungwe.cms.core.form.element.StringElement;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
