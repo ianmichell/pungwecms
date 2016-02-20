@@ -1,22 +1,25 @@
 package com.pungwe.cms.core.form.element;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by ian on 09/01/2016.
  */
 public class StringElement extends AbstractFormElement<String> {
 
-	int size = 60;
-
 	public int getSize() {
-		return size;
+		if (StringUtils.isEmpty(getAttribute("size"))) {
+			setSize(60);
+		}
+		return new Integer(getAttribute("size"));
 	}
 
 	public void setSize(int size) {
-		this.size = size;
+		addAttribute("size", size + "");
 	}
 
 	@Override
 	public String getTheme() {
-		return "form_string_element";
+		return "form/string_element";
 	}
 }

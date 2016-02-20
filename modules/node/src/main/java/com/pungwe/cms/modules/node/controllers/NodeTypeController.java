@@ -43,9 +43,9 @@ public class NodeTypeController {
 
 			TableElement table = new TableElement();
 			table.addHeaderRow(
-					new TableElement.Column(new PlainTextElement("Title")),
-					new TableElement.Column(new PlainTextElement("Description")),
-					new TableElement.Column(new PlainTextElement("Operations"))
+					new TableElement.Header(new PlainTextElement("Title")),
+					new TableElement.Header(new PlainTextElement("Description")),
+					new TableElement.Header(new PlainTextElement("Operations"))
 			);
 
 			// Run through each record and create a table row per entity

@@ -19,6 +19,6 @@ public class SelectListElement<T> extends AbstractFormElement<T> {
 
 	@Override
 	public String getTheme() {
-		return "form_select_list_element";
+		return "form/select_element";
 	}
 }

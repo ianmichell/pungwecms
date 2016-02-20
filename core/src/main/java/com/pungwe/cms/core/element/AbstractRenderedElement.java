@@ -1,5 +1,9 @@
 package com.pungwe.cms.core.element;
 
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,17 +15,18 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	protected String name;
 	protected int weight;
 	// FIXME: Should this be here?
-	protected Map<String, Object> attributes;
+	protected Map<String, String> attributes;
 	protected String theme;
 
 	@Override
+	@ModelAttribute("id")
 	public String getHtmlId() {
 		return htmlId;
 	}
 
 	@Override
 	public void setHtmlId(String htmlId) {
-		this.htmlId = htmlId;
+		addAttribute("id", htmlId);
 	}
 
 	@Override
@@ -45,13 +50,20 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	}
 
 	@Override
-	public Map<String, Object> getAttributes() {
+	public Map<String, String> getAttributes() {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
 		return attributes;
 	}
 
 	@Override
-	public void setAttributes(Map<String, Object> attributes) {
+	public void setAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
+	}
+
+	public void addAttribute(String attribute, String value) {
+		getAttributes().put(attribute, value);
 	}
 
 }

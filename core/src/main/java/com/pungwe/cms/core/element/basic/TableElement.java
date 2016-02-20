@@ -2,6 +2,7 @@ package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,26 +14,39 @@ import java.util.Map;
  */
 public class TableElement extends AbstractRenderedElement {
 
-	protected String summary;
-	protected List<Row> header;
+	protected RenderedElement caption;
+	protected List<Row<Header>> header;
 	protected List<Row> rows;
+	protected List<Row> footer;
 
-	public String getSummary() {
-		return summary;
+	@ModelAttribute("caption")
+	public RenderedElement getCaption() {
+		return caption;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setCaption(RenderedElement caption) {
+		this.caption = caption;
 	}
 
-	public List<Row> getHeader() {
+	@ModelAttribute("header")
+	public List<Row<Header>> getHeader() {
 		return header;
 	}
 
-	public void setHeader(List<Row> header) {
+	public void setHeader(List<Row<Header>> header) {
 		this.header = header;
 	}
 
+	@ModelAttribute("footer")
+	public List<Row> getFooter() {
+		return footer;
+	}
+
+	public void setFooter(List<Row> footer) {
+		this.footer = footer;
+	}
+
+	@ModelAttribute("rows")
 	public List<Row> getRows() {
 		return rows;
 	}
@@ -43,7 +57,7 @@ public class TableElement extends AbstractRenderedElement {
 
 	@Override
 	public String getTheme() {
-		return "table";
+		return "table/table";
 	}
 
 	public void addRow(Row row) {
@@ -59,7 +73,7 @@ public class TableElement extends AbstractRenderedElement {
 		addRow(row);
 	}
 
-	public void addHeader(Row... header) {
+	public void addHeader(Row<Header>... header) {
 		if (this.header == null) {
 			this.header = new ArrayList<>();
 		}
@@ -68,41 +82,54 @@ public class TableElement extends AbstractRenderedElement {
 		}
 	}
 
-	public void addHeaderRow(Column... columns) {
+	public void addHeaderRow(Header... columns) {
 		Row row = new Row();
 		row.addColumn(columns);
 		addHeader(row);
 	}
 
-	public static class Row {
+	public void addFooter(Row... header) {
+		if (this.footer == null) {
+			this.footer = new ArrayList<>();
+		}
+		for (Row h : header) {
+			this.footer.add(h);
+		}
+	}
 
-		Map<String, Object> attributes = new HashMap<String, Object>();
-		protected List<Column> columns = new ArrayList<>();
+	public void addFooterRow(Column... columns) {
+		Row row = new Row();
+		row.addColumn(columns);
+		addFooter(row);
+	}
 
-		public void addColumn(Column... columns) {
-			for (Column column : columns) {
+	public static class Row<T extends Column> extends AbstractRenderedElement {
+
+		Map<String, String> attributes = new HashMap<String, String>();
+		protected List<T> columns = new ArrayList<>();
+
+		public void addColumn(T... columns) {
+			for (T column : columns) {
 				this.columns.add(column);
 			}
 		}
 
-		public Map<String, Object> getAttributes() {
-			return attributes;
+		@Override
+		public String getTheme() {
+			return "table/row";
 		}
 
-		public void setAttributes(Map<String, Object> attributes) {
-			this.attributes = attributes;
-		}
-
-		public List<Column> getColumns() {
+		@ModelAttribute("columns")
+		public List<T> getColumns() {
 			return columns;
 		}
 
-		public void setColumns(List<Column> columns) {
+		public void setColumns(List<T> columns) {
 			this.columns = columns;
 		}
 	}
 
-	public static class Column {
+	public static class Column extends AbstractRenderedElement {
 
 		public Column() {
 		}
@@ -112,8 +139,8 @@ public class TableElement extends AbstractRenderedElement {
 		}
 
 		protected RenderedElement content;
-		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		@ModelAttribute("content")
 		public RenderedElement getContent() {
 			return content;
 		}
@@ -122,12 +149,23 @@ public class TableElement extends AbstractRenderedElement {
 			this.content = content;
 		}
 
-		public Map<String, Object> getAttributes() {
-			return attributes;
+		@Override
+		public String getTheme() {
+			return "table/column";
+		}
+	}
+
+	public static class Header extends Column {
+		public Header() {
 		}
 
-		public void setAttributes(Map<String, Object> attributes) {
-			this.attributes = attributes;
+		public Header(RenderedElement content) {
+			super(content);
+		}
+
+		@Override
+		public String getTheme() {
+			return "table/header";
 		}
 	}
 }

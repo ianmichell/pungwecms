@@ -2,57 +2,56 @@ package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  * Created by ian on 14/01/2016.
  */
 public class LinkElement extends AbstractRenderedElement {
 
-	protected String title;
-	protected String href;
-	protected String target;
 	protected RenderedElement content;
 
 	public LinkElement() {
 	}
 
 	public LinkElement(String title, String href, RenderedElement content) {
-		this.title = title;
-		this.href = href;
+		addAttribute("title", title);
+		addAttribute("href", href);
 		this.content = content;
 	}
 
 	public LinkElement(String title, String href, String target, RenderedElement content) {
-		this.title = title;
-		this.href = href;
-		this.target = target;
+		addAttribute("title", title);
+		addAttribute("href", href);
+		addAttribute("target", target);
 		this.content = content;
 	}
 
 	public String getTitle() {
-		return title;
+		return getAttribute("title");
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		addAttribute("title", title);
 	}
 
 	public String getHref() {
-		return href;
+		return getAttribute("href");
 	}
 
 	public void setHref(String href) {
-		this.href = href;
+		addAttribute("href", href);
 	}
 
 	public String getTarget() {
-		return target;
+		return getAttribute("target");
 	}
 
 	public void setTarget(String target) {
-		this.target = target;
+		addAttribute("target", target);
 	}
 
+	@ModelAttribute("content")
 	public RenderedElement getContent() {
 		return content;
 	}
@@ -64,15 +63,5 @@ public class LinkElement extends AbstractRenderedElement {
 	@Override
 	public String getTheme() {
 		return "link";
-	}
-
-	@Override
-	public String preProcessAttributes() {
-		StringBuilder b = new StringBuilder();
-		b.append(" href=\"").append(href).append("\"");
-		b.append(" target=\"").append(target).append("\"");
-		b.append(" title=\"").append(title).append("\"");
-		b.append(super.preProcessAttributes());
-		return b.toString();
 	}
 }

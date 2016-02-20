@@ -1,5 +1,6 @@
 package com.pungwe.cms.themes.test;
 
+import com.pungwe.cms.core.annotations.Hook;
 import com.pungwe.cms.core.annotations.Theme;
 
 /**
@@ -7,4 +8,9 @@ import com.pungwe.cms.core.annotations.Theme;
  */
 @Theme(name="test_theme", label="Test Theme", description = "This is a test theme with no parent")
 public class TestTheme {
+
+	@Hook("install")
+	public void install() {
+
+	}
 }

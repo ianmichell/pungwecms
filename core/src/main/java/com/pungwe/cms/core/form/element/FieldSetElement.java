@@ -2,6 +2,7 @@ package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class FieldSetElement extends AbstractRenderedElement {
 		this.legend = legend;
 	}
 
+	@ModelAttribute("children")
 	public List<RenderedElement> getChildren() {
 		return children;
 	}
@@ -31,6 +33,6 @@ public class FieldSetElement extends AbstractRenderedElement {
 
 	@Override
 	public String getTheme() {
-		return "fieldset";
+		return "form/fieldset";
 	}
 }

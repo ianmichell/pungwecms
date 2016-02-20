@@ -14,7 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
  * Created by ian on 20/01/2016.
@@ -37,19 +40,22 @@ import org.springframework.web.servlet.ViewResolver;
 		// Aop
 		AopAutoConfiguration.class,
 })
+@EnableWebMvc
 // We only want to scan the core package
 @ComponentScan(basePackages = {"com.pungwe.cms.core"})
 public class BaseApplicationConfig {
 
-	@Autowired
-	TemplateFunctions templateFunctions;
+	@Bean
+	public LocaleResolver localeResolver() {
+		return new SessionLocaleResolver();
+	}
 
 	@Bean
 	public ViewResolver viewResolver() {
 		ThemeTemplateResolver resolver = new ThemeTemplateResolver();
-		resolver.setPrefix("classpath:/templates");
+		resolver.setPrefix("classpath:/templates/");
 		resolver.setSuffix(".twig");
-		resolver.configuration().render().functionRepository().include(templateFunctions);
+		resolver.configuration().render().functionRepository().include(new TemplateFunctions(resolver, localeResolver()));
 		return resolver;
 	}
 }

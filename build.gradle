@@ -89,6 +89,9 @@ subprojects {
             dependency 'com.h2database:h2:1.4.182'
             dependency 'mysql:mysql-connector-java:5.1.6'
 
+            dependency 'net.sourceforge.htmlunit:htmlunit:2.19'
+
+            dependency 'org.jsoup:jsoup:1.8.3'
         }
     }
 

@@ -1,0 +1,24 @@
+<table{{ attributes }}>
+    {%  if caption %}
+    <caption>{{ render(caption) }}</caption>
+    {%  endif %}
+    {% if header.size > 0 %}
+    <thead>
+    {%  for row in header %}
+        {{ render(row) }}
+    {% endfor %}
+    </thead>
+    {%  endif %}
+    <tbody>
+        {%  for row in rows %}
+        {{ render(row) }}
+        {%  endfor %}
+    </tbody>
+    {% if footer.size > 0 %}
+    <tfoot>
+    {% for row in footer %}
+        {{ render(row) }}
+    {% endfor %}
+    </tfoot>
+    {% endif %}
+</table>

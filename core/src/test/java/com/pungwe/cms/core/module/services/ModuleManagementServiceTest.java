@@ -5,6 +5,7 @@ import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
 import com.pungwe.cms.modules.dependency.ModuleWithDependency;
 import com.pungwe.cms.modules.test.TestComponent;
 import com.pungwe.cms.modules.test.TestModule;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +33,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(ModuleManagementServiceTest.AppConfig.class)
+@WebAppConfiguration("src/main/resources")
 public class ModuleManagementServiceTest {
 
 	@Configuration
@@ -41,6 +47,16 @@ public class ModuleManagementServiceTest {
 		}
 	}
 
+	private MockMvc mockMvc;
+
+	@Autowired
+	WebApplicationContext wac;
+
+	@Before
+	public void setup()
+	{
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+	}
 
 	@Autowired
 	ModuleConfigService<ModuleConfig> configService;

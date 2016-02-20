@@ -1,5 +1,5 @@
 <form{{ attributes }}>
     {% for child in children %}
-        {{ child | render }}
+        {{ render(child) }}
     {% endfor %}
 </form>

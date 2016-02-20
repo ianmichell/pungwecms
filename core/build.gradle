@@ -8,4 +8,6 @@ dependencies {
 
     // Test Compile
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('net.sourceforge.htmlunit:htmlunit')
+    testCompile('org.jsoup:jsoup')
 }
