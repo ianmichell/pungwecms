@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.element.basic;
 
+import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 /**
  * Created by ian on 14/01/2016.
  */
+@ThemeInfo("basic/link")
 public class LinkElement extends AbstractRenderedElement {
 
 	protected RenderedElement content;
@@ -60,8 +62,4 @@ public class LinkElement extends AbstractRenderedElement {
 		this.content = content;
 	}
 
-	@Override
-	public String getTheme() {
-		return "link";
-	}
 }

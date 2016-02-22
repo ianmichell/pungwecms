@@ -74,17 +74,17 @@ public class ThemeConfigServiceImpl implements ThemeConfigService<ThemeConfigImp
 
 	@Override
 	public ThemeConfigImpl getDefaultTheme() {
-		return listEnabledThemes().parallelStream().filter(t -> t.isDefaultTheme()).findFirst().orElseGet(null);
+		return listEnabledThemes().parallelStream().filter(t -> t.isDefaultTheme()).findFirst().orElse(null);
 	}
 
 	@Override
 	public ThemeConfigImpl getDefaultAdminTheme() {
-		return listEnabledThemes().parallelStream().filter(t -> t.isDefaultAdminTheme()).findFirst().orElseGet(null);
+		return listEnabledThemes().parallelStream().filter(t -> t.isDefaultAdminTheme()).findFirst().orElse(null);
 	}
 
 	@Override
 	public ThemeConfigImpl getTheme(String name) {
 		Optional<ThemeConfigImpl> config = listAllThemes().parallelStream().filter(t -> t.getName().equalsIgnoreCase(name)).findFirst();
-		return config.orElseGet(null);
+		return config.orElse(null);
 	}
 }

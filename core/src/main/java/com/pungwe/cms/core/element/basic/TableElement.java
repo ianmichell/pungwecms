@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.element.basic;
 
+import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * Created by ian on 12/01/2016.
  */
+@ThemeInfo("basic/table/table")
 public class TableElement extends AbstractRenderedElement {
 
 	protected RenderedElement caption;
@@ -53,11 +55,6 @@ public class TableElement extends AbstractRenderedElement {
 
 	public void setRows(List<Row> rows) {
 		this.rows = rows;
-	}
-
-	@Override
-	public String getTheme() {
-		return "table/table";
 	}
 
 	public void addRow(Row row) {
@@ -103,6 +100,7 @@ public class TableElement extends AbstractRenderedElement {
 		addFooter(row);
 	}
 
+	@ThemeInfo("basic/table/row")
 	public static class Row<T extends Column> extends AbstractRenderedElement {
 
 		Map<String, String> attributes = new HashMap<String, String>();
@@ -112,11 +110,6 @@ public class TableElement extends AbstractRenderedElement {
 			for (T column : columns) {
 				this.columns.add(column);
 			}
-		}
-
-		@Override
-		public String getTheme() {
-			return "table/row";
 		}
 
 		@ModelAttribute("columns")
@@ -129,6 +122,7 @@ public class TableElement extends AbstractRenderedElement {
 		}
 	}
 
+	@ThemeInfo("basic/table/column")
 	public static class Column extends AbstractRenderedElement {
 
 		public Column() {
@@ -149,23 +143,15 @@ public class TableElement extends AbstractRenderedElement {
 			this.content = content;
 		}
 
-		@Override
-		public String getTheme() {
-			return "table/column";
-		}
 	}
 
+	@ThemeInfo("basic/table/header")
 	public static class Header extends Column {
 		public Header() {
 		}
 
 		public Header(RenderedElement content) {
 			super(content);
-		}
-
-		@Override
-		public String getTheme() {
-			return "table/header";
 		}
 	}
 }

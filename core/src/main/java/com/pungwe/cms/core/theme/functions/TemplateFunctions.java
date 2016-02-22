@@ -4,6 +4,7 @@ import com.lyncode.jtwig.functions.annotations.JtwigFunction;
 import com.lyncode.jtwig.functions.annotations.Parameter;
 import com.lyncode.jtwig.functions.exceptions.FunctionException;
 import com.lyncode.jtwig.util.render.RenderHttpServletResponse;
+import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,9 +33,16 @@ public class TemplateFunctions {
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter T input) throws FunctionException {
 		try {
+
+			// Get Theme Info and template
+			// FIXME: Make parameters work!
+			ThemeInfo info = input.getClass().isAnnotationPresent(ThemeInfo.class) ? input.getClass().getAnnotation(ThemeInfo.class) : null;
+			String template = info == null ? input.getClass().getSimpleName() : info.value();
+
+			// Convert input to a model map and render the view
 			Map<String, Object> model = objectToModelMap(input);
 			RenderHttpServletResponse responseWrapper = new RenderHttpServletResponse();
-			View view = viewResolver.resolveViewName(input.getTheme(), localeResolver != null ? localeResolver.resolveLocale(request) : null);
+			View view = viewResolver.resolveViewName(template, localeResolver != null ? localeResolver.resolveLocale(request) : null);
 			view.render(model, request, responseWrapper);
 			return responseWrapper.toString();
 		} catch (Exception ex) {

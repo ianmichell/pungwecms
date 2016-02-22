@@ -14,10 +14,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Set;
@@ -113,5 +115,27 @@ public class ThemeManagementServiceTest {
 		assertNotNull("Parent was null!", parent);
 		ThemeWithParent child = ctx.getBean(ThemeWithParent.class);
 		assertNotNull("Theme with parent was null", child);
+	}
+
+	@Test
+	public void testThemePathNormal() {
+		// Register the appropriate themes
+		themeConfigService.registerTheme(TestTheme.class, TestTheme.class.getProtectionDomain().getCodeSource().getLocation());
+		themeConfigService.registerTheme(ThemeWithParent.class, ThemeWithParent.class.getProtectionDomain().getCodeSource().getLocation());
+		// Ensure they are both disabled to begin with
+		themeConfigService.setThemeEnabled("test_theme", true);
+		themeConfigService.setThemeEnabled("theme_with_parent", true);
+
+		ThemeConfig theme = themeConfigService.getTheme("theme_with_parent");
+		theme.setDefaultTheme(true);
+
+		// Remove missing...
+		themeManagementService.removeMissingThemes();
+
+		themeManagementService.startEnabledThemes();
+
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
+		String result = themeManagementService.resolveViewPath(request, "classpath:/templates/", "my_view", ".twig");
+
 	}
 }

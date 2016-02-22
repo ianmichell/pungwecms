@@ -3,6 +3,7 @@ package com.pungwe.cms.core.element.basic;
 import com.lyncode.jtwig.functions.exceptions.FunctionException;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
+import com.pungwe.cms.test.AbstractWebTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -26,19 +27,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BaseApplicationConfig.class)
-@WebAppConfiguration("src/main/resources")
-public class TableElementTest {
-
-	private MockMvc mockMvc;
-
-	@Before
-	public void setup()
-	{
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-
-	@Autowired
-	WebApplicationContext wac;
+public class TableElementTest extends AbstractWebTest {
 
 	@Autowired
 	ViewResolver viewResolver;

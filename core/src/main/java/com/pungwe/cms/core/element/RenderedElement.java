@@ -26,8 +26,6 @@ public interface RenderedElement {
 
 	void setAttributes(Map<String, String> attributes);
 
-	String getTheme();
-
 	default String getAttribute(String name) {
 		return getAttributes() == null ? null : getAttributes().get(name);
 	}

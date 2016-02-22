@@ -2,6 +2,7 @@ package com.pungwe.cms.core.theme.services;
 
 import com.pungwe.cms.core.annotations.Theme;
 import com.pungwe.cms.core.theme.ThemeConfig;
+import com.pungwe.cms.core.utils.services.HookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,9 @@ public class ThemeManagementService {
 
 	@Autowired
 	private ApplicationContext applicationContext;
+
+	@Autowired
+	private HookService hookService;
 
 	private Map<String, AnnotationConfigApplicationContext> themeContexts = new TreeMap<>();
 
@@ -160,11 +165,25 @@ public class ThemeManagementService {
 		Set<String> missing = themeConfigService.listAllThemes().stream().filter(t -> {
 			try {
 				Class<?> c = Class.forName(t.getEntryPoint());
-				return c.isAnnotationPresent(Theme.class);
+				return !c.isAnnotationPresent(Theme.class);
 			} catch (Exception ex) {
 				return true;
 			}
 		}).map(t -> t.getName()).collect(Collectors.toSet());
 		themeConfigService.removeThemes(missing);
+	}
+
+	public String resolveViewPath(HttpServletRequest request, String prefix, String viewName, String suffix) {
+		// Get the request path... We use a substring of this excluding the context path and the rest of the url to determine if it's admin or not.
+		String currentPath = request.getRequestURI().substring(request.getContextPath().length());
+		// If the current path starts with /admin, then load the admin theme.
+		ThemeConfig themeConfig = null;
+		if (currentPath.startsWith("/admin")) {
+			themeConfig = themeConfigService.getDefaultAdminTheme();
+		} else {
+			themeConfig = themeConfigService.getDefaultTheme();
+		}
+		// If the theme is null, then we do not have a theme at all, so don't bother trying to resolve anything!
+		return prefix + viewName + suffix;
 	}
 }

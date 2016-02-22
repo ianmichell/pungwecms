@@ -6,6 +6,7 @@ package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
+import com.pungwe.cms.test.AbstractWebTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -28,24 +29,13 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BaseApplicationConfig.class)
 @WebAppConfiguration("src/main/resources")
-public class LinkElementTest {
-
-	private MockMvc mockMvc;
-
-	@Autowired
-	WebApplicationContext wac;
+public class LinkElementTest extends AbstractWebTest {
 
 	@Autowired
 	ViewResolver viewResolver;
 
 	@Autowired(required = false)
 	LocaleResolver localeResolver;
-
-	@Before
-	public void setup()
-	{
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
 
 	@Test
 	public void testRenderLinkDefaultConstructor() throws Exception {

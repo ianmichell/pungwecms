@@ -86,6 +86,6 @@ public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfig
 	@Override
 	public ModuleConfigImpl getModuleConfig(String module) {
 		Optional<ModuleConfigImpl> config = listAllModules().parallelStream().filter(m -> m.getName().equalsIgnoreCase(module)).findFirst();
-		return config.orElseGet(null);
+		return config.orElse(null);
 	}
 }

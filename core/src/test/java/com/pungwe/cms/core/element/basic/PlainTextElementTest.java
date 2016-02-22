@@ -2,6 +2,7 @@ package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
+import com.pungwe.cms.test.AbstractWebTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,20 +25,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BaseApplicationConfig.class)
-@WebAppConfiguration("src/main/resources")
-public class PlainTextElementTest {
-
-
-	private MockMvc mockMvc;
-
-	@Before
-	public void setup()
-	{
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-
-	@Autowired
-	WebApplicationContext wac;
+public class PlainTextElementTest extends AbstractWebTest {
 
 	@Autowired
 	ViewResolver viewResolver;

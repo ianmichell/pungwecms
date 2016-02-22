@@ -10,5 +10,5 @@ public interface CommonHooks {
 	String UPDATE = "update_";
 	String ALTER = "_alter";
 	String PREPROCESS = "_preprocess";
-	String THEME = "_theme";
+	String THEME = "theme";
 }

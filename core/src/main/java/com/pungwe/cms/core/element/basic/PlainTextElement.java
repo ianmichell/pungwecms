@@ -1,11 +1,13 @@
 package com.pungwe.cms.core.element.basic;
 
+import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  * Created by ian on 14/01/2016.
  */
+@ThemeInfo("basic/plain_text")
 public class PlainTextElement extends AbstractRenderedElement {
 
 	protected String text;
@@ -27,8 +29,4 @@ public class PlainTextElement extends AbstractRenderedElement {
 		this.text = text;
 	}
 
-	@Override
-	public String getTheme() {
-		return "plain_text";
-	}
 }
