@@ -12,11 +12,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
+import static com.lyncode.jtwig.util.LocalThreadHolder.getServletRequest;
 
 /**
  * Created by ian on 29/01/2016.
@@ -161,6 +164,23 @@ public class ThemeManagementService {
 		});
 	}
 
+	public ApplicationContext getDefaultThemeContext() {
+		HttpServletRequest request = getServletRequest();
+		String currentPath = request.getRequestURI().substring(request.getContextPath().length());
+		// If the current path starts with /admin, then load the admin theme.
+		ThemeConfig themeConfig = null;
+		if (currentPath.startsWith("/admin")) {
+			themeConfig = themeConfigService.getDefaultAdminTheme();
+		} else {
+			themeConfig = themeConfigService.getDefaultTheme();
+		}
+
+		if (themeConfig == null) {
+			return null;
+		}
+		return getThemeContext(themeConfig.getName());
+	}
+
 	protected void removeMissingThemes() {
 		Set<String> missing = themeConfigService.listAllThemes().stream().filter(t -> {
 			try {
@@ -173,17 +193,29 @@ public class ThemeManagementService {
 		themeConfigService.removeThemes(missing);
 	}
 
-	public String resolveViewPath(HttpServletRequest request, String prefix, String viewName, String suffix) {
+	public List<String> resolveViewPath(HttpServletRequest request, String prefix, String viewName, String suffix) {
+		List<String> urls = new ArrayList<>();
+		urls.add(prefix + viewName + suffix);
 		// Get the request path... We use a substring of this excluding the context path and the rest of the url to determine if it's admin or not.
-		String currentPath = request.getRequestURI().substring(request.getContextPath().length());
-		// If the current path starts with /admin, then load the admin theme.
-		ThemeConfig themeConfig = null;
-		if (currentPath.startsWith("/admin")) {
-			themeConfig = themeConfigService.getDefaultAdminTheme();
-		} else {
-			themeConfig = themeConfigService.getDefaultTheme();
+		try {
+			hookService.executeHook("theme", o -> {
+				if (o instanceof Map && ((Map)o).containsKey(viewName)) {
+					String url = prefix + ((Map)o).get(viewName) + suffix;
+					if (!url.contains(url)) {
+						urls.add(url);
+					}
+				}
+			});
+			// FIXME: Add custom exception here
+			// Shouldn't ever happen... But you never know
+		} catch (InvocationTargetException e) {
+			LOG.error("Could not execute hook theme", e);
+		} catch (IllegalAccessException e) {
+			LOG.error("Could not execute hook theme", e);
 		}
-		// If the theme is null, then we do not have a theme at all, so don't bother trying to resolve anything!
-		return prefix + viewName + suffix;
+		// Reverse the collection
+		Collections.reverse(urls);
+
+		return urls;
 	}
 }

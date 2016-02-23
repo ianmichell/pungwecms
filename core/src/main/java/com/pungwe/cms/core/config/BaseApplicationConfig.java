@@ -4,6 +4,8 @@ package com.pungwe.cms.core.config;
 
 import com.pungwe.cms.core.theme.ThemeViewResolver;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
+import com.pungwe.cms.core.theme.resolver.ThemeResourceResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -51,9 +53,7 @@ public class BaseApplicationConfig {
 
 	@Bean
 	public ViewResolver viewResolver() {
-		ThemeViewResolver resolver = new ThemeViewResolver();
-		resolver.setPrefix("classpath:/templates/");
-		resolver.setSuffix(".twig");
+		ThemeViewResolver resolver = new ThemeViewResolver("classpath:/templates/", ".twig");
 		resolver.configuration().render().functionRepository().include(new TemplateFunctions(resolver, localeResolver()));
 		return resolver;
 	}

@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -135,7 +136,7 @@ public class ThemeManagementServiceTest {
 		themeManagementService.startEnabledThemes();
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
-		String result = themeManagementService.resolveViewPath(request, "classpath:/templates/", "my_view", ".twig");
-
+		List<String> result = themeManagementService.resolveViewPath(request, "classpath:/templates/", "my_view", ".twig");
+		System.out.println(result);
 	}
 }

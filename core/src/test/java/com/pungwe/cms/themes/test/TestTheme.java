@@ -19,16 +19,8 @@ public class TestTheme {
 
 	@Hook("theme")
 	public Map<String, String> themeHook() {
-
-		/*
-		"table/table": {
-			"template": "table",
-			"parameters": {}
-		}
-		 */
-
 		HashMap<String, String> theme = new HashMap<>();
-
+		theme.put("my_view", "my_theme/my_view");
 		return theme;
 	}
 }
