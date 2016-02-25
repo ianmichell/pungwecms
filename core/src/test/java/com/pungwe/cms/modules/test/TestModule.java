@@ -1,7 +1,11 @@
 package com.pungwe.cms.modules.test;
 
+import com.pungwe.cms.core.annotations.Hook;
 import com.pungwe.cms.core.annotations.Module;
 import org.springframework.context.annotation.ComponentScan;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ian on 21/01/2016.
@@ -15,4 +19,10 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.pungwe.cms.modules.test")
 public class TestModule {
 
+	@Hook("theme")
+	public Map<String, String> hookTheme() {
+		Map<String, String> theme = new HashMap<>();
+		theme.put("my_view", "test_module/my_view");
+		return theme;
+	}
 }

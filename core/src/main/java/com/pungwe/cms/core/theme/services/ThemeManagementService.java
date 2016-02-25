@@ -1,8 +1,11 @@
 package com.pungwe.cms.core.theme.services;
 
 import com.pungwe.cms.core.annotations.Theme;
+import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.utils.services.HookService;
+import org.apache.commons.lang3.ClassPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +13,18 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import static com.lyncode.jtwig.util.LocalThreadHolder.getServletRequest;
@@ -37,6 +45,9 @@ public class ThemeManagementService {
 
 	@Autowired
 	private HookService hookService;
+
+	@Autowired
+	private ModuleManagementService moduleManagementService;
 
 	private Map<String, AnnotationConfigApplicationContext> themeContexts = new TreeMap<>();
 
@@ -193,16 +204,27 @@ public class ThemeManagementService {
 		themeConfigService.removeThemes(missing);
 	}
 
-	public List<String> resolveViewPath(HttpServletRequest request, String prefix, String viewName, String suffix) {
+	public List<String> resolveViewPath(HttpServletRequest request, final String prefix, final String viewName, final String suffix) {
 		List<String> urls = new ArrayList<>();
 		urls.add(prefix + viewName + suffix);
 		// Get the request path... We use a substring of this excluding the context path and the rest of the url to determine if it's admin or not.
 		try {
-			hookService.executeHook("theme", o -> {
+			hookService.executeHook("theme", (c, o) -> {
 				if (o instanceof Map && ((Map)o).containsKey(viewName)) {
-					String url = prefix + ((Map)o).get(viewName) + suffix;
-					if (!url.contains(url)) {
-						urls.add(url);
+					URL hookLocation = c.getProtectionDomain().getCodeSource().getLocation();
+					String prefixPath = prefix.replace(ResourceUtils.CLASSPATH_URL_PREFIX, "");
+
+					if (ResourceUtils.isJarFileURL(hookLocation)) {
+						String url = hookLocation.toExternalForm() + ResourceUtils.JAR_URL_SEPARATOR + prefixPath + ((Map)o).get(viewName) + suffix;
+						if (!urls.contains(url)) {
+							urls.add(url);
+						}
+						// Should default to standard prefix + file
+					} else {
+						String url = prefix + ((Map)o).get(viewName) + suffix;
+						if (!urls.contains(url)) {
+							urls.add(url);
+						}
 					}
 				}
 			});
@@ -217,5 +239,11 @@ public class ThemeManagementService {
 		Collections.reverse(urls);
 
 		return urls;
+	}
+
+	private String findDefaultTemplate(String viewName) {
+//		ApplicationContext moduleContext = moduleManagementService.getModuleContext();
+		
+		return "";
 	}
 }

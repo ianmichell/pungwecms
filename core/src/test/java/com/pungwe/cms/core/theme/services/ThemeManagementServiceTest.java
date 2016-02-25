@@ -1,7 +1,13 @@
 package com.pungwe.cms.core.theme.services;
 
+import com.pungwe.cms.core.module.ModuleConfig;
+import com.pungwe.cms.core.module.services.ModuleConfigService;
+import com.pungwe.cms.core.module.services.ModuleManagementService;
+import com.pungwe.cms.core.module.services.impl.ModuleConfigImpl;
+import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
 import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.theme.services.impl.ThemeConfigServiceImpl;
+import com.pungwe.cms.modules.test.TestModule;
 import com.pungwe.cms.themes.parent.ThemeWithParent;
 import com.pungwe.cms.themes.test.TestTheme;
 import org.junit.Before;
@@ -14,11 +20,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -47,6 +55,9 @@ public class ThemeManagementServiceTest {
 			return new ThemeConfigServiceImpl();
 		}
 
+		@Bean
+		public ModuleConfigServiceImpl moduleConfig() { return new ModuleConfigServiceImpl(); }
+
 	}
 
 	private MockMvc mockMvc;
@@ -65,6 +76,12 @@ public class ThemeManagementServiceTest {
 
 	@Autowired
 	ThemeManagementService themeManagementService;
+
+	@Autowired
+	ModuleConfigService<ModuleConfig> moduleConfigService;
+
+	@Autowired
+	ModuleManagementService moduleManagementService;
 
 	@Test
 	public void testScan() throws Exception {
@@ -119,7 +136,14 @@ public class ThemeManagementServiceTest {
 	}
 
 	@Test
-	public void testThemePathNormal() {
+	public void testThemePathNormal() throws Exception {
+
+		moduleConfigService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
+
+		moduleManagementService.enable("test_module");
+
+		moduleManagementService.startEnabledModules();
+
 		// Register the appropriate themes
 		themeConfigService.registerTheme(TestTheme.class, TestTheme.class.getProtectionDomain().getCodeSource().getLocation());
 		themeConfigService.registerTheme(ThemeWithParent.class, ThemeWithParent.class.getProtectionDomain().getCodeSource().getLocation());
@@ -137,6 +161,10 @@ public class ThemeManagementServiceTest {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
 		List<String> result = themeManagementService.resolveViewPath(request, "classpath:/templates/", "my_view", ".twig");
-		System.out.println(result);
+		assertEquals("There should be two results", 4, result.size());
+		assertEquals("Hook template was not in the list", "classpath:/templates/theme_with_parent/my_view.twig", result.get(0));
+		assertEquals("Parent Hook template was not in the list", "classpath:/templates/my_theme/my_view.twig", result.get(1));
+		assertEquals("Parent Hook template was not in the list", "classpath:/templates/test_module/my_view.twig", result.get(2));
+		assertEquals("Default template was not in the list", "classpath:/templates/my_view.twig", result.get(3));
 	}
 }

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
@@ -65,7 +62,7 @@ public class HookService {
 	}
 
 	public void executeHook(Class<?> c, String name, HookCallback callback, Object... parameters) throws InvocationTargetException, IllegalAccessException {
-		Map<Method, Object> methods = new HashMap<>();
+		Map<Method, Object> methods = new LinkedHashMap<>();
 
 		if (moduleManagementService.getModuleContext() != null) {
 			methods.putAll(getHookMethods(moduleManagementService.getModuleContext(), c, name));
@@ -74,14 +71,17 @@ public class HookService {
 //      // FIXME: This needs to be sorted out to get the default theme and it's parents...
 		ApplicationContext themeContext = themeManagementService.getDefaultThemeContext();
 		if (themeContext != null) {
+			ApplicationContext parentContext = themeContext;
+			while ((parentContext = parentContext.getParent()) != null) {
+				methods.putAll(getHookMethods(parentContext, c, name));
+			}
 			methods.putAll(getHookMethods(themeContext, c, name));
 		}
-
 		// Execute hooks
 		for (Method m : methods.keySet()) {
 			Object result = m.invoke(methods.get(m), parameters);
 			if (callback != null) {
-				callback.call(result);
+				callback.call(methods.get(m).getClass(), result);
 			}
 		}
 	}

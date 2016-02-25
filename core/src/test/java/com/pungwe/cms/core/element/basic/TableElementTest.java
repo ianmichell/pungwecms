@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -35,10 +36,13 @@ public class TableElementTest extends AbstractWebTest {
 	@Autowired(required = false)
 	LocaleResolver localeResolver;
 
+	@Autowired
+	ApplicationContext applicationContext;
+
 	@Test
 	public void testCreateTableElement() throws FunctionException {
 
-		TemplateFunctions functions = new TemplateFunctions(viewResolver, localeResolver);
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
 		TableElement table = new TableElement();
 		table.setCaption(new PlainTextElement("Caption"));

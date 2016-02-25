@@ -16,6 +16,7 @@ public class FieldSetElement extends AbstractRenderedElement {
 	protected String legend;
 	protected List<RenderedElement> children;
 
+	@ModelAttribute("legend")
 	public String getLegend() {
 		return legend;
 	}

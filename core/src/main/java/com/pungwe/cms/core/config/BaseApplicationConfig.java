@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.*;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +47,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @ComponentScan(basePackages = {"com.pungwe.cms.core"})
 public class BaseApplicationConfig {
 
+	@Autowired
+	ApplicationContext applicationContext;
+
 	@Bean
 	public LocaleResolver localeResolver() {
 		return new SessionLocaleResolver();
@@ -54,7 +58,7 @@ public class BaseApplicationConfig {
 	@Bean
 	public ViewResolver viewResolver() {
 		ThemeViewResolver resolver = new ThemeViewResolver("classpath:/templates/", ".twig");
-		resolver.configuration().render().functionRepository().include(new TemplateFunctions(resolver, localeResolver()));
+		resolver.configuration().render().functionRepository().include(new TemplateFunctions(applicationContext, resolver, localeResolver()));
 		return resolver;
 	}
 }

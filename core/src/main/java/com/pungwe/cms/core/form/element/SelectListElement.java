@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.annotations.ThemeInfo;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class SelectListElement<T> extends AbstractFormElement<T> {
 
 	protected Set<T> items;
 
+	@ModelAttribute("items")
 	public Set<T> getItems() {
 		return items;
 	}

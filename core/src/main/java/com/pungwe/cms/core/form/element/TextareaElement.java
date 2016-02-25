@@ -8,14 +8,15 @@ import com.pungwe.cms.core.annotations.ThemeInfo;
 @ThemeInfo("form/textarea")
 public class TextareaElement extends StringElement {
 
-	protected int rows;
-
 	public int getRows() {
-		return rows;
+		if (!getAttributes().containsKey("rows")) {
+			addAttribute("rows", "5");
+		}
+		return new Integer(getAttribute("rows"));
 	}
 
 	public void setRows(int rows) {
-		this.rows = rows;
+		addAttribute("rows", rows + "");
 	}
 
 }

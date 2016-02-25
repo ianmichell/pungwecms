@@ -14,10 +14,6 @@ public interface RenderedElement {
 
 	void setHtmlId(String htmlId);
 
-	String getName();
-
-	void setName(String name);
-
 	int getWeight();
 
 	void setWeight(int weight);
@@ -33,7 +29,7 @@ public interface RenderedElement {
 	@ModelAttribute("attributes")
 	default String getAttributesAsString() {
 
-		if (getAttributes() != null) {
+		if (getAttributes() != null && !getAttributes().isEmpty()) {
 			return " " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
 		}
 

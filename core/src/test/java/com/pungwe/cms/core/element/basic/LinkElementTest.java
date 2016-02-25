@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -32,6 +33,9 @@ import static org.junit.Assert.assertTrue;
 public class LinkElementTest extends AbstractWebTest {
 
 	@Autowired
+	ApplicationContext applicationContext;
+
+	@Autowired
 	ViewResolver viewResolver;
 
 	@Autowired(required = false)
@@ -39,7 +43,7 @@ public class LinkElementTest extends AbstractWebTest {
 
 	@Test
 	public void testRenderLinkDefaultConstructor() throws Exception {
-		TemplateFunctions functions = new TemplateFunctions(viewResolver, localeResolver);
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 		LinkElement link = new LinkElement();
 		link.setHtmlId("link");
 		link.setTitle("Link title");
@@ -53,7 +57,7 @@ public class LinkElementTest extends AbstractWebTest {
 
 	@Test
 	public void testRenderLinkHrefAndContent() throws Exception {
-		TemplateFunctions functions = new TemplateFunctions(viewResolver, localeResolver);
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 		LinkElement link = new LinkElement("Title", "http://www.example.com", new PlainTextElement("Link"));
 		link.setHtmlId("link");
 		String output = functions.render(new MockHttpServletRequest(), link);

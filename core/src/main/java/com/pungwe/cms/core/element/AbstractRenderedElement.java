@@ -11,7 +11,6 @@ import java.util.Map;
  */
 public abstract class AbstractRenderedElement implements RenderedElement {
 
-	protected String htmlId;
 	protected String name;
 	protected int weight;
 	// FIXME: Should this be here?
@@ -19,24 +18,13 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	protected String theme;
 
 	@Override
-	@ModelAttribute("id")
 	public String getHtmlId() {
-		return htmlId;
+		return getAttribute("id");
 	}
 
 	@Override
 	public void setHtmlId(String htmlId) {
 		addAttribute("id", htmlId);
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@Override
