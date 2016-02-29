@@ -5,6 +5,9 @@ import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
  * Created by ian on 14/01/2016.
  */
@@ -16,17 +19,30 @@ public class LinkElement extends AbstractRenderedElement {
 	public LinkElement() {
 	}
 
+	public LinkElement(String title, String href, String content) {
+		setTitle(title);
+		setHref(href);
+		setContent(new PlainTextElement(content));
+	}
+
 	public LinkElement(String title, String href, RenderedElement content) {
-		addAttribute("title", title);
-		addAttribute("href", href);
-		this.content = content;
+		setTitle(title);
+		setHref(href);
+		setContent(content);
+	}
+
+	public LinkElement(String title, String href, String target, String content) {
+		setTitle(title);
+		setTarget(target);
+		setHref(href);
+		setContent(new PlainTextElement(content));
 	}
 
 	public LinkElement(String title, String href, String target, RenderedElement content) {
-		addAttribute("title", title);
-		addAttribute("href", href);
-		addAttribute("target", target);
-		this.content = content;
+		setTitle(title);
+		setTarget(target);
+		setHref(href);
+		setContent(content);
 	}
 
 	public String getTitle() {
@@ -62,4 +78,8 @@ public class LinkElement extends AbstractRenderedElement {
 		this.content = content;
 	}
 
+	@Override
+	protected Collection<String> excludedAttributes() {
+		return new LinkedList<>();
+	}
 }

@@ -15,7 +15,7 @@ public abstract class AbstractWebTest {
 
 	@Autowired
 	protected WebApplicationContext webApplicationContext;
-	private MockMvc mockMvc;
+	protected MockMvc mockMvc;
 
 	@Before
 	public void setup() {

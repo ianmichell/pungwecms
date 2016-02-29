@@ -1,7 +1,6 @@
-package com.pungwe.cms.core.form.element;
+package com.pungwe.cms.core.system.element.templates;
 
 import com.pungwe.cms.core.config.BaseApplicationConfig;
-import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import com.pungwe.cms.test.AbstractWebTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,12 +13,12 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 
 /**
- * Created by ian on 25/02/2016.
+ * Created by ian on 28/02/2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BaseApplicationConfig.class)
 @WebAppConfiguration("src/main/resources")
-public class SelectElementTest extends AbstractWebTest {
+public class AdminPageElementTest extends AbstractWebTest {
 
 	@Autowired
 	ApplicationContext applicationContext;
@@ -31,9 +30,7 @@ public class SelectElementTest extends AbstractWebTest {
 	LocaleResolver localeResolver;
 
 	@Test
-	public void testStringElementWithDefaultValue() {
+	public void testAdminPageElement() throws Exception {
 
-		// Get the ability to render stuff
-		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 	}
 }

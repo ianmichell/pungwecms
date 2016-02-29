@@ -1,8 +1,8 @@
 <fieldset{{ attributes }}>
     {% if legend %}
-        <legend>{{ legend | render }}</legend>
+        <legend>{{ render(legend) }}</legend>
     {% endif %}
-    {% for (child in children) %}
-        {{ child | render }}
+    {% for child in children %}
+        {{  render(child) }}
     {% endfor %}
 </fieldset>

@@ -1,0 +1,5 @@
+{% for region in regions %}
+    <section class="region-wrapper {{ region }}">
+    {{ render(regions[region]) }}
+    </section>
+{% endfor %}

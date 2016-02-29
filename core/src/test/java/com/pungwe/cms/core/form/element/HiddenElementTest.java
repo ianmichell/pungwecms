@@ -49,7 +49,7 @@ public class HiddenElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "hidden", doc.getElementById("hidden").attr("name"));
+		assertEquals("Name does not match", "hidden[0]", doc.getElementById("hidden").attr("name"));
 		assertEquals("Hidden Value does not match", "Default Value", doc.getElementById("hidden").attr("value"));
 	}
 }

@@ -1,2 +1,2 @@
 {{ render(label) }}
-<textarea{{ attributes }}>{{ value }}</textarea>
+<textarea name="{{ name }}"{{ printAttribute("rows", rows) }}{{ printAttribute("cols", columns) }}{{ attributes }}>{{ value }}</textarea>

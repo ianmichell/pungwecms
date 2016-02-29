@@ -5,10 +5,7 @@ import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ian on 12/01/2016.
@@ -32,6 +29,9 @@ public class TableElement extends AbstractRenderedElement {
 
 	@ModelAttribute("header")
 	public List<Row<Header>> getHeader() {
+		if (this.header == null) {
+			this.header = new ArrayList<>();
+		}
 		return header;
 	}
 
@@ -41,6 +41,9 @@ public class TableElement extends AbstractRenderedElement {
 
 	@ModelAttribute("footer")
 	public List<Row> getFooter() {
+		if (this.footer == null) {
+			this.footer = new ArrayList<>();
+		}
 		return footer;
 	}
 
@@ -50,6 +53,9 @@ public class TableElement extends AbstractRenderedElement {
 
 	@ModelAttribute("rows")
 	public List<Row> getRows() {
+		if (this.rows == null) {
+			this.rows = new ArrayList<>();
+		}
 		return rows;
 	}
 
@@ -58,10 +64,7 @@ public class TableElement extends AbstractRenderedElement {
 	}
 
 	public void addRow(Row row) {
-		if (this.rows == null) {
-			this.rows = new ArrayList<>();
-		}
-		this.rows.add(row);
+		this.getRows().add(row);
 	}
 
 	public void addRow(Column... columns) {
@@ -71,11 +74,8 @@ public class TableElement extends AbstractRenderedElement {
 	}
 
 	public void addHeader(Row<Header>... header) {
-		if (this.header == null) {
-			this.header = new ArrayList<>();
-		}
 		for (Row h : header) {
-			this.header.add(h);
+			this.getHeader().add(h);
 		}
 	}
 
@@ -86,11 +86,8 @@ public class TableElement extends AbstractRenderedElement {
 	}
 
 	public void addFooter(Row... header) {
-		if (this.footer == null) {
-			this.footer = new ArrayList<>();
-		}
 		for (Row h : header) {
-			this.footer.add(h);
+			this.getFooter().add(h);
 		}
 	}
 
@@ -98,6 +95,11 @@ public class TableElement extends AbstractRenderedElement {
 		Row row = new Row();
 		row.addColumn(columns);
 		addFooter(row);
+	}
+
+	@Override
+	protected Collection<String> excludedAttributes() {
+		return new LinkedList<>();
 	}
 
 	@ThemeInfo("basic/table/row")
@@ -119,6 +121,11 @@ public class TableElement extends AbstractRenderedElement {
 
 		public void setColumns(List<T> columns) {
 			this.columns = columns;
+		}
+
+		@Override
+		protected Collection<String> excludedAttributes() {
+			return new LinkedList<>();
 		}
 	}
 
@@ -143,6 +150,10 @@ public class TableElement extends AbstractRenderedElement {
 			this.content = content;
 		}
 
+		@Override
+		protected Collection<String> excludedAttributes() {
+			return new LinkedList<>();
+		}
 	}
 
 	@ThemeInfo("basic/table/header")

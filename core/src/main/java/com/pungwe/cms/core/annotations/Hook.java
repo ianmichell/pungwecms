@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Autowired
 public @interface Hook {
 	String value();
 }

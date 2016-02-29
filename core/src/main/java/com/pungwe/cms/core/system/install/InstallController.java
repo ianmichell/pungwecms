@@ -2,6 +2,7 @@ package com.pungwe.cms.core.system.install;
 
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ import java.util.concurrent.Callable;
 @RequestMapping("/install")
 public class InstallController {
 
-	@RequestMapping(method= RequestMethod.GET)
+	@RequestMapping(method= RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	public Callable<String> index(Model model) {
 		return () -> {
 			TableElement table = new TableElement();

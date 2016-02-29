@@ -38,7 +38,7 @@ public class LabelElementTest extends AbstractWebTest {
 	LocaleResolver localeResolver;
 
 	@Test
-	public void testHiddenElementDefaultConstructor() throws Exception {
+	public void testLabelElementDefaultConstructorWithString() throws Exception {
 
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
@@ -53,7 +53,42 @@ public class LabelElementTest extends AbstractWebTest {
 	}
 
 	@Test
-	public void testHiddenElementStringConstructor() throws Exception {
+	public void testLabelElementDefaultConstructorWithElement() throws Exception {
+
+		// Get the ability to render stuff
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+
+		LabelElement element = new LabelElement();
+		element.setContent(new PlainTextElement("My Label"));
+		element.setHtmlId("label");
+
+		String output = functions.render(new MockHttpServletRequest(), element);
+		Document doc = Jsoup.parse(output);
+		assertEquals("Label test is not correct", "My Label", doc.body().getElementById("label").text());
+	}
+
+	@Test
+	public void testLabelElementRemoveForAttribute() throws Exception {
+
+		StringElement stringElement = new StringElement();
+		stringElement.setHtmlId("string");
+		// Get the ability to render stuff
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+
+		LabelElement element = new LabelElement();
+		element.setContent(new PlainTextElement("My Label"));
+		element.setHtmlId("label");
+		element.setForElement(stringElement);
+		element.addAttribute("for", "blah");
+
+		String output = functions.render(new MockHttpServletRequest(), element);
+		Document doc = Jsoup.parse(output);
+		assertEquals("Label test is not correct", "My Label", doc.body().getElementById("label").text());
+		assertEquals("For attribute is not correct", element.getForElement().getHtmlId(), doc.getElementById("label").attr("for"));
+	}
+
+	@Test
+	public void testLabelElementStringConstructor() throws Exception {
 
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
@@ -63,11 +98,11 @@ public class LabelElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Label test is not correct", "My Label", doc.body().getElementById("label").text());
+		assertEquals("Label text is not correct", "My Label", doc.body().getElementById("label").text());
 	}
 
 	@Test
-	public void testHiddenElementElementConstructor() throws Exception {
+	public void testLabelElementElementConstructor() throws Exception {
 
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
@@ -77,6 +112,6 @@ public class LabelElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Label test is not correct", "My Label", doc.body().getElementById("label").text());
+		assertEquals("Label text is not correct", "My Label", doc.body().getElementById("label").text());
 	}
 }

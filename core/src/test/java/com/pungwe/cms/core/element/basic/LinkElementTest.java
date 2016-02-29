@@ -24,6 +24,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -50,7 +53,27 @@ public class LinkElementTest extends AbstractWebTest {
 		link.setHref("http://www.example.com");
 		link.setContent(new PlainTextElement("Link Text"));
 		String output = functions.render(new MockHttpServletRequest(), link);
+		System.out.println(output);
 		Document doc = Jsoup.parse(output);
+		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("href"));
+		assertEquals("HREF is not http://www.example.com", "http://www.example.com", doc.body().getElementById("link").attr("href"));
+	}
+
+	@Test
+	public void testRenderLinkDefaultConstructorSetAttributes() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		LinkElement link = new LinkElement();
+		Map<String, String> attributes = new LinkedHashMap<>();
+		attributes.put("id", "link");
+		attributes.put("title", "Link Title");
+		attributes.put("href", "http://www.example.com");
+		link.setAttributes(attributes);
+		link.setContent(new PlainTextElement("Link Text"));
+		link.setWeight(10);
+		String output = functions.render(new MockHttpServletRequest(), link);
+		System.out.println(output);
+		Document doc = Jsoup.parse(output);
+		assertEquals(10, link.getWeight());
 		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("href"));
 		assertEquals("HREF is not http://www.example.com", "http://www.example.com", doc.body().getElementById("link").attr("href"));
 	}
@@ -64,5 +87,47 @@ public class LinkElementTest extends AbstractWebTest {
 		Document doc = Jsoup.parse(output);
 		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("href"));
 		assertEquals("HREF is not http://www.example.com", "http://www.example.com", doc.body().getElementById("link").attr("href"));
+	}
+
+	@Test
+	public void testRenderLinkHrefAndContentString() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		LinkElement link = new LinkElement("Title", "http://www.example.com", "Link");
+		link.setHtmlId("link");
+		String output = functions.render(new MockHttpServletRequest(), link);
+		Document doc = Jsoup.parse(output);
+		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("href"));
+		assertEquals("HREF is not http://www.example.com", "http://www.example.com", doc.body().getElementById("link").attr("href"));
+	}
+
+	@Test
+	public void testRenderLinkHrefTargetContentString() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		LinkElement link = new LinkElement("Title", "http://www.example.com", "_self", "Link");
+		link.setHtmlId("link");
+		String output = functions.render(new MockHttpServletRequest(), link);
+		Document doc = Jsoup.parse(output);
+		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("href"));
+		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("target"));
+		assertEquals("HREF is not http://www.example.com", "http://www.example.com", doc.body().getElementById("link").attr("href"));
+		assertEquals("HREF is not http://www.example.com", "_self", doc.body().getElementById("link").attr("target"));
+	}
+
+	@Test
+	public void testRenderLinkHrefTargetContent() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		LinkElement link = new LinkElement("Title", "http://www.example.com", "_self", new PlainTextElement("Link"));
+		link.setHtmlId("link");
+		String output = functions.render(new MockHttpServletRequest(), link);
+		Document doc = Jsoup.parse(output);
+		// Test Getters
+		assertEquals("href does not match", "http://www.example.com", link.getHref());
+		assertEquals("target does not match", "_self", link.getTarget());
+		assertEquals("title does not match", "Title", link.getTitle());
+
+		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("href"));
+		assertTrue("Document does not have href", doc.body().getElementById("link").hasAttr("target"));
+		assertEquals("HREF is not http://www.example.com", "http://www.example.com", doc.body().getElementById("link").attr("href"));
+		assertEquals("HREF is not http://www.example.com", "_self", doc.body().getElementById("link").attr("target"));
 	}
 }

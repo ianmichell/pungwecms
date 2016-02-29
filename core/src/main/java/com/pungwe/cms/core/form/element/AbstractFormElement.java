@@ -1,8 +1,12 @@
 package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.element.AbstractRenderedElement;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 /**
@@ -10,18 +14,25 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractFormElement<T> extends AbstractRenderedElement {
 
+	protected String name;
 	protected LabelElement label;
 	protected T defaultValue;
+	protected T value;
 	protected int detla;
 	protected boolean required;
 
 	// FIXME: We should change this slightly, so that it builds up based on delta
 	public String getName() {
-		return getAttribute("name");
+		return name;
 	}
 
 	public void setName(String name) {
-		addAttribute("name", name);
+		this.name = name;
+	}
+
+	@ModelAttribute("name")
+	public String getElementName() {
+		return getName() + "[" + getDetla() + "]";
 	}
 
 	@ModelAttribute("label")
@@ -29,8 +40,13 @@ public abstract class AbstractFormElement<T> extends AbstractRenderedElement {
 		return label;
 	}
 
+	public void setLabel(LabelElement label) {
+		this.label = label;
+		this.label.setForElement(this); // force this
+	}
+
 	public void setLabel(String label) {
-		this.label = new LabelElement(label);
+		this.label = new LabelElement(label, this);
 	}
 
 	@ModelAttribute("defaultValue")
@@ -60,17 +76,21 @@ public abstract class AbstractFormElement<T> extends AbstractRenderedElement {
 		this.required = required;
 	}
 
-	@Override
-	@ModelAttribute("attributes")
-	public String getAttributesAsString() {
-		// Setup value attribute
-		if (getAttributes() != null && !getAttributes().containsKey("value")) {
-			return " value=\"" + (getDefaultValue() != null ? getDefaultValue() : "") + "\" " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
-		}
-		if (getAttributes() != null && !getAttributes().isEmpty()) {
-			return " " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
-		}
+	public T getValue() {
+		return value;
+	}
 
-		return "";
+	public void setValue(T value) {
+		this.value = value;
+	}
+
+	@ModelAttribute("value")
+	public T getValueOrDefaultValue() {
+		return getValue() != null ? getValue() : getDefaultValue();
+	}
+
+	@Override
+	protected Collection<String> excludedAttributes() {
+		return Arrays.asList("value", "name");
 	}
 }

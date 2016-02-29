@@ -1,0 +1,10 @@
+{{ render(label) }}
+<select name="{{ name }}"{{ attributes }} multiple>
+    {%  for option in options %}
+        {% if value.contains(option.value) %}
+            <option value="{{ option.value }}" selected>{{ option.key }}</option>
+        {%  else %}
+            <option value="{{ option.value }}">{{ option.key }}</option>
+        {% endif %}
+    {% endfor %}
+</select>

@@ -5,10 +5,7 @@ import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ian on 24/02/2016.
@@ -38,5 +35,10 @@ public class PageElement extends AbstractRenderedElement {
 			return;
 		}
 		renderedElements.add(content);
+	}
+
+	@Override
+	protected Collection<String> excludedAttributes() {
+		return new LinkedList<>();
 	}
 }

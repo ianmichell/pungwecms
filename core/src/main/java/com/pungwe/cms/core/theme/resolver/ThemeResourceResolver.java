@@ -1,20 +1,13 @@
 package com.pungwe.cms.core.theme.resolver;
 
-import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.resource.ClasspathJtwigResource;
 import com.lyncode.jtwig.resource.FileJtwigResource;
 import com.lyncode.jtwig.resource.JtwigResource;
 import com.lyncode.jtwig.resource.WebJtwigResource;
 import com.lyncode.jtwig.resource.loader.JtwigResourceResolver;
-import com.lyncode.jtwig.services.api.url.ResourceUrlResolver;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
 import javax.servlet.ServletContext;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,21 +43,6 @@ public class ThemeResourceResolver implements JtwigResourceResolver {
 			}
 			return new WebJtwigResource(servletContext, url);
 		}).filter(r -> r.exists()).findFirst();
-		return resource.orElse(new JtwigResource() {
-			@Override
-			public boolean exists() {
-				return false;
-			}
-
-			@Override
-			public InputStream retrieve() throws ResourceException {
-				return null;
-			}
-
-			@Override
-			public JtwigResource resolve(String relativePath) throws ResourceException {
-				return null;
-			}
-		});
+		return resource.orElse(new WebJtwigResource(servletContext, viewUrl));
 	}
 }

@@ -50,7 +50,6 @@ public class TemplateFunctions {
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter T input) throws FunctionException {
 		try {
-//			HookService hookService = applicationContext.getBean(HookService.class);
 			// Get Theme Info and template
 			// FIXME: Make parameters work!
 			ThemeInfo info = input.getClass().isAnnotationPresent(ThemeInfo.class) ? input.getClass().getAnnotation(ThemeInfo.class) : null;
@@ -65,6 +64,21 @@ public class TemplateFunctions {
 		} catch (Exception ex) {
 			throw new FunctionException(ex);
 		}
+	}
+
+	@JtwigFunction(name = "printAttribute")
+	public String printAttribute(@Parameter String name, @Parameter String value) {
+		return !StringUtils.isEmpty(value) ? " " + name + "=\"" + value + "\"" : "";
+	}
+
+	@JtwigFunction(name = "printAttribute")
+	public <T extends Number> String printAttribute(@Parameter String name, @Parameter T value) {
+		return value != null ? " " + name + "=\"" + value + "\"" : "";
+	}
+
+	@JtwigFunction(name = "printAttribute")
+	public String printAttribute(@Parameter String name, @Parameter Boolean value) {
+		return value != null ? " " + name + "=\"" + value + "\"" : "";
 	}
 
 	protected ModelMap objectToModelMap(Object o) throws InvocationTargetException, IllegalAccessException {

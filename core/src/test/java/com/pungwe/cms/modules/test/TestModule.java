@@ -25,4 +25,22 @@ public class TestModule {
 		theme.put("my_view", "test_module/my_view");
 		return theme;
 	}
+
+	@Hook("test_hook")
+	public String testHook() {
+		return "hooked";
+	}
+
+	@Hook("void_hook")
+	public void voidHook() {
+	}
+
+	@Hook("no_callback_hook")
+	public void noCallbackHook() {
+	}
+
+	@Hook("parameter_hook")
+	public String parameterHook(String parameter) {
+		return parameter;
+	}
 }

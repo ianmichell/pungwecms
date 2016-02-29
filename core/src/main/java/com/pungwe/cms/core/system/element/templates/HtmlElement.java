@@ -17,9 +17,14 @@ import java.util.stream.Collectors;
 public class HtmlElement extends AbstractRenderedElement {
 
 	protected Map<String, String> bodyAttributes;
-	protected List<RenderedElement> pageTop;
-	protected RenderedElement page;
-	protected List<RenderedElement> pageBottom;
+	protected String head;
+	protected String title;
+	protected String css;
+	protected String jsTop;
+	protected String pageTop;
+	protected String pageContent;
+	protected String pageBottom;
+	protected String jsBottom;
 
 	public Map<String, String> getBodyAttributes() {
 		if (bodyAttributes == null) {
@@ -32,53 +37,89 @@ public class HtmlElement extends AbstractRenderedElement {
 		this.bodyAttributes = bodyAttributes;
 	}
 
+	public void addBodyAttribute(String name, String value) {
+		getBodyAttributes().put(name, value);
+	}
+
 	@ModelAttribute("body_attributes")
 	public String getBodyAttributesAsString() {
-		return " " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
+		return " " + getBodyAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
+	}
+
+	@ModelAttribute("head")
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+
+	@ModelAttribute("title")
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@ModelAttribute("css")
+	public String getCss() {
+		return css;
+	}
+
+	public void setCss(String css) {
+		this.css = css;
+	}
+
+	@ModelAttribute("js_top")
+	public String getJsTop() {
+		return jsTop;
+	}
+
+	public void setJsTop(String jsTop) {
+		this.jsTop = jsTop;
+	}
+
+	@ModelAttribute("js_bottom")
+	public String getJsBottom() {
+		return jsBottom;
+	}
+
+	public void setJsBottom(String jsBottom) {
+		this.jsBottom = jsBottom;
 	}
 
 	@ModelAttribute("page_top")
-	public List<RenderedElement> getPageTop() {
-		if (pageTop == null) {
-			pageTop = new LinkedList<>();
-		}
+	public String getPageTop() {
 		return pageTop;
 	}
 
-	public void setPageTop(List<RenderedElement> pageTop) {
+	public void setPageTop(String pageTop) {
 		this.pageTop = pageTop;
 	}
 
-	@ModelAttribute("page")
-	public RenderedElement getPage() {
-		return page;
+	@ModelAttribute("page_content")
+	public String getPageContent() {
+		return pageContent;
 	}
 
-	public void setPage(RenderedElement page) {
-		this.page = page;
+	public void setPageContent(String pageContent) {
+		this.pageContent = pageContent;
 	}
 
 	@ModelAttribute("page_bottom")
-	public List<RenderedElement> getPageBottom() {
-		if (pageBottom == null) {
-			pageBottom = new LinkedList<>();
-		}
+	public String getPageBottom() {
 		return pageBottom;
 	}
 
-	public void setPageBottom(List<RenderedElement> pageBottom) {
+	public void setPageBottom(String pageBottom) {
 		this.pageBottom = pageBottom;
 	}
 
-	public void addBodyAttribute(String name, String value) {
-		getAttributes().put(name, value);
-	}
-
-	public void addPageTop(RenderedElement... pageTop) {
-		getPageTop().addAll(Arrays.asList(pageTop));
-	}
-
-	public void addPageBottom(RenderedElement... pageBottom) {
-		getPageBottom().addAll(Arrays.asList(pageBottom));
+	@Override
+	protected Collection<String> excludedAttributes() {
+		return new LinkedList<>();
 	}
 }

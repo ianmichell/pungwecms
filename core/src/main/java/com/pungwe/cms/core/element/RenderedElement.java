@@ -22,17 +22,6 @@ public interface RenderedElement {
 
 	void setAttributes(Map<String, String> attributes);
 
-	default String getAttribute(String name) {
-		return getAttributes() == null ? null : getAttributes().get(name);
-	}
+	String getAttribute(String name);
 
-	@ModelAttribute("attributes")
-	default String getAttributesAsString() {
-
-		if (getAttributes() != null && !getAttributes().isEmpty()) {
-			return " " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
-		}
-
-		return "";
-	}
 }

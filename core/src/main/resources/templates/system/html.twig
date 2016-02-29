@@ -11,8 +11,11 @@
         {{ js_top }}
     </head>
     <body{{ body_attributes }}>
+    <a href="#main-content" class="visually-hidden focusable">
+        {{ 'Skip to main content' }}
+    </a>
     {{ page_top }}
-    {{ page }}
+    {{ page_content }}
     {{ page_bottom }}
     {{ js_bottom }}
     </body>

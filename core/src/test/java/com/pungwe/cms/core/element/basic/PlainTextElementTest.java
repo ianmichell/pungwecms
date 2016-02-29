@@ -45,4 +45,25 @@ public class PlainTextElementTest extends AbstractWebTest {
 		String html = functions.render(request, element);
 		assertEquals("Text incorrect", "Text", html);
 	}
+
+	@Test
+	public void testDefautConstructor() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		PlainTextElement element = new PlainTextElement();
+		element.setText("Text");
+		String html = functions.render(request, element);
+		assertEquals("Text incorrect", "Text", html);
+	}
+
+	@Test
+	public void testDefautConstructorExcludedAttributes() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		PlainTextElement element = new PlainTextElement();
+		element.setText("Text");
+		String html = functions.render(request, element);
+		assertEquals("Text incorrect", "Text", html);
+		assertEquals("Attributes should be an empty list", 0, element.excludedAttributes().size());
+	}
 }
