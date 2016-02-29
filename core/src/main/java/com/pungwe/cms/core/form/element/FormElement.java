@@ -5,6 +5,9 @@ import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -55,12 +58,32 @@ public class FormElement extends AbstractRenderedElement {
 		return getAttribute("action");
 	}
 
+	public void setName(String name) {
+		addAttribute("name", name);
+	}
+
+	public String getName() {
+		return getAttribute("name");
+	}
+
 	@ModelAttribute("children")
 	public List<RenderedElement> getChildren() {
+		if (children == null) {
+			children = new LinkedList<>();
+		}
 		return children;
 	}
 
 	public void setChildren(List<RenderedElement> children) {
 		this.children = children;
+	}
+
+	public void addChild(RenderedElement... child) {
+		getChildren().addAll(Arrays.asList(child));
+	}
+
+	@Override
+	protected Collection<String> excludedAttributes() {
+		return new LinkedList<>();
 	}
 }

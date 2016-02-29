@@ -29,14 +29,4 @@ public class SingleSelectListElement extends AbstractFormElement<String> {
 	public void addOption(String label, String value) {
 		this.getOptions().put(label, value);
 	}
-
-	@Override
-	@ModelAttribute("attributes")
-	public String getAttributesAsString() {
-		// Setup value attribute
-		if (getAttributes() != null && !getAttributes().isEmpty()) {
-			return " " + getAttributes().entrySet().stream().filter(e -> e.getKey() != "value").map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
-		}
-		return "";
-	}
 }

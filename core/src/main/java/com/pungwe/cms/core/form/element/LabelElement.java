@@ -4,8 +4,13 @@ import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -30,8 +35,7 @@ public class LabelElement extends AbstractRenderedElement {
 	}
 
 	public LabelElement(String label, AbstractFormElement<?> forElement) {
-		this.content = new PlainTextElement(label);
-		this.forElement = forElement;
+		this(new PlainTextElement(label), forElement);
 	}
 
 	public LabelElement(RenderedElement content, AbstractFormElement<?> forElement) {
@@ -45,6 +49,11 @@ public class LabelElement extends AbstractRenderedElement {
 
 	public void setForElement(AbstractFormElement<?> forElement) {
 		this.forElement = forElement;
+	}
+
+	@ModelAttribute("forElement")
+	public String getFor() {
+		return forElement != null ? forElement.getHtmlId() : "";
 	}
 
 	@ModelAttribute("content")
@@ -61,21 +70,7 @@ public class LabelElement extends AbstractRenderedElement {
 	}
 
 	@Override
-	@ModelAttribute("attributes")
-	public String getAttributesAsString() {
-		String attributes = "";
-		if (getAttributes().containsKey("for") && getForElement() != null) {
-			getAttributes().remove("for");
-		}
-
-		if (getForElement() != null) {
-			return " for=\"" + getForElement().getHtmlId() + "\" " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
-		}
-
-		if (!getAttributes().isEmpty()) {
-			return " " + getAttributes().entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
-		}
-
-		return "";
+	protected Collection<String> excludedAttributes() {
+		return Arrays.asList("for");
 	}
 }
