@@ -273,6 +273,8 @@ public class MyEntityTypeController {
 }
 ```
 
+You should also create an entity controller for viewing the data from your entity in a similar structure to the above example of the admin controller.
+
 Finally if you're using the @ComponentScan annotation on your module, then you will need to ensure that the entity type class you define is in a package that gets scanned. You can alternatively define your entity by declaring it as a bean:
 
 ```java
@@ -337,6 +339,43 @@ public class MyEntityTypeModule {
 #####Note
 Entity definitions are stored in the database and at present there is no plan to make that optional. I'm not a big fan of storing lots of config data in the database, but in order to be editable via the admin interface, this is the best place for it right now.
 
+### Elements
+Elements are probably the most straight forward set of classes to use. These are essentially models to be used for rendering their templates.
+
+To create a RenderableElement, you should do the following:
+
+```java
+// directory is not mandatory, defaults /templates/template_name
+@ThemeInfo("my_module/my_element")
+public class MyElement extends AbstractRenderedElement {
+
+	protected String content;
+	
+	// If not defined on your attributes, then this property will be ignored
+	// and will not be accessible in your template.
+	@ModelAttribute("content")
+	public String getContent() {
+		return content;
+	}
+	
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	@Override
+	protected List<String> excludedAttributes() {
+		return new LinkedList<>(); // never return null :)
+	}
+}
+```
+
+Then create the template on the class path (/templates/my_module/my_element.twig):
+
+```twig
+<div{{ attributes }}>
+	{{ content }}
+</div>
+```
 
 ##Things to do
 - Should probably start populating the wiki with documentation
