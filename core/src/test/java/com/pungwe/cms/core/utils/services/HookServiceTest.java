@@ -27,6 +27,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -91,7 +92,7 @@ public class HookServiceTest extends AbstractWebTest {
 	}
 
 	@Test
-	public void testExecuteHookWithClassAndParameter() throws InvocationTargetException, IllegalAccessException {
+	 public void testExecuteHookWithClassAndParameter() throws InvocationTargetException, IllegalAccessException {
 		final AtomicBoolean bool = new AtomicBoolean();
 
 		hookService.executeHook(TestModule.class, "parameter_hook", (c, a) -> {
@@ -103,6 +104,49 @@ public class HookServiceTest extends AbstractWebTest {
 		}, "parameter");
 
 		assertTrue(bool.get());
+	}
+
+	@Test
+	public void testExecuteHookWithClassAndTooManyParameters() throws InvocationTargetException, IllegalAccessException {
+		final AtomicBoolean bool = new AtomicBoolean();
+
+		hookService.executeHook(TestModule.class, "parameter_hook", (c, a) -> {
+			if (a.equals("parameter1")) {
+				bool.set(true);
+			} else {
+				bool.set(false);
+			}
+		}, "parameter1", "parameter2");
+
+		assertTrue(bool.get());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testExecuteHookWithClassAndInvalidParameterType() throws InvocationTargetException, IllegalAccessException {
+		final AtomicBoolean bool = new AtomicBoolean();
+
+		hookService.executeHook(TestModule.class, "parameter_hook", (c, a) -> {
+			if (a.equals(1)) {
+				bool.set(true);
+			} else {
+				bool.set(false);
+			}
+		}, 1);
+	}
+
+	@Test
+	public void testExecuteHookWithClassAndTooFewParameters() throws InvocationTargetException, IllegalAccessException {
+		final AtomicBoolean bool = new AtomicBoolean();
+
+		hookService.executeHook(TestModule.class, "parameter_many_hook", (c, a) -> {
+			if (a.equals("parameter1")) {
+				bool.set(true);
+			} else {
+				bool.set(false);
+			}
+		}, "parameter1");
+
+		assertFalse(bool.get());
 	}
 
 	@Test

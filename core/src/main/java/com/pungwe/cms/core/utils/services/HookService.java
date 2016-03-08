@@ -78,11 +78,32 @@ public class HookService {
 			methods.putAll(getHookMethods(themeContext, c, name));
 		}
 		// Execute hooks
-		for (Method m : methods.keySet()) {
-			Object result = m.invoke(methods.get(m), parameters);
+		for (Map.Entry<Method, Object> e : methods.entrySet()) {
+			// we can't execute hooks when there are more expected parameters with less passed in...
+			if (e.getKey().getParameterCount() > parameters.length) {
+				continue;
+			}
+			Object result = executeHookMethod(e.getKey(), e.getValue(), parameters);
 			if (callback != null) {
-				callback.call(methods.get(m).getClass(), result);
+				callback.call(e.getValue().getClass(), result);
 			}
 		}
+	}
+
+	// TODO: Add annotations for parameters...
+	private Object executeHookMethod(Method m, Object o, Object... parameters) throws InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+		// Create an array list with an initial size of parameters.length
+		List<Object> usableParameters = new ArrayList<>(parameters.length);
+		for (Object p : parameters) {
+			for (Class<?> c : m.getParameterTypes()) {
+				if (p != null && p.getClass() == c) {
+					usableParameters.add(p);
+				}
+			}
+		}
+		if (usableParameters.size() < m.getParameterCount()) {
+			throw new IllegalArgumentException("Wrong parameters types for hook: " + m.toGenericString());
+		}
+		return m.invoke(o, usableParameters.subList(0, m.getParameterCount()).toArray());
 	}
 }

@@ -1,5 +1,7 @@
 package com.pungwe.cms.core.annotations;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
@@ -14,6 +16,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Component
 public @interface Block {
-	String name();
+	@AliasFor(annotation = Component.class, attribute = "value")
+	String value();
 	String label();
+	String category() default "";
 }

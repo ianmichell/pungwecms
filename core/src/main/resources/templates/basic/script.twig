@@ -1,0 +1,7 @@
+{% if src %}
+<script{{ printAttribute("type", type) }}{{ printAttribute("src", src) }}{{ attributes }}></script>
+{% else %}
+<script{{ printAttribute("type", type) }}{{ attributes }}>
+    {{ content }}
+</script>
+{% endif %}

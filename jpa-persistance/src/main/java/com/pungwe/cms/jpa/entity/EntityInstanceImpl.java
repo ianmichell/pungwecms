@@ -38,24 +38,24 @@ public class EntityInstanceImpl implements EntityInstance<EntityInstanceIdImpl> 
 	@Column(name = "date_created")
 	@CreatedDate
 	public Date getDateCreated() {
-		return dateCreated;
+		return dateCreated != null ? (Date)dateCreated : null;
 	}
 
 	@Override
 	public void setDateCreated(Date date) {
-		this.dateCreated = date;
+		this.dateCreated = date != null ? (Date)date.clone() : null;
 	}
 
 	@Override
 	@Column(name = "date_modified")
 	@LastModifiedDate
 	public Date getDateModified() {
-		return dateModified;
+		return dateModified != null ? (Date)dateModified.clone() : null;
 	}
 
 	@Override
 	public void setDateModified(Date date) {
-		this.dateModified = date;
+		this.dateModified = date != null ? (Date)date.clone() : null;
 	}
 
 	@Override

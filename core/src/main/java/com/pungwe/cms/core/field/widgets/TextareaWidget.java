@@ -52,4 +52,5 @@ public class TextareaWidget implements FieldWidget {
 	public boolean supports(String fieldType) {
 		return "string".equals(fieldType);
 	}
+
 }

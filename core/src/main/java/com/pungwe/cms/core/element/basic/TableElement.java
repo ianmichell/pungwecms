@@ -104,8 +104,7 @@ public class TableElement extends AbstractRenderedElement {
 
 	@ThemeInfo("basic/table/row")
 	public static class Row<T extends Column> extends AbstractRenderedElement {
-
-		Map<String, String> attributes = new HashMap<String, String>();
+		
 		protected List<T> columns = new ArrayList<>();
 
 		public void addColumn(T... columns) {

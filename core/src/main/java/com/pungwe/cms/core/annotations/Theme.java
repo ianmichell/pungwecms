@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.annotations;
 
+import com.pungwe.cms.core.system.element.templates.PageElement;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.annotation.ElementType;
@@ -27,4 +28,6 @@ public @interface Theme {
 	 * @return the name of the parent theme
 	 */
 	String parent() default "";
+
+	String[] regions() default {};
 }

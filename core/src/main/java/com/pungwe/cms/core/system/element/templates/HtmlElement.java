@@ -2,7 +2,11 @@ package com.pungwe.cms.core.system.element.templates;
 
 import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
+import com.pungwe.cms.core.element.HeaderRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.element.basic.LinkElement;
+import com.pungwe.cms.core.element.basic.ScriptElement;
+import com.pungwe.cms.core.element.basic.StyleElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
@@ -17,14 +21,14 @@ import java.util.stream.Collectors;
 public class HtmlElement extends AbstractRenderedElement {
 
 	protected Map<String, String> bodyAttributes;
-	protected String head;
-	protected String title;
-	protected String css;
-	protected String jsTop;
-	protected String pageTop;
-	protected String pageContent;
-	protected String pageBottom;
-	protected String jsBottom;
+	protected List<HeaderRenderedElement> head;
+	protected List<String> title;
+	protected List<HeaderRenderedElement> css;
+	protected List<ScriptElement> jsTop;
+	protected List<RenderedElement> pageTop;
+	protected List<RenderedElement> pageContent;
+	protected List<RenderedElement> pageBottom;
+	protected List<ScriptElement> jsBottom;
 
 	public Map<String, String> getBodyAttributes() {
 		if (bodyAttributes == null) {
@@ -47,79 +51,141 @@ public class HtmlElement extends AbstractRenderedElement {
 	}
 
 	@ModelAttribute("head")
-	public String getHead() {
+	public List<HeaderRenderedElement> getHead() {
+		if (head == null) {
+			head = new LinkedList<>();
+		}
 		return head;
 	}
 
-	public void setHead(String head) {
-		this.head = head;
+	public void addToHead(HeaderRenderedElement... elements) {
+		addToHead(Arrays.asList(elements));
+	}
+
+	public void addToHead(Collection<HeaderRenderedElement> elements) {
+		getHead().addAll(elements);
 	}
 
 	@ModelAttribute("title")
-	public String getTitle() {
+	public List<String> getTitle() {
+		if (title == null) {
+			title = new LinkedList<>();
+		}
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(List<String> title) {
 		this.title = title;
 	}
 
+	public void addTitle(String title) {
+		this.getTitle().add(title);
+	}
+
 	@ModelAttribute("css")
-	public String getCss() {
+	public List<HeaderRenderedElement> getCss() {
+		if (css == null) {
+			css = new LinkedList<>();
+		}
 		return css;
 	}
 
-	public void setCss(String css) {
-		this.css = css;
+	public void addToCss(HeaderRenderedElement... elements) {
+		addToCss(Arrays.asList(elements));
+	}
+
+	public void addToCss(Collection<HeaderRenderedElement> elements) {
+		for (HeaderRenderedElement element : elements) {
+			if (!(element instanceof LinkElement) && !(element instanceof StyleElement)) {
+				throw new IllegalArgumentException("Invalid element type for HTML css region");
+			}
+			getCss().add(element);
+		}
 	}
 
 	@ModelAttribute("js_top")
-	public String getJsTop() {
+	public List<ScriptElement> getJsTop() {
+		if (jsTop == null) {
+			jsTop = new LinkedList<>();
+		}
 		return jsTop;
 	}
 
-	public void setJsTop(String jsTop) {
-		this.jsTop = jsTop;
+	public void addToJsTop(ScriptElement... scriptElements) {
+		addToJsTop(Arrays.asList(scriptElements));
+	}
+
+	public void addToJsTop(Collection<ScriptElement> scriptElements) {
+		getJsTop().addAll(scriptElements);
 	}
 
 	@ModelAttribute("js_bottom")
-	public String getJsBottom() {
+	public List<ScriptElement> getJsBottom() {
+		if (jsBottom == null) {
+			jsBottom = new LinkedList<>();
+		}
 		return jsBottom;
 	}
 
-	public void setJsBottom(String jsBottom) {
-		this.jsBottom = jsBottom;
+	public void addToJsBottom(ScriptElement... scriptElements) {
+		addToJsBottom(Arrays.asList(scriptElements));
+	}
+
+	public void addToJsBottom(Collection<ScriptElement> scriptElements) {
+		getJsBottom().addAll(scriptElements);
 	}
 
 	@ModelAttribute("page_top")
-	public String getPageTop() {
+	public List<RenderedElement> getPageTop() {
+		if (pageTop == null) {
+			pageTop = new LinkedList<>();
+		}
 		return pageTop;
 	}
 
-	public void setPageTop(String pageTop) {
-		this.pageTop = pageTop;
+	public void addToPageTop(RenderedElement... renderedElements) {
+		addToPageTop(Arrays.asList(renderedElements));
+	}
+
+	public void addToPageTop(Collection<RenderedElement> renderedElements) {
+		getPageTop().addAll(renderedElements);
 	}
 
 	@ModelAttribute("page_content")
-	public String getPageContent() {
+	public List<RenderedElement> getPageContent() {
+		if (pageContent == null) {
+			pageContent = new LinkedList<>();
+		}
 		return pageContent;
 	}
 
-	public void setPageContent(String pageContent) {
-		this.pageContent = pageContent;
+	public void addToPageContent(RenderedElement... renderedElements) {
+		addToPageContent(Arrays.asList(renderedElements));
+	}
+
+	public void addToPageContent(Collection<RenderedElement> renderedElements) {
+		getPageContent().addAll(renderedElements);
 	}
 
 	@ModelAttribute("page_bottom")
-	public String getPageBottom() {
+	public List<RenderedElement> getPageBottom() {
+		if (pageBottom == null) {
+			pageBottom = new LinkedList<>();
+		}
 		return pageBottom;
 	}
 
-	public void setPageBottom(String pageBottom) {
-		this.pageBottom = pageBottom;
+	public void addToPageBottom(RenderedElement... renderedElements) {
+		addToPageBottom(Arrays.asList(renderedElements));
+	}
+
+	public void addToPageBottom(Collection<RenderedElement> renderedElements) {
+		getPageBottom().addAll(renderedElements);
 	}
 
 	@Override
 	protected Collection<String> excludedAttributes() {
 		return new LinkedList<>();
 	}
+
 }

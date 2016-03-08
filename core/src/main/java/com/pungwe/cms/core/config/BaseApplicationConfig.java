@@ -2,9 +2,9 @@ package com.pungwe.cms.core.config;
 
 //import org.springframework.boot.actuate.autoconfigure.*;
 
-import com.pungwe.cms.core.theme.ThemeViewResolver;
+import com.pungwe.cms.core.system.interceptors.HtmlPageBuilderInterceptor;
+import com.pungwe.cms.core.theme.PungweJtwigViewResolver;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
-import com.pungwe.cms.core.theme.resolver.ThemeResourceResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
@@ -12,13 +12,17 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
@@ -45,10 +49,13 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @EnableWebMvc
 // We only want to scan the core package
 @ComponentScan(basePackages = {"com.pungwe.cms.core"})
-public class BaseApplicationConfig {
+public class BaseApplicationConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	ApplicationContext applicationContext;
+
+	@Autowired
+	HtmlPageBuilderInterceptor htmlTemplateRenderingInterceptor;
 
 	@Bean
 	public LocaleResolver localeResolver() {
@@ -56,9 +63,22 @@ public class BaseApplicationConfig {
 	}
 
 	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("/translation/messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		return messageSource;
+	}
+
+	@Bean
 	public ViewResolver viewResolver() {
-		ThemeViewResolver resolver = new ThemeViewResolver("classpath:/templates/", ".twig");
+		PungweJtwigViewResolver resolver = new PungweJtwigViewResolver("classpath:/templates/", ".twig");
 		resolver.configuration().render().functionRepository().include(new TemplateFunctions(applicationContext, resolver, localeResolver()));
 		return resolver;
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(htmlTemplateRenderingInterceptor);
 	}
 }

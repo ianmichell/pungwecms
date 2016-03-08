@@ -1,5 +1,7 @@
-{% for region in regions %}
-    <section class="region-wrapper {{ region }}">
+{% for region in regions|keys %}
+    {% if (regions[region]) %}
+    <section class="region-wrapper region-{{ region }}">
     {{ render(regions[region]) }}
     </section>
+    {% endif %}
 {% endfor %}

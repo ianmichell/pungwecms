@@ -92,10 +92,16 @@ subprojects {
             dependency 'net.sourceforge.htmlunit:htmlunit:2.19'
 
             dependency 'org.jsoup:jsoup:1.8.3'
+
+            dependency 'joda-time:joda-time:2.9.2'
         }
     }
 
     dependencies {
+        // Include joda in everything!
+        compile 'joda-time:joda-time:2.9.2'
+
+        // Test stuff
         testCompile 'junit:junit:4.12'
         testCompile 'org.springframework:spring-test'
     }

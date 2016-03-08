@@ -6,7 +6,6 @@ import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import com.pungwe.cms.test.AbstractWebTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +13,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -55,7 +49,7 @@ public class TableElementTest extends AbstractWebTest {
 				new TableElement.Header(new PlainTextElement("Column 3"))
 		);
 		table.addRow(
-				new TableElement.Column(new LinkElement("Link title", "http://www.example.com", new PlainTextElement("Link"))),
+				new TableElement.Column(new AnchorElement("Link title", "http://www.example.com", new PlainTextElement("Link"))),
 				new TableElement.Column(new PlainTextElement("Column 2 text")),
 				new TableElement.Column(new PlainTextElement("Column 3 text"))
 		);
@@ -110,7 +104,7 @@ public class TableElementTest extends AbstractWebTest {
 		table.setHeader(Arrays.asList(headerRow));
 
 		TableElement.Column column1 = new TableElement.Column();
-		column1.setContent(new LinkElement("Link title", "http://www.example.com", new PlainTextElement("Link")));
+		column1.setContent(new AnchorElement("Link title", "http://www.example.com", new PlainTextElement("Link")));
 		TableElement.Row<TableElement.Column> row = new TableElement.Row<>();
 		row.setColumns(Arrays.asList(
 				column1,

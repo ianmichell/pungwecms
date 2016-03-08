@@ -1,5 +1,4 @@
 # Pungwe CMS
-
 The current state of popular open source java cms is pretty dire... The most popular being 
 licensed under both commercial and proprietry licenses; such as magnolia.
 
@@ -13,15 +12,68 @@ a Drupal clone... This just means it's similar and heavily based on my point of 
 lost of type safety, spring oriented design and of course denormalised data, without JCR).
 
 ## Modules / Themes
-
 For the time being, it has been decided that we will not support a plugin system like OSGI, due to how it complicates lives
 for the developers... It is for this reason that modules have to be included on the classpath as part of your project builds.
 When time permits we will look into alternative methods of dynamically loading these...
 
+### Modules
+Modules are loaded into their own shared context, this allows for restarting of the relevant application context to turn 
+modules on and off. There is no dependency management or plugin system as such. Modules are added to the gradle build file as
+runtime dependencies and used for a build:
 
+	dependencies {
+		runtime 'org.module.group:module-name:1.0.0'
+	}
+
+#### Module Definition
+Modules are defined using @Module annotation. This should feel like creating standard spring @Configuration classes.
+
+	@Module(
+		name="mymodule",
+		label="My Module",
+		description="My Custom Module"
+	)
+	@ComponentScan("com.example.mymodule.components")
+	public class MyModule {
+		...
+	}
+
+### Themes
+As with modules, themes work in a very similar fashion with one major difference. Themes are hierarchical and as such run in their
+own application contexts; with the parent theme's context being the parent application context for that theme. This is to guarantee
+hook and bean isolation between completely different themes.
+
+Themes are added as runtime dependencies to the project build in the same way as modules:
+
+	dependencies {
+		runtime 'org.theme.group:theme-name:1.0.0'
+	}
+
+#### Theme Definition
+Themes are defined using the @Theme annotation. This should feel like creating standard spring @Configuration classes.
+
+	@Theme(
+		name="mytheme", 
+		label="My Theme", 
+		description="A basic theme definition", 
+		regions={"header", "content", "sidebar", "footer"}
+	)
+	@ComponentScan("com.example.mytheme.components")
+	public class MyTheme {
+	
+		@Hook("theme")
+		public Map<String, String> themeHook() {
+			HashMap<String, String> theme = new HashMap<>();
+			theme.put("my_view", "my_theme/my_view");
+			return theme;
+		}
+	}
+
+#### Status
+The theme system is almost complete... Themes can be created using the @Theme annotation, hooks work and the relevant template overrides will work
+as well.
 
 ## Things to do
-
 - Should probably start populating the wiki with documentation
 - Design how Rest API will work with everything (pretty much, should run headless if need be)
 - Rest API should override views, so that developers can use pure client side apps

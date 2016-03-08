@@ -1,7 +1,7 @@
 package com.pungwe.cms.core.system.element.templates;
 
 import com.pungwe.cms.core.config.BaseApplicationConfig;
-import com.pungwe.cms.core.element.basic.PlainTextElement;
+import com.pungwe.cms.core.element.basic.*;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import com.pungwe.cms.test.AbstractWebTest;
 import org.jsoup.Jsoup;
@@ -17,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,16 +46,27 @@ public class HtmlElementTest extends AbstractWebTest {
 		TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
 		HtmlElement element = new HtmlElement();
-		element.setTitle("Title");
+		element.setTitle(Arrays.asList("Title"));
 		element.addAttribute("class", "page");
 		element.addBodyAttribute("class", "body");
-		element.setCss("<link rel=\"stylsheet\" href=\"styles.css\" />");
-		element.setHead("");
-		element.setJsTop("<script src=\"top.js\"></script>");
-		element.setJsBottom("<script src=\"bottom.js\"></script>");
-		element.setPageTop("<span class=\"top\">Top</span>");
-		element.setPageContent("<span class=\"content\" id=\"#main_content\">Content</span>");
-		element.setPageBottom("<span class=\"bottom\">Bottom</span>");
+		element.addToCss(new LinkElement("stylesheet", "styles.css"));
+		element.addToHead(new MetaElement("description", "HTML Element Test"));
+		element.addToJsTop(new ScriptElement("top.js", "text/javascript"));
+		element.addToJsBottom(new ScriptElement("bottom.js", "text/javascript"));
+
+		// Page Content
+		SpanElement top = new SpanElement("Top");
+		top.addAttribute("class", "top");
+		element.addToPageTop(top);
+
+		SpanElement content = new SpanElement("Content");
+		content.setHtmlId("main_content");
+		content.addAttribute("class", "content");
+		element.addToPageContent(content);
+
+		SpanElement bottom = new SpanElement("Bottom");
+		bottom.addAttribute("class", "bottom");
+		element.addToPageBottom(bottom);
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
@@ -69,6 +81,12 @@ public class HtmlElementTest extends AbstractWebTest {
 		assertEquals("body top span is missing", "Bottom", doc.select("body span[class=bottom]").first().text());
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddInvalidCSSElement() throws Exception {
+		HtmlElement element = new HtmlElement();
+		element.addToCss(new MetaElement("name", "description"));
+	}
+
 	@Test
 	public void testRenderHTMLSetAttributes() throws Exception {
 
@@ -80,16 +98,30 @@ public class HtmlElementTest extends AbstractWebTest {
 		Map<String, String> bodyAttributes = new HashMap<String, String>();
 		attributes.put("class", "page");
 		bodyAttributes.put("class", "body");
-		element.setTitle("Title");
 		element.setAttributes(attributes);
 		element.setBodyAttributes(bodyAttributes);
-		element.setCss("<link rel=\"stylsheet\" href=\"styles.css\" />");
-		element.setHead("");
-		element.setJsTop("<script src=\"top.js\"></script>");
-		element.setJsBottom("<script src=\"bottom.js\"></script>");
-		element.setPageTop("<span class=\"top\">Top</span>");
-		element.setPageContent("<span class=\"content\" id=\"#main_content\">Content</span>");
-		element.setPageBottom("<span class=\"bottom\">Bottom</span>");
+
+		element.setTitle(Arrays.asList("Title"));
+		element.addAttribute("class", "page");
+		element.addBodyAttribute("class", "body");
+		element.addToCss(new LinkElement("stylesheet", "styles.css"));
+		element.addToHead(new MetaElement("description", "HTML Element Test"));
+		element.addToJsTop(new ScriptElement("top.js", "text/javascript"));
+		element.addToJsBottom(new ScriptElement("bottom.js", "text/javascript"));
+
+		// Page Content
+		SpanElement top = new SpanElement("Top");
+		top.addAttribute("class", "top");
+		element.addToPageTop(top);
+
+		SpanElement content = new SpanElement("Content");
+		content.setHtmlId("main_content");
+		content.addAttribute("class", "content");
+		element.addToPageContent(content);
+
+		SpanElement bottom = new SpanElement("Bottom");
+		bottom.addAttribute("class", "bottom");
+		element.addToPageBottom(bottom);
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);

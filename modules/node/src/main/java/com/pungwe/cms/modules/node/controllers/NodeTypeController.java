@@ -1,7 +1,7 @@
 package com.pungwe.cms.modules.node.controllers;
 
 import com.pungwe.cms.core.annotations.MenuItem;
-import com.pungwe.cms.core.element.basic.LinkElement;
+import com.pungwe.cms.core.element.basic.AnchorElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
 import com.pungwe.cms.core.entity.EntityDefinition;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 /**
@@ -36,7 +35,7 @@ public class NodeTypeController {
 			title = "Content Types",
 			description = "Manage your content types"
 	)
-	@RequestMapping(value = "/")
+	@RequestMapping(method = RequestMethod.GET)
 	public Callable<String> list(Model model, int pageNumber, int maxRows) {
 		return () -> {
 			Page<EntityDefinition> entities = entityDefinitionService.list("node_type", new PageRequest(pageNumber, maxRows));
@@ -51,7 +50,7 @@ public class NodeTypeController {
 			// Run through each record and create a table row per entity
 			for (EntityDefinition entity : entities) {
 				// Link the title to the edit operation for the entity
-				LinkElement entityEditLink = new LinkElement(
+				AnchorElement entityEditLink = new AnchorElement(
 						entity.getTitle(),
 						"admin/structure/content-types/edit/" + entity.getId().getBundle(),
 						new PlainTextElement(entity.getTitle())
@@ -68,7 +67,7 @@ public class NodeTypeController {
 			model.addAttribute("title", "Content Types");
 
 			// Page actions
-			model.addAttribute("actions", new LinkElement(
+			model.addAttribute("actions", new AnchorElement(
 					"Add a new content type",
 					"admin/structure/content-types/add",
 					new PlainTextElement("Add a content type")

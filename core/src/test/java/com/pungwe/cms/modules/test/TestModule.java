@@ -43,4 +43,9 @@ public class TestModule {
 	public String parameterHook(String parameter) {
 		return parameter;
 	}
+
+	@Hook("parameter_many_hook")
+	public String parameterHook(String parameter1, String parameter2) {
+		return parameter1;
+	}
 }

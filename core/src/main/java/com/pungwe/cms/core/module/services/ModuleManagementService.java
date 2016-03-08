@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
  * Created by ian on 20/01/2016.
  */
 @Service
-
 public class ModuleManagementService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ModuleManagementService.class);

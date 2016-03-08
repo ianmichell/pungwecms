@@ -3,20 +3,19 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {{ head }}
-        <title>{{ title }}</title>
-        {{ css }}
-        {{ js_top }}
+        {{ render(head) }}
+        <title>{{ title|join(" | ") }}</title>
+        {{ render(css) }}
+        {{ render(js_top) }}
     </head>
     <body{{ body_attributes }}>
     <a href="#main-content" class="visually-hidden focusable">
-        {{ 'Skip to main content' }}
+        Skip to main content
     </a>
-    {{ page_top }}
-    {{ page_content }}
-    {{ page_bottom }}
-    {{ js_bottom }}
+    {{ render(page_top) }}
+    {{ render(page_content) }}
+    {{ render(page_bottom) }}
+    {{ render(js_bottom) }}
     </body>
 </html>

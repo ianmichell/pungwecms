@@ -12,6 +12,7 @@ import java.util.List;
  * Created by ian on 10/01/2016.
  */
 public class BooleanWidget implements FieldWidget {
+
 	@Override
 	public String getName() {
 		return null;
@@ -31,4 +32,5 @@ public class BooleanWidget implements FieldWidget {
 	public boolean supports(String fieldType) {
 		return false;
 	}
+
 }

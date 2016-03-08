@@ -1,11 +1,10 @@
 package com.pungwe.cms.core.theme.services;
 
 import com.pungwe.cms.core.annotations.Theme;
-import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
+import com.pungwe.cms.core.system.element.templates.PageElement;
 import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.utils.services.HookService;
-import org.apache.commons.lang3.ClassPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +12,13 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -241,9 +236,68 @@ public class ThemeManagementService {
 		return urls;
 	}
 
-	private String findDefaultTemplate(String viewName) {
-//		ApplicationContext moduleContext = moduleManagementService.getModuleContext();
-		
-		return "";
+	protected ThemeConfig getDefaultThemeConfigForRequest() {
+		// FIXME: Move to a method as this is done more than once...
+		HttpServletRequest request = getServletRequest();
+		String currentPath = request.getRequestURI().substring(request.getContextPath().length());
+		// Fetch the default theme config
+		ThemeConfig themeConfig = null;
+		if (currentPath.startsWith("/admin")) {
+			themeConfig = themeConfigService.getDefaultAdminTheme();
+		} else {
+			themeConfig = themeConfigService.getDefaultTheme();
+		}
+		return themeConfig;
+	}
+
+	public List<String> getRegionsForDefaultThemeByRequest() {
+		ThemeConfig themeConfig = getDefaultThemeConfigForRequest();
+		return getThemeRegions(themeConfig);
+	}
+
+	public List<String> getThemeRegions(String theme) {
+		ThemeConfig themeConfig = themeConfigService.getTheme(theme);
+		return getThemeRegions(themeConfig);
+	}
+
+	/**
+	 * Returns a list of the regions for the default theme, independent of current request.
+	 * @return
+	 */
+	public List<String> getRegionsForDefaultTheme() {
+		ThemeConfig config = themeConfigService.getDefaultTheme();
+		return getThemeRegions(config);
+	}
+
+	protected List<String> getThemeRegions(ThemeConfig themeConfig) {
+		if (themeConfig != null) {
+			try {
+				Class<?> clazz = Class.forName(themeConfig.getEntryPoint());
+				List<String> regions = Arrays.asList(clazz.getAnnotation(Theme.class).regions());
+				if (regions.isEmpty()) {
+					regions = PageElement.DEFAULT_REGIONS;
+				}
+				return regions;
+			} catch (ClassNotFoundException e) {
+				LOG.warn("Could not find default theme class!");
+			}
+		}
+		return PageElement.DEFAULT_REGIONS;
+	}
+
+	public String getDefaultThemeName() {
+		ThemeConfig config = themeConfigService.getDefaultTheme();
+		if (config != null) {
+			return config.getName();
+		}
+		return null;
+	}
+
+	public String getCurrentThemeNameForRequest() {
+		ThemeConfig config = getDefaultThemeConfigForRequest();
+		if (config == null) {
+			return null;
+		}
+		return config.getName();
 	}
 }

@@ -51,7 +51,7 @@ final public class FieldGroupConfig implements Comparable<FieldGroupConfig> {
 	}
 
 
-	public void setFieldGroupType(String type) {
+	public void setFieldGroupType(String fieldGroupType) {
 		this.fieldGroupType = fieldGroupType;
 	}
 

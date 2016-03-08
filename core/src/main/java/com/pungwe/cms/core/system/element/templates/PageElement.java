@@ -13,6 +13,9 @@ import java.util.*;
 @ThemeInfo("system/page")
 public class PageElement extends AbstractRenderedElement {
 
+	public static final List<String> DEFAULT_REGIONS = Collections.unmodifiableList(Arrays.asList("header", "help", "primary_menu", "secondary_menu", "breadcrumb",
+			"highlighted", "sidebar_first", "content", "sidebar_second", "footer"));
+
 	protected Map<String, List<RenderedElement>> regions = new LinkedHashMap<>();
 
 	@ModelAttribute("regions")

@@ -127,12 +127,31 @@ public final class FieldConfig implements Comparable<FieldConfig> {
 	 */
 
 	public int compareTo(FieldConfig o) {
-		int name = this.getName().compareTo(o.getName());
-		if (name == 0) {
-			return name;
+		if (this.getName().equals(o.getName())) {
+			return 0;
 		}
+		int name = this.getName().compareTo(o.getName());
 		int weight = Integer.compare(this.getWeight(), o.getWeight());
 		return weight == 0 ? name : weight;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		FieldConfig that = (FieldConfig) o;
+
+		if (weight != that.weight) return false;
+		return name.equals(that.name);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = weight;
+		result = 31 * result + name.hashCode();
+		return result;
 	}
 
 	public void addSetting(String setting, Object value) {

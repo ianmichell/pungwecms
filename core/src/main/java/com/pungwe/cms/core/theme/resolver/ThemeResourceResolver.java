@@ -33,16 +33,23 @@ public class ThemeResourceResolver implements JtwigResourceResolver {
 
 	@Override
 	public JtwigResource resolve(String viewUrl) {
+		if (viewUrl.startsWith(prefix) && viewUrl.endsWith(suffix)) {
+			return getResource(viewUrl);
+		}
 		// Should be an ordered list with the theme on top...
 		List<String> urls = themeManagementService.resolveViewPath(getServletRequest(), prefix, viewUrl, suffix);
 		Optional<JtwigResource> resource = urls.stream().map(url -> {
-			if (url.startsWith("classpath:")) {
-				return new ClasspathJtwigResource(url);
-			} else if (url.startsWith("file:")) {
-				return new FileJtwigResource(url);
-			}
-			return new WebJtwigResource(servletContext, url);
+			return getResource(url);
 		}).filter(r -> r.exists()).findFirst();
 		return resource.orElse(new WebJtwigResource(servletContext, viewUrl));
+	}
+
+	private JtwigResource getResource(String url) {
+		if (url.startsWith("classpath:")) {
+			return new ClasspathJtwigResource(url);
+		} else if (url.startsWith("file:")) {
+			return new FileJtwigResource(url);
+		}
+		return new WebJtwigResource(servletContext, url);
 	}
 }

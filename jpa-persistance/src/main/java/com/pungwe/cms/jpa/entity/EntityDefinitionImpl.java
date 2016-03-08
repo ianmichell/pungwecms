@@ -61,22 +61,22 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
 
 	@Override
 	public Date getDateCreated() {
-		return dateCreated;
+		return dateCreated != null ? (Date)dateCreated.clone() : null;
 	}
 
 	@Override
 	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
+		this.dateCreated = dateCreated != null ? (Date)dateCreated.clone() : null;
 	}
 
 	@Override
 	public Date getDateModified() {
-		return dateModified;
+		return dateModified != null ? (Date)dateModified.clone() : null;
 	}
 
 	@Override
 	public void setDateModified(Date dateModified) {
-		this.dateModified = dateModified;
+		this.dateModified = dateModified != null ? (Date)dateModified.clone() : null;
 	}
 
 	@Override

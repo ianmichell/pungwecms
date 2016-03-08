@@ -67,7 +67,7 @@ public class JPAConfiguration {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
 			EntityManagerFactoryBuilder factoryBuilder, DataSource dataSource) {
 		Map<String, String> hibernateProperties = mapPropertyNames("hibernate", hibernateConfiguration());
-		return factoryBuilder.dataSource(dataSource).packages("com.pungwe.cms.jpa.entity", "com.pungwe.cms.jpa.module", "com.pungwe.cms.jpa.theme")
+		return factoryBuilder.dataSource(dataSource).packages("com.pungwe.cms.jpa.entity", "com.pungwe.cms.jpa.module", "com.pungwe.cms.jpa.theme", "com.pungwe.cms.jpa.block")
 				.properties(hibernateProperties).build();
 	}
 
@@ -97,8 +97,9 @@ public class JPAConfiguration {
 
 	private Map<String, String> mapPropertyNames(String prefix, Map<String, ?> map) {
 		Map<String, String> toMap = new HashMap<>();
-		for (String key : map.keySet()) {
-			Object value = map.get(key);
+		for (Map.Entry<String, ?> e : map.entrySet()) {
+			Object value = e.getValue();
+			String key = e.getKey();
 			if (value instanceof Map) {
 				toMap.putAll(mapPropertyNames(prefix + "." + key, (Map) value));
 				continue;

@@ -29,6 +29,8 @@ public class InstallController {
 			);
 			table.setCaption(new PlainTextElement("Table Caption"));
 			table.addAttribute("class", "table table-striped");
+
+			model.addAttribute("title", "Pungwe CMS Installation");
 			model.addAttribute("content", table);
 			return "install/index";
 		};

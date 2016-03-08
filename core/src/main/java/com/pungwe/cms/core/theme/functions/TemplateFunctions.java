@@ -4,24 +4,19 @@ import com.lyncode.jtwig.functions.annotations.JtwigFunction;
 import com.lyncode.jtwig.functions.annotations.Parameter;
 import com.lyncode.jtwig.functions.exceptions.FunctionException;
 import com.lyncode.jtwig.util.render.RenderHttpServletResponse;
-import com.pungwe.cms.core.annotations.ThemeInfo;
 import com.pungwe.cms.core.element.RenderedElement;
-import com.pungwe.cms.core.utils.services.HookService;
+import com.pungwe.cms.core.element.services.RenderedElementService;
 import org.springframework.context.ApplicationContext;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by ian on 14/02/2016.
@@ -39,27 +34,48 @@ public class TemplateFunctions {
 	}
 
 	@JtwigFunction(name = "render")
-	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter Collection<T> input) throws FunctionException {
-		String html = "";
-		for (T element : input) {
-			html += render(request, element) + "\n";
+	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter String template) throws FunctionException {
+		return render(request, template, new HashMap<>());
+	}
+
+	@JtwigFunction(name = "render")
+	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter String template, @Parameter Map<String, ?> parameters) throws FunctionException {
+		if (StringUtils.isEmpty(template)) {
+			return "";
 		}
-		return html;
+		ModelAndView modelAndView = new ModelAndView(template, parameters);
+		return render(request, modelAndView);
+	}
+
+	@JtwigFunction(name = "render")
+	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter Collection<T> input) throws FunctionException {
+		StringBuilder html = new StringBuilder();
+		for (T element : input) {
+			html.append(render(request, element)).append("\n");
+		}
+		return html.toString();
 	}
 
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter T input) throws FunctionException {
 		try {
-			// Get Theme Info and template
-			// FIXME: Make parameters work!
-			ThemeInfo info = input.getClass().isAnnotationPresent(ThemeInfo.class) ? input.getClass().getAnnotation(ThemeInfo.class) : null;
-			String template = info == null ? input.getClass().getSimpleName() : info.value();
+			RenderedElementService renderedElementService = applicationContext.getBean(RenderedElementService.class);
+			ModelAndView modelAndView = renderedElementService.convertToModelAndView(input);
+			return render(request, modelAndView);
+		} catch (Exception ex) {
+			throw new FunctionException(ex);
+		}
+	}
 
-			// Convert input to a model map and render the view
-			Map<String, Object> model = objectToModelMap(input);
-			RenderHttpServletResponse responseWrapper = new RenderHttpServletResponse();
-			View view = viewResolver.resolveViewName(template, localeResolver != null ? localeResolver.resolveLocale(request) : null);
-			view.render(model, request, responseWrapper);
+	@JtwigFunction(name = "render")
+	public <T extends ModelAndView> String render(HttpServletRequest request, @Parameter T model) throws FunctionException {
+		RenderHttpServletResponse responseWrapper = new RenderHttpServletResponse();
+		try {
+			if (model.getView() == null && StringUtils.isEmpty(model.getViewName())) {
+				throw new FunctionException("No view has been found");
+			}
+			View view = viewResolver.resolveViewName(model.getViewName(), localeResolver.resolveLocale(request));
+			view.render(model.getModel(), request, responseWrapper);
 			return responseWrapper.toString();
 		} catch (Exception ex) {
 			throw new FunctionException(ex);
@@ -81,17 +97,5 @@ public class TemplateFunctions {
 		return value != null ? " " + name + "=\"" + value + "\"" : "";
 	}
 
-	protected ModelMap objectToModelMap(Object o) throws InvocationTargetException, IllegalAccessException {
-		ModelMap map = new ModelMap();
-		Method[] methods = o.getClass().getMethods();
-		for (Method m : methods) {
-			if (!m.isAnnotationPresent(ModelAttribute.class)) {
-				continue;
-			}
-			ModelAttribute attr = m.getAnnotation(ModelAttribute.class);
-			Object v = m.invoke(o);
-			map.addAttribute(attr.value(), v);
-		}
-		return map;
-	}
+
 }
