@@ -1,15 +1,11 @@
 package com.pungwe.cms.core.utils.services;
 
-import com.pungwe.cms.core.annotations.Hook;
 import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
-import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.theme.services.ThemeConfigService;
-import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import com.pungwe.cms.core.theme.services.impl.ThemeConfigServiceImpl;
-import com.pungwe.cms.core.utils.HookCallback;
 import com.pungwe.cms.modules.test.TestModule;
 import com.pungwe.cms.test.AbstractWebTest;
 import org.junit.Before;

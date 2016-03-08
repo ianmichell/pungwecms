@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.block.controller;
 
-import com.pungwe.cms.core.annotations.MenuItem;
+import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.services.BlockManagementService;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;

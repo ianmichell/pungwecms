@@ -1,7 +1,7 @@
 package com.pungwe.cms.modules.test;
 
-import com.pungwe.cms.core.annotations.Hook;
-import com.pungwe.cms.core.annotations.Module;
+import com.pungwe.cms.core.annotations.util.Hook;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.element.services;
 
-import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;

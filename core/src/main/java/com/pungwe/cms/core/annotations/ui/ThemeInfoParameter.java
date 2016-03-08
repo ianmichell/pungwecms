@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

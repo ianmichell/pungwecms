@@ -1,6 +1,4 @@
-package com.pungwe.cms.core.annotations;
-
-import org.springframework.context.annotation.Configuration;
+package com.pungwe.cms.core.annotations.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by ian on 23/01/2016.
+ * Created by ian on 21/02/2016.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Configuration
-public @interface PersistenceDriver {
+public @interface ThemeInfo {
 	String value();
+	ThemeInfoParameter[] parameters() default {};
 }

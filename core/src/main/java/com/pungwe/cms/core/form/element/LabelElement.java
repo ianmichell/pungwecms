@@ -1,17 +1,13 @@
 package com.pungwe.cms.core.form.element;
 
-import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by ian on 24/02/2016.

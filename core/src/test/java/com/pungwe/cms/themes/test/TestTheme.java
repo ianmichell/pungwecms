@@ -1,7 +1,7 @@
 package com.pungwe.cms.themes.test;
 
-import com.pungwe.cms.core.annotations.Hook;
-import com.pungwe.cms.core.annotations.Theme;
+import com.pungwe.cms.core.annotations.util.Hook;
+import com.pungwe.cms.core.annotations.stereotypes.Theme;
 
 import java.util.HashMap;
 import java.util.Map;

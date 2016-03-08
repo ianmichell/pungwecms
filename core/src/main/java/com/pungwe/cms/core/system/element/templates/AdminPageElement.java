@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.system.element.templates;
 
-import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 
 /**
  * Created by ian on 28/02/2016.

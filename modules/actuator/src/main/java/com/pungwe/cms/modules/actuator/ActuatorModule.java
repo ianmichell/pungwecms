@@ -1,6 +1,6 @@
 package com.pungwe.cms.modules.actuator;
 
-import com.pungwe.cms.core.annotations.Module;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
 import org.springframework.boot.actuate.autoconfigure.*;
 import org.springframework.context.annotation.Import;
 

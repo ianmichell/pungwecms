@@ -1,21 +1,16 @@
 package com.pungwe.cms.core.utils.services;
 
-import com.pungwe.cms.core.annotations.Hook;
+import com.pungwe.cms.core.annotations.util.Hook;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import com.pungwe.cms.core.utils.HookCallback;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.type.StandardMethodMetadata;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 /**
  * Created by ian on 01/02/2016.

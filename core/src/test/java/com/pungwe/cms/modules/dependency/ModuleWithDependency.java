@@ -1,7 +1,7 @@
 package com.pungwe.cms.modules.dependency;
 
-import com.pungwe.cms.core.annotations.Module;
-import com.pungwe.cms.core.annotations.ModuleDependency;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
+import com.pungwe.cms.core.annotations.system.ModuleDependency;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.modules.test.TestComponent;
 import org.springframework.beans.factory.annotation.Autowired;

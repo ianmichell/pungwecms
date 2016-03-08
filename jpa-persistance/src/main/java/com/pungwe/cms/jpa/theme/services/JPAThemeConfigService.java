@@ -1,7 +1,6 @@
 package com.pungwe.cms.jpa.theme.services;
 
-import com.pungwe.cms.core.annotations.Theme;
-import com.pungwe.cms.core.theme.ThemeConfig;
+import com.pungwe.cms.core.annotations.stereotypes.Theme;
 import com.pungwe.cms.core.theme.services.ThemeConfigService;
 import com.pungwe.cms.jpa.theme.ThemeConfigImpl;
 import com.pungwe.cms.jpa.theme.repository.ThemeConfigRepository;

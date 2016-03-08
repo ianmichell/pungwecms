@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.element.basic;
 
-import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.HeaderRenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;

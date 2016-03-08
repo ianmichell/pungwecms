@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.system;
 
 /**
  * Created by ian on 21/01/2016.

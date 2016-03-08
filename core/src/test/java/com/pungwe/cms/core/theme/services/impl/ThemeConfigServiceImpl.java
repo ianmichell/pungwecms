@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.theme.services.impl;
 
-import com.pungwe.cms.core.annotations.Theme;
+import com.pungwe.cms.core.annotations.stereotypes.Theme;
 import com.pungwe.cms.core.theme.services.ThemeConfigService;
 import org.springframework.stereotype.Service;
 

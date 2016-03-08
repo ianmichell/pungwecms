@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.stereotypes;
 
 import com.pungwe.cms.core.system.element.templates.PageElement;
 import org.springframework.context.annotation.Configuration;

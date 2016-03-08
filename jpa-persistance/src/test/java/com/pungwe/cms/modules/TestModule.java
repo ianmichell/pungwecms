@@ -1,6 +1,6 @@
 package com.pungwe.cms.modules;
 
-import com.pungwe.cms.core.annotations.Module;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
 import org.springframework.context.annotation.ComponentScan;
 
 /**

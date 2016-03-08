@@ -1,10 +1,9 @@
 package com.pungwe.cms.core.form.element;
 
-import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by ian on 09/01/2016.

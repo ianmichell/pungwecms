@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.application;
 
-import com.pungwe.cms.core.annotations.PersistenceDriver;
+import com.pungwe.cms.core.annotations.stereotypes.PersistenceDriver;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;

@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.block.builder;
 
-import com.pungwe.cms.core.annotations.Block;
+import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.block.services.BlockManagementService;
@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 /**
  * Created by ian on 05/03/2016.

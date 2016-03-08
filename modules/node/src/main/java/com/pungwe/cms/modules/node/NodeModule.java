@@ -1,8 +1,8 @@
 package com.pungwe.cms.modules.node;
 
-import com.pungwe.cms.core.annotations.Hook;
-import com.pungwe.cms.core.annotations.Module;
-import com.pungwe.cms.core.annotations.ModuleDependency;
+import com.pungwe.cms.core.annotations.util.Hook;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
+import com.pungwe.cms.core.annotations.system.ModuleDependency;
 
 /**
  * Created by ian on 13/12/2015.

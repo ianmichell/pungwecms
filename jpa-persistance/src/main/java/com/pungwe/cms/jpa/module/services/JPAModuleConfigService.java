@@ -1,6 +1,6 @@
 package com.pungwe.cms.jpa.module.services;
 
-import com.pungwe.cms.core.annotations.Module;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
 import com.pungwe.cms.jpa.module.ModuleConfigImpl;
 import com.pungwe.cms.jpa.module.repository.ModuleConfigRepository;

@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.block.system;
 
-import com.pungwe.cms.core.annotations.Block;
+import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.model.ModelAndViewElement;

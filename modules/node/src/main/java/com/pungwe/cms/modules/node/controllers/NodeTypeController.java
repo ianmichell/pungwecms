@@ -1,6 +1,6 @@
 package com.pungwe.cms.modules.node.controllers;
 
-import com.pungwe.cms.core.annotations.MenuItem;
+import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.element.basic.AnchorElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.concurrent.Callable;
 
@@ -36,7 +37,7 @@ public class NodeTypeController {
 			description = "Manage your content types"
 	)
 	@RequestMapping(method = RequestMethod.GET)
-	public Callable<String> list(Model model, int pageNumber, int maxRows) {
+	public Callable<String> list(Model model, @RequestParam(value = "page", defaultValue = "1") int pageNumber, @RequestParam(value = "max", defaultValue = "25") int maxRows) {
 		return () -> {
 			Page<EntityDefinition> entities = entityDefinitionService.list("node_type", new PageRequest(pageNumber, maxRows));
 
@@ -46,13 +47,12 @@ public class NodeTypeController {
 					new TableElement.Header(new PlainTextElement("Description")),
 					new TableElement.Header(new PlainTextElement("Operations"))
 			);
-
 			// Run through each record and create a table row per entity
 			for (EntityDefinition entity : entities) {
 				// Link the title to the edit operation for the entity
 				AnchorElement entityEditLink = new AnchorElement(
 						entity.getTitle(),
-						"admin/structure/content-types/edit/" + entity.getId().getBundle(),
+						"/admin/structure/content-types/edit/" + entity.getId().getBundle(),
 						new PlainTextElement(entity.getTitle())
 				);
 				// Add a table row for the entity
@@ -69,7 +69,7 @@ public class NodeTypeController {
 			// Page actions
 			model.addAttribute("actions", new AnchorElement(
 					"Add a new content type",
-					"admin/structure/content-types/add",
+					"/admin/structure/content-types/add",
 					new PlainTextElement("Add a content type")
 			));
 

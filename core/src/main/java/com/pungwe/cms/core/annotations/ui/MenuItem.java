@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface MenuItem {
+
 	String name();
 
 	String title();
@@ -20,4 +21,5 @@ public @interface MenuItem {
 	String parent() default "";
 
 	String route() default "";
+
 }

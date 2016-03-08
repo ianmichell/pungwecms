@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.theme.services;
 
-import com.pungwe.cms.core.annotations.Theme;
+import com.pungwe.cms.core.annotations.stereotypes.Theme;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.system.element.templates.PageElement;
 import com.pungwe.cms.core.theme.ThemeConfig;

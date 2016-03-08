@@ -1,7 +1,7 @@
 package com.pungwe.cms.core.module.services;
 
-import com.pungwe.cms.core.annotations.Module;
-import com.pungwe.cms.core.annotations.ModuleDependency;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
+import com.pungwe.cms.core.annotations.system.ModuleDependency;
 import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.utils.CommonHooks;
 import com.pungwe.cms.core.utils.services.HookService;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,7 +51,7 @@ public class ModuleManagementService {
 	 *
 	 * @param module The name of the module that should be enabled
 	 * @return the module
-	 * @see com.pungwe.cms.core.annotations.Module
+	 * @see Module
 	 * @see com.pungwe.cms.core.module.ModuleConfig
 	 */
 	public boolean enable(String module) {
@@ -161,7 +160,7 @@ public class ModuleManagementService {
 	/**
 	 * Scans the classpath for classes with the <b>@Module</b> annotation
 	 *
-	 * @see com.pungwe.cms.core.annotations.Module @Module
+	 * @see Module @Module
 	 */
 	public void scan() {
 

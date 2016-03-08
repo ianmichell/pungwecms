@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.form.element;
 
-import com.pungwe.cms.core.annotations.ThemeInfo;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import org.apache.commons.lang3.StringUtils;
 
 /**

@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.block.services;
 
-import com.pungwe.cms.core.annotations.Block;
+import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.module.services.ModuleManagementService;

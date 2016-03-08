@@ -1,6 +1,6 @@
 package com.pungwe.cms.modules.text;
 
-import com.pungwe.cms.core.annotations.Module;
+import com.pungwe.cms.core.annotations.stereotypes.Module;
 
 /**
  * Created by ian on 03/01/2016.

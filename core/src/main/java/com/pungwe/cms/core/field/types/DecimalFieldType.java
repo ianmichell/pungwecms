@@ -1,7 +1,7 @@
 package com.pungwe.cms.core.field.types;
 
 
-import com.pungwe.cms.core.annotations.FieldType;
+import com.pungwe.cms.core.annotations.ui.FieldType;
 import com.pungwe.cms.core.field.formatters.DecimalFormatter;
 import com.pungwe.cms.core.field.widgets.DecimalWidget;
 

@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.ui;
 
 import com.pungwe.cms.core.field.FieldFormatter;
 import com.pungwe.cms.core.field.FieldWidget;

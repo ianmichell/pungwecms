@@ -1,4 +1,4 @@
-package com.pungwe.cms.core.annotations;
+package com.pungwe.cms.core.annotations.stereotypes;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.AliasFor;

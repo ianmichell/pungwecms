@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.entity;
 
 import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 
 import java.util.List;
@@ -31,5 +32,5 @@ public interface EntityType {
 	 * @param elements the list of elements for the form
 	 * @param state    the current form state.
 	 */
-	void buildSettingsForm(List<RenderedElement> elements, FormState state);
+	void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state);
 }

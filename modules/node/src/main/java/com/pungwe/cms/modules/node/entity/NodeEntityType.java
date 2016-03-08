@@ -3,6 +3,7 @@ package com.pungwe.cms.modules.node.entity;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.EntityType;
 import com.pungwe.cms.core.entity.FieldConfig;
+import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 
 import java.util.ArrayList;
@@ -51,6 +52,6 @@ public class NodeEntityType implements EntityType {
 	}
 
 	@Override
-	public void buildSettingsForm(List<RenderedElement> elements, FormState state) {
+	public void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
 	}
 }
