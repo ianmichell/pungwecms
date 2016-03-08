@@ -21,22 +21,26 @@ Modules are loaded into their own shared context, this allows for restarting of 
 modules on and off. There is no dependency management or plugin system as such. Modules are added to the gradle build file as
 runtime dependencies and used for a build:
 
-	dependencies {
-		runtime 'org.module.group:module-name:1.0.0'
-	}
+```groovy
+dependencies {
+	runtime 'org.module.group:module-name:1.0.0'
+}
+```
 
 #### Module Definition
 Modules are defined using @Module annotation. This should feel like creating standard spring @Configuration classes.
 
-	@Module(
-		name="mymodule",
-		label="My Module",
-		description="My Custom Module"
-	)
-	@ComponentScan("com.example.mymodule.components")
-	public class MyModule {
-		...
-	}
+```java
+@Module(
+	name="mymodule",
+	label="My Module",
+	description="My Custom Module"
+)
+@ComponentScan("com.example.mymodule.components")
+public class MyModule {
+	...
+}
+```
 
 ### Themes
 As with modules, themes work in a very similar fashion with one major difference. Themes are hierarchical and as such run in their
@@ -45,29 +49,33 @@ hook and bean isolation between completely different themes.
 
 Themes are added as runtime dependencies to the project build in the same way as modules:
 
-	dependencies {
-		runtime 'org.theme.group:theme-name:1.0.0'
-	}
+```groovy
+dependencies {
+	runtime 'org.theme.group:theme-name:1.0.0'
+}
+```
 
 #### Theme Definition
 Themes are defined using the @Theme annotation. This should feel like creating standard spring @Configuration classes.
 
-	@Theme(
-		name="mytheme", 
-		label="My Theme", 
-		description="A basic theme definition", 
-		regions={"header", "content", "sidebar", "footer"}
-	)
-	@ComponentScan("com.example.mytheme.components")
-	public class MyTheme {
-	
-		@Hook("theme")
-		public Map<String, String> themeHook() {
-			HashMap<String, String> theme = new HashMap<>();
-			theme.put("my_view", "my_theme/my_view");
-			return theme;
-		}
+```java
+@Theme(
+	name="mytheme", 
+	label="My Theme", 
+	description="A basic theme definition", 
+	regions={"header", "content", "sidebar", "footer"}
+)
+@ComponentScan("com.example.mytheme.components")
+public class MyTheme {
+
+	@Hook("theme")
+	public Map<String, String> themeHook() {
+		HashMap<String, String> theme = new HashMap<>();
+		theme.put("my_view", "my_theme/my_view");
+		return theme;
 	}
+}
+```
 
 #### Status
 The theme system is almost complete... Themes can be created using the @Theme annotation, hooks work and the relevant template overrides will work
