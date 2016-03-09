@@ -95,6 +95,12 @@ Blocks are defined by their annotation and are expected to implement the BlockDe
 public class HelloWorldBlock implements BlockDefinition {
 
 	@Override
+	public Map<String, Object> getDefaultSettings() {
+		// Default settings for the block, if there aren't any return a new hashmap.
+		return new HashMap<>();
+	}
+	
+	@Override
 	public void build(List<RenderedElement> elements, Map<String, Object> settings, 
 		Map<String, Object> variables) {
 		
