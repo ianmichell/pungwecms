@@ -1,0 +1,96 @@
+<!-- Create the main container -->
+{% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
+{% if regions['navigation'] %}
+    {% block navbar %}
+        {% set navbar_classes = [
+        'navbar',
+        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-default',
+        theme.settings.navbar_position ? 'navbar-' ~ theme.settings.navbar_position : container
+        ] %}
+        <nav role="navigation" class="navbar">
+            {{ render(regions['navigation']) }}
+        </nav>
+    {% endblock %}
+{% endif %}
+
+{% block main %}
+
+    {# Content #}
+    {% set content_classes = [
+    regions['sidebar_first'] and regions['sidebar_second'] ? 'col-sm-6',
+    regions['sidebar_first'] and regions['sidebar_second'] is empty ? 'col-sm-9',
+    regions['sidebar_second'] and regions['sidebar_first'] is empty ? 'col-sm-9',
+    regions['sidebar_first'] is empty and regions['sidebar_second'] is empty ? 'col-sm-12'
+    ] %}
+
+    <div class="main-content {{ container }}" role="main">
+
+        {% if regions['breadcrumb'] %}
+            {% block breadcrumb %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <nav role="navigation">
+                            {{ render(regions['breadcrumb']) }}
+                        </nav>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['header'] %}
+            {% block header %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <header class="page-header">
+                            {{ render(regions['header']) }}
+                        </header>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['highlighted'] %}
+            {% block highlighted %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div role="banner" class="jumbotron">
+                            {{ render(regions['highlighted']) }}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['sidebar_first'] %}
+            {% block sidebar_first %}
+                <aside role="complementary" class="sidebar_first col-sm-3">
+                    {{ render(regions['sidebar_first']) }}
+                </aside>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['content'] %}
+            {% block content %}
+                <div role="document" class="main_content {{ content_classes }}">
+                    {{ render(regions['content']) }}
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['sidebar_second'] %}
+            {% block sidebar_second %}
+                <div role="complementary" class="sidebar_second col-sm-3">
+                    {{ render(regions['sidebar_second']) }}
+                </div>
+            {% endblock %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% if regions['footer'] %}
+    {% block footer %}
+        <footer class="footer">
+            {{ render(regions['footer']) }}
+        </footer>
+    {% endblock %}
+{% endif %}

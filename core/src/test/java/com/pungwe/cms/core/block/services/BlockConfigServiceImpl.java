@@ -3,9 +3,7 @@ package com.pungwe.cms.core.block.services;
 import com.pungwe.cms.core.block.impl.BlockConfigImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -26,4 +24,15 @@ public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImp
 		return listAllBlocks(theme).stream().filter(blockConfig -> name.length == 0 || Arrays.asList(name).contains(blockConfig.getName())).collect(Collectors.toList());
 	}
 
+	@Override
+	public void createNewInstance(String theme, String region, String block, int weight, Map<String, Object> defaultSettings) {
+		BlockConfigImpl blockConfig = new BlockConfigImpl();
+		blockConfig.setId(UUID.randomUUID().toString());
+		blockConfig.setName(block);
+		blockConfig.setRegion(region);
+		blockConfig.setTheme(theme);
+		blockConfig.setWeight(weight);
+		// Save the block
+		blocks.add(blockConfig);
+	}
 }

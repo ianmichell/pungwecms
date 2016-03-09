@@ -8,16 +8,18 @@ import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ian on 05/03/2016.
  */
 @Block(value = "main_content_block", label = "Main Content Block", category = "Default")
 public class MainContentBlock implements BlockDefinition {
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		return new HashMap<>();
+	}
 
 	@Override
 	public void build(List<RenderedElement> elements, Map<String, Object> settings, Map<String, Object> variables) {

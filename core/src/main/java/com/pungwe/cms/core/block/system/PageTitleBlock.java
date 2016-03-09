@@ -7,6 +7,7 @@ import com.pungwe.cms.core.element.basic.HeaderElement;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,11 @@ import java.util.Map;
  */
 @Block(category = "system", label = "Page Title Block", value = "page_title_block")
 public class PageTitleBlock implements BlockDefinition {
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		return new HashMap<>();
+	}
 
 	@Override
 	public void build(List<RenderedElement> elements, Map<String, Object> settings, Map<String, Object> variables) {

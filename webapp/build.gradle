@@ -16,4 +16,7 @@ dependencies {
     runtime project(':modules:node')
     runtime project(':modules:text')
     runtime project(':modules:actuator')
+
+    // Theme
+    runtime project(':themes:bootstrap')
 }

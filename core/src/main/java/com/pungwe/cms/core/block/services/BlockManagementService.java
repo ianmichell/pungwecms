@@ -4,6 +4,7 @@ import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
+import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,5 +112,14 @@ public class BlockManagementService {
 			LOG.error("Could not find block with name: " + name);
 		}
 		return Optional.empty();
+	}
+
+	public void addBlockToTheme(String theme, String region, String block, int weight) {
+		Optional<BlockDefinition> blockDefinition = getBlockByName(block);
+		if (!blockDefinition.isPresent()) {
+			return;
+		}
+
+		blockConfigService.createNewInstance(theme, region, block, weight, blockDefinition.get().getDefaultSettings());
 	}
 }

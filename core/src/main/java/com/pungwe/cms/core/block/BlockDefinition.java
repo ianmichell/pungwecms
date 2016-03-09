@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by ian on 05/03/2016.
  */
 public interface BlockDefinition {
+	Map<String, Object> getDefaultSettings();
 	void build(List<RenderedElement> elements, Map<String, Object> settings, final Map<String, Object> variables);
 	void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state);
 }

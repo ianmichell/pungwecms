@@ -26,6 +26,9 @@ public interface MenuConfig {
 	String getUrl();
 	void setUrl(String url);
 
+	String getTarget();
+	void setTarget(String target);
+
 	boolean isExternal();
 	void setExternal(boolean external);
 }

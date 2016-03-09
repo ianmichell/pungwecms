@@ -147,13 +147,63 @@ hookService.executeHook("my_hook", (c, o) -> {
 });
 ```
 
-Or without a block
+Or without a block:
 
 ```java
 hookService.executeHook("my_hook", (c, o) -> someVariable::method);
 ```
+###Controllers
+Controllers take advantage of spring's existing @Controller and @RequestMapping annotations:
 
-### Entities
+```java
+@Controller
+@RequestMapping("/path/to/my/controller")
+public class MyController {
+	
+	@RequestMapping(value="index", method=RequestMethod.GET)
+	public Callable<String> index(Model model) {
+		return () -> {
+			model.addAttribute("content", new PlainTextElement("Hello World"));
+			return "my_module/my_controller/index";
+		}
+	}
+}
+```
+
+Menu items can also be configured for specific controller actions. For example:
+
+```java
+@MenuItem(
+	name="my-controller", 
+	parent="system.admin.structure", 
+	title="My Controller", 
+	description="My controller stuff"
+)
+@RequestMapping(value="index", method=RequestMethod.GET)
+public Callable<String> index(Model model) {
+	return () -> {
+		model.addAttribute("content", new PlainTextElement("Hello World"));
+		return "my_module/my_controller/index";
+	}
+}
+```
+
+The menu annotation should only really be used for system menus as this menu is static and used to generate the administration section menu and breadcrumbs. By declaring this you are expecting the menu and any declared parents to exist. This can be forced via a module or theme where a custom menu is needed.
+
+#####Status
+This is not fully fleshed out yet. The remaining part of the design is to specify how content based controllers work with entities for display purposes. Whilst the @MenuItem annotation is useful for admin functionality, there has to be a way of controlling how URL's are created for entity instances.
+
+###Services
+Services take advantage of existing @Service stereotype annotations provided by spring.
+
+```java
+@Service
+public class MyService {
+	...
+}
+```
+
+###Entities
 You can also create and define entities... Entities are the only true database agnostic way of storing data within the CMS and should be used for any custom modules.
 
 Definition is straight forward in the spirit of this CMS and there are a number of ways you can do this. The preferred method is to define your entity in a custom module with default fields, leaving the definition of your entity types to the admin interface (It should be noted that an admin interface for your entity definition is optional).
@@ -339,7 +389,7 @@ public class MyEntityTypeModule {
 #####Note
 Entity definitions are stored in the database and at present there is no plan to make that optional. I'm not a big fan of storing lots of config data in the database, but in order to be editable via the admin interface, this is the best place for it right now.
 
-### Elements
+###Elements
 Elements are probably the most straight forward set of classes to use. These are essentially models to be used for rendering their templates.
 
 To create a RenderableElement, you should do the following:
@@ -369,13 +419,122 @@ public class MyElement extends AbstractRenderedElement {
 }
 ```
 
-Then create the template on the class path (/templates/my_module/my_element.twig):
+Then create the template on the class path (/templates/my\_module/my\_element.twig):
 
 ```twig
 <div{{ attributes }}>
 	{{ content }}
 </div>
 ```
+
+##Security
+TODO
+
+##Persistence
+Persistence is always a difficult subject to design software around. A lot of people will try over design this area using a specific type of database then get stuck when support for a entirely different database is required.
+
+The persistence layer within the CMS is done using two specific persistence engines, based on top of Spring Data. If Spring Data supports a persistence type, then the CMS will support it too at some point.
+
+The modelling principles are straight forward.
+- Denormalise data as much as possible.
+- Share nothing
+- Allow for sharing
+- Ensure the persistence model is centrally controlled and do not encourage custom domain model types.
+
+Drupal has tried to create a persistence model based around relational datastores and as such has made life difficult for engineers to build around NoSQL. The approach taken on this CMS is to design around NoSQL methodology and back port to JPA. 
+
+A good example of this is how the entity framework stores data and configuration:
+
+```
++-------------------------------------------------------------------------------+
+|	TYPE	|	BUNDLE		|	TITLE		|	DESCRIPTION		|	CONFIG		|
++-------------------------------------------------------------------------------+
+|	node	|	page		|	Basic Page	|	Basic Page		| { ... }			|
++-------------------------------------------------------------------------------+
+```
+
+The above example is not a full definition of an entity definition, but should relay the design from a relation database perspective.
+
+The Type and Bundle columns are the primary key, with title and description being basic attributes for the entity definition. The config field holds the most interest. On the JPA driver, it's stored as binary json in a BLOB column. This jSON is serialised using the @Converter annotation on hibernate and the smile data format for Jackson.
+
+Querying becomes straight forward as well. You can only fetch an entity by it's type and bundle (or just the type). This means you have to know what it is before you can execute the query as you can't query anything stored in the CONFIG field.
+
+If you want to find data using different attributes, then use the search api which takes advantage of Elastic Search.
+
+Alternatively the same object represented in MongoDB:
+
+```json
+{
+	"_id": {
+		"type": "node",
+		"bundle": "page"
+	},
+	"title": "Basic Page",
+	"description": "Basic Page",
+	"config": {
+		...
+	}
+}
+```
+
+With MongoDB you can directly query the data as it's not stored as binary; however this is not permitted via the API and instead you would need to use the search engine to find data by attributes other than those in the id field.
+
+Document size for entities will be limited to that of the maximum size permitted by the datastore. In the case of relation databases, this could be gigabytes, so they will be limited to the maximum document size in MongoDB, which currently stands at 16MB (to be honest when you store field data, why would you ever need more? Then again why would you need to use any other database other than MongoDB)?
+
+####JPA Persistence
+JPA persistence is implemented on hibernate, this works great for mapping object model to tables. It's very poor when relational; so with that in mind, there are no joins anywhere!
+
+####MongoDB Persistence
+MongoDB Persistence is the preferred method of persistence within the CMS. It's naturally denormalised document orientated storage and sharding capabilities make it a perfect fit for managing data.
+
+####Roll your own persistence layer
+Developers are free to roll their own persistence layer. It's relatively straight forward.
+
+```java
+@PersistenceDriver("my_driver")
+@ComponentScan("package.to.scan")
+public class MyDriverConfiguration {
+	...
+}
+```
+
+Make sure you implement all the relevant Config services and Model interfaces, for example:
+
+Models:
+- BlockConfig
+- ModuleConfig
+- ThemeConfig
+- MenuConfig
+- EntityDefinition
+- EntityInstance
+
+Services:
+- ThemeConfigService
+- ModuleConfigService
+- BlockConfigService
+
+A complete list with a tutorial will be published in the wiki at some point.
+
+In order to activate your persistence driver, simply enable it in the application.yml file for your app:
+
+```yml
+cms.data.type: my_driver
+```
+
+
+####Other
+Other persistence layers will be added in time. For now the focus is on JPA based relational databases (using hibernate) and MongoDB.
+
+TODO
+- Cassandra
+- Couchbase
+
+### Search
+
+Elastic Search is the primary indexing method being employed in the  CMS. Elastic Search was chosen simply because it offers a flexible document oriented design that fits into the object model being used. This will be the only supported search engine for the time being (at least until it can be abstracted away enough to hide it).
+
+##Build Tools
+TODO - At the moment none of the binaries are not published into maven repositories. When I feel that things have moved on enough to actually do stuff with the CMS, I will publish a release snapshot!
 
 ##Things to do
 - Should probably start populating the wiki with documentation

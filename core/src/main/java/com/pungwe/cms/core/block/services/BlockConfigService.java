@@ -4,6 +4,7 @@ import com.pungwe.cms.core.block.BlockConfig;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ian on 05/03/2016.
@@ -12,4 +13,6 @@ public interface BlockConfigService<T extends BlockConfig> {
 
 	List<T> listAllBlocks(String theme);
 	List<T> listAllBlocks(String theme, String... name);
+
+	void createNewInstance(String theme, String region, String block, int weight, Map<String, Object> defaultSettings);
 }
