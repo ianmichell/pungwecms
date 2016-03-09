@@ -6,6 +6,7 @@ import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ian on 09/12/2015.
@@ -16,7 +17,7 @@ public interface FieldWidget {
 
 	void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate);
 
-	void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state);
+	void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings);
 
 	boolean supports(String fieldType);
 

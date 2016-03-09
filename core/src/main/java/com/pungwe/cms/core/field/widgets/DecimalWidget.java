@@ -7,6 +7,7 @@ import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ian on 10/01/2016.
@@ -24,7 +25,7 @@ public class DecimalWidget implements FieldWidget {
 	}
 
 	@Override
-	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
 
 	}
 

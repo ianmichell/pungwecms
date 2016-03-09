@@ -209,6 +209,52 @@ public class MyService {
 }
 ```
 
+###Field Widgets & Formatters
+Fields are rendered using widgets and formatters.
+
+Widgets are used to render the actual form entry component and formatters are used to render a field for display.
+
+####Field Widgets
+Field Widgets are used to render form elements for a specific widget. These classes should be annotated with the @Component stereotype or created using the @Bean annotation in your module definition. 
+
+Theses should be treated as singleton beans and should not be used like a traditional object instance.
+
+```java
+
+@Component("my_widget")
+public MyWidget implements FieldWidget {
+	
+	// This might get deprecated in favour of the bean name!
+	@Override
+	public String getName() {
+		return "my_widget";
+	}
+	
+	@Override
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState state) {
+		...
+	}
+	
+	@Override
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState form, Map<String, Object> settings) {
+	...
+	}
+	
+	@Override
+	public boolean supports(String fieldType) {
+		...
+	}
+}
+
+```
+
+####Field Formatters
+Field Formatters are used to render fields. These classes like their widget counterparts should be declared with the @Component stereotype annotation. 
+
+These should be treated as singleton beans and should not be used a like traditional object instance.
+
+TODO: Create an example.
+
 ###Entities
 You can also create and define entities... Entities are the only true database agnostic way of storing data within the CMS and should be used for any custom modules.
 

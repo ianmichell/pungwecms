@@ -9,6 +9,7 @@ import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.form.element.StringElement;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ian on 08/01/2016.
@@ -35,7 +36,7 @@ public class TextfieldWidget implements FieldWidget {
 	}
 
 	@Override
-	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
 
 		StringElement size = new StringElement();
 		size.setName("size");

@@ -9,6 +9,7 @@ import com.pungwe.cms.core.form.element.StringElement;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ian on 08/01/2016.
@@ -36,7 +37,7 @@ public class TextareaWidget implements FieldWidget {
 	}
 
 	@Override
-	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
 
 		StringElement rows = new StringElement();
 		rows.setName("rows");
