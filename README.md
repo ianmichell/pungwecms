@@ -455,7 +455,7 @@ A good example of this is how the entity framework stores data and configuration
 +-------------------------------------------------------------------------------+
 |	TYPE	|	BUNDLE		|	TITLE		|	DESCRIPTION		|	CONFIG		|
 +-------------------------------------------------------------------------------+
-|	node	|	page		|	Basic Page	|	Basic Page		| { ... }			|
+|	node	|	page		|	Basic Page	|	Basic Page		| { ... }		|
 +-------------------------------------------------------------------------------+
 ```
 
