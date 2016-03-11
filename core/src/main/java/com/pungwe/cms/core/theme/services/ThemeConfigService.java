@@ -17,7 +17,7 @@ public interface ThemeConfigService<E extends ThemeConfig> {
 	 * @param entryPoint the main theme class
 	 * @param themeLocation the jar file that the theme is located
 	 */
-	void registerTheme(Class<?> entryPoint, URL themeLocation);
+	E registerTheme(Class<?> entryPoint, URL themeLocation);
 
 	/**
 	 * Removes themes from the registry. This is generally used to remove themes that are no longer on the
@@ -75,4 +75,9 @@ public interface ThemeConfigService<E extends ThemeConfig> {
 
 	E getTheme(String name);
 
+	void setDefaultAdminTheme(String theme);
+
+	void setDefaultTheme(String theme);
+
+	void setInstalled(String name, boolean b);
 }

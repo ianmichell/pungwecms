@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.theme.services.impl;
 
 import com.pungwe.cms.core.annotations.stereotypes.Theme;
+import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.theme.services.ThemeConfigService;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class ThemeConfigServiceImpl implements ThemeConfigService<ThemeConfigImp
 	}
 
 	@Override
-	public void registerTheme(Class<?> entryPoint, URL themeLocation) {
+	public ThemeConfigImpl registerTheme(Class<?> entryPoint, URL themeLocation) {
 
 		ThemeConfigImpl config = new ThemeConfigImpl();
 
@@ -38,6 +39,8 @@ public class ThemeConfigServiceImpl implements ThemeConfigService<ThemeConfigImp
 		config.setEntryPoint(entryPoint.getName());
 
 		themes.add(config);
+
+		return config;
 	}
 
 	@Override
@@ -60,6 +63,32 @@ public class ThemeConfigServiceImpl implements ThemeConfigService<ThemeConfigImp
 	public boolean isEnabled(String theme) {
 		ThemeConfigImpl config = getTheme(theme);
 		return config != null && config.isEnabled();
+	}
+
+	@Override
+	public void setDefaultAdminTheme(String theme) {
+		listAllThemes().parallelStream().forEach(t -> t.setDefaultAdminTheme(false));
+		ThemeConfig config = getTheme(theme);
+		if (config != null) {
+			config.setDefaultAdminTheme(true);
+		}
+	}
+
+	@Override
+	public void setDefaultTheme(String theme) {
+		listAllThemes().parallelStream().forEach(t -> t.setDefaultTheme(false));
+		ThemeConfig config = getTheme(theme);
+		if (config != null) {
+			config.setDefaultTheme(true);
+		}
+	}
+
+	@Override
+	public void setInstalled(String name, boolean b) {
+		ThemeConfig config = getTheme(name);
+		if (config != null) {
+			config.setInstalled(b);
+		}
 	}
 
 	@Override

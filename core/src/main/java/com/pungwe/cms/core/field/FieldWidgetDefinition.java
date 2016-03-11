@@ -11,14 +11,12 @@ import java.util.Map;
 /**
  * Created by ian on 09/12/2015.
  */
-public interface FieldWidget {
+public interface FieldWidgetDefinition {
 
-	String getName();
+	Map<String, Object> getDefaultSettings();
 
 	void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate);
 
 	void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings);
-
-	boolean supports(String fieldType);
 
 }

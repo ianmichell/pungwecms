@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,6 +52,10 @@ public class ThemeManagementService {
 	}
 
 	public boolean enable(String theme) {
+
+		if (StringUtils.isEmpty(theme)) {
+			return false;
+		}
 		// Fetch the theme config
 		ThemeConfig config = themeConfigService.getTheme(theme);
 		try {
@@ -68,6 +73,14 @@ public class ThemeManagementService {
 			themeConfigService.removeThemes(theme);
 			return false;
 		}
+	}
+
+	public void setDefaultTheme(String theme) {
+		themeConfigService.setDefaultTheme(theme);
+	}
+
+	public void setDefaultAdminTheme(String theme) {
+		themeConfigService.setDefaultAdminTheme(theme);
 	}
 
 	public boolean disable(String theme) {
@@ -134,7 +147,7 @@ public class ThemeManagementService {
 
 				// Find the parent application context for the theme and set it
 				ApplicationContext parent = getThemeContext(themeInfo.parent());
-				ctx.setParent(parent);
+				ctx.setParent(parent == null ? applicationContext : parent);
 
 				// Register the theme entry point class
 				ctx.register(c);
@@ -145,8 +158,18 @@ public class ThemeManagementService {
 				// Overwrite the existing theme application context
 				themeContexts.put(theme.getName(), ctx);
 
+				// Execute hook install - the theme should be installed.
+				if (!theme.isInstalled()) {
+					hookService.executeHook(ctx, c, "install");
+					themeConfigService.setInstalled(theme.getName(), true);
+				}
+
 			} catch (ClassNotFoundException ex) {
 				LOG.error("Could not start theme: " + theme.getName(), ex);
+			} catch (IllegalAccessException ex) {
+				LOG.error("Could not install theme: " + theme.getName(), ex);
+			} catch (InvocationTargetException ex) {
+				LOG.error("Could not install theme: " + theme.getName(), ex);
 			}
 		});
 
@@ -156,6 +179,12 @@ public class ThemeManagementService {
 
 		// Remove the themes missing from the classpath
 		removeMissingThemes();
+
+		String defaultTheme = applicationContext.getEnvironment().getProperty("themes.default", "");
+		String defaultAdminTheme = applicationContext.getEnvironment().getProperty("themes.default.admin", defaultTheme);
+
+		ThemeConfig defaultThemeConfig = themeConfigService.getDefaultTheme();
+		ThemeConfig defaultAdminThemeConfig = themeConfigService.getDefaultAdminTheme();
 
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AnnotationTypeFilter(Theme.class));
@@ -168,6 +197,27 @@ public class ThemeManagementService {
 				LOG.error("Could not load a module found on the class path, due to it's class not being found. This should never happen and usually means something is wrong with the environment", e);
 			}
 		});
+
+
+		if ((defaultThemeConfig == null || !themeClassExists(defaultThemeConfig))) {
+			enable(defaultTheme);
+			setDefaultTheme(defaultTheme);
+		}
+
+		if ((defaultAdminThemeConfig == null || !themeClassExists(defaultAdminThemeConfig))) {
+			enable(defaultAdminTheme);
+			setDefaultAdminTheme(defaultAdminTheme);
+		}
+	}
+
+	private boolean themeClassExists(ThemeConfig config) {
+		try {
+			// Just running this will check that the class exists
+			Class.forName(config.getEntryPoint());
+			return true;
+		} catch (ClassNotFoundException ex) {
+			return false;
+		}
 	}
 
 	public ApplicationContext getDefaultThemeContext() {
@@ -202,6 +252,7 @@ public class ThemeManagementService {
 	public List<String> resolveViewPath(HttpServletRequest request, final String prefix, final String viewName, final String suffix) {
 		List<String> urls = new ArrayList<>();
 		urls.add(prefix + viewName + suffix);
+		urls.addAll(getThemeTemplateURLSearchPath(prefix.replace(ResourceUtils.CLASSPATH_URL_PREFIX, ""), viewName, suffix));
 		// Get the request path... We use a substring of this excluding the context path and the rest of the url to determine if it's admin or not.
 		try {
 			hookService.executeHook("theme", (c, o) -> {
@@ -234,6 +285,29 @@ public class ThemeManagementService {
 		Collections.reverse(urls);
 
 		return urls;
+	}
+
+	private List<String> getThemeTemplateURLSearchPath(String prefix, String viewName, String suffix) {
+		ThemeConfig config = getDefaultThemeConfigForRequest();
+		if (config == null) {
+			return new LinkedList<>();
+		}
+		URL url = null;
+		try {
+			if (ResourceUtils.isJarFileURL(new URL(config.getThemeLocation()))) {
+				url = new URL(config.getThemeLocation() + ResourceUtils.JAR_URL_SEPARATOR + prefix + viewName + suffix);
+			} else {
+				url = new URL(config.getThemeLocation() + "/" + prefix + "/" + viewName + suffix);
+			}
+		} catch (MalformedURLException ex) {
+			// do nothing
+		}
+		List<String> themePaths = new ArrayList<>(1);
+//		themePaths.add(prefix + config.getName() + "/" + viewName + suffix);
+		if (url != null) {
+			themePaths.add(url.toExternalForm());
+		}
+		return themePaths;
 	}
 
 	protected ThemeConfig getDefaultThemeConfigForRequest() {

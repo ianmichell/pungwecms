@@ -1,5 +1,6 @@
 package com.pungwe.cms.modules.text.widget;
 
+import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.widgets.TextareaWidget;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Created by ian on 09/01/2016.
  */
+@FieldWidget(value="textarea_with_summary_widget", label="Textarea with Summary", supports = "string")
 public class TextareaWithSummaryWidget extends TextareaWidget {
 
 	@Override

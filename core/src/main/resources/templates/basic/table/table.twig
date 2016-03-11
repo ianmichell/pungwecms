@@ -1,3 +1,4 @@
+{% block table %}
 <table{{ attributes }}>
     {%  if caption %}
     <caption>{{ render(caption) }}</caption>
@@ -22,3 +23,4 @@
     </tfoot>
     {% endif %}
 </table>
+{% endblock %}

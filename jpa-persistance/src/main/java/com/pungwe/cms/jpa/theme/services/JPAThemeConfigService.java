@@ -6,7 +6,9 @@ import com.pungwe.cms.jpa.theme.ThemeConfigImpl;
 import com.pungwe.cms.jpa.theme.repository.ThemeConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,7 +25,7 @@ public class JPAThemeConfigService implements ThemeConfigService<ThemeConfigImpl
 	private ThemeConfigRepository themeConfigRepository;
 
 	@Override
-	public void registerTheme(Class<?> entryPoint, URL themeLocation) {
+	public ThemeConfigImpl registerTheme(Class<?> entryPoint, URL themeLocation) {
 
 		ThemeConfigImpl config = new ThemeConfigImpl();
 
@@ -32,14 +34,15 @@ public class JPAThemeConfigService implements ThemeConfigService<ThemeConfigImpl
 		if (isEnabled(themeInfo.name())) {
 			config = getTheme(themeInfo.name());
 			config.setEntryPoint(entryPoint.getName());
+		} else {
+			config.setEnabled(false);
 		}
 
 		config.setName(themeInfo.name());
-		config.setThemeLocation(themeLocation.getFile());
-		config.setEnabled(false);
+		config.setThemeLocation(themeLocation.toExternalForm());
 		config.setEntryPoint(entryPoint.getName());
 
-		themeConfigRepository.save(config);
+		return themeConfigRepository.save(config);
 	}
 
 	@Override
@@ -62,8 +65,11 @@ public class JPAThemeConfigService implements ThemeConfigService<ThemeConfigImpl
 
 	@Override
 	public boolean isEnabled(String theme) {
+		if (StringUtils.isEmpty(theme)) {
+			return false;
+		}
 		ThemeConfigImpl config = getTheme(theme);
-		return config.isEnabled();
+		return config != null && config.isEnabled();
 	}
 
 	@Override
@@ -78,16 +84,56 @@ public class JPAThemeConfigService implements ThemeConfigService<ThemeConfigImpl
 
 	@Override
 	public ThemeConfigImpl getDefaultTheme() {
-		return null;
+		return themeConfigRepository.findDefaultTheme().orElse(null);
 	}
 
 	@Override
 	public ThemeConfigImpl getDefaultAdminTheme() {
-		return null;
+		return themeConfigRepository.findDefaultAdminTheme().orElse(null);
 	}
 
 	@Override
 	public ThemeConfigImpl getTheme(String name) {
 		return themeConfigRepository.findOne(name);
+	}
+
+	@Transactional
+	@Override
+	public void setInstalled(String name, boolean b) {
+		ThemeConfigImpl config = getTheme(name);
+		if (config != null) {
+			config.setInstalled(b);
+			themeConfigRepository.save(config);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void setDefaultAdminTheme(String theme) {
+		ThemeConfigImpl oldDefaultTheme = getDefaultAdminTheme();
+		if (oldDefaultTheme != null) {
+			oldDefaultTheme.setDefaultTheme(false);
+			themeConfigRepository.save(oldDefaultTheme);
+		}
+
+		ThemeConfigImpl newDefaultTheme = getTheme(theme);
+		newDefaultTheme.setDefaultAdminTheme(true);
+
+		themeConfigRepository.save(newDefaultTheme);
+	}
+
+	@Override
+	@Transactional
+	public void setDefaultTheme(String theme) {
+		ThemeConfigImpl oldDefaultTheme = getDefaultTheme();
+		if (oldDefaultTheme != null) {
+			oldDefaultTheme.setDefaultTheme(false);
+			themeConfigRepository.save(oldDefaultTheme);
+		}
+
+		ThemeConfigImpl newDefaultTheme = getTheme(theme);
+		newDefaultTheme.setDefaultTheme(true);
+
+		themeConfigRepository.save(newDefaultTheme);
 	}
 }

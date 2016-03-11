@@ -70,8 +70,11 @@ public class BlockManagementService {
 		final List<BlockConfig> blockConfigList = (List<BlockConfig>)blockConfigService.listAllBlocks(themeName);
 		// Find all the relevant block definitions for each region; sorted by weight.
 		blocks.entrySet().forEach(entry -> {
-			entry.getValue().addAll(blockConfigList.parallelStream().filter(blockConfig -> blockConfig.getRegion() == entry.getKey())
-					.sorted((o1, o2) -> Integer.compare(o1.getWeight(), o2.getWeight())).collect(Collectors.toList()));
+			final String region = entry.getKey();
+			entry.getValue().addAll(blockConfigList.stream().filter(blockConfig -> {
+				boolean match = blockConfig.getRegion().equals(region);
+				return match;
+			}).sorted((o1, o2) -> Integer.compare(o1.getWeight(), o2.getWeight())).collect(Collectors.toList()));
 		});
 		return blocks;
 	}

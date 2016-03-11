@@ -1,24 +1,27 @@
 package com.pungwe.cms.core.field.widgets;
 
 
+import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
-import com.pungwe.cms.core.field.FieldWidget;
+import com.pungwe.cms.core.field.FieldWidgetDefinition;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.form.element.StringElement;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by ian on 08/01/2016.
  */
-public class TextfieldWidget implements FieldWidget {
+@FieldWidget(value = "textfield_widget", label="Textfield", supports = "string")
+public class TextfieldWidget implements FieldWidgetDefinition {
 
 	@Override
-	public String getName() {
-		return "textfield";
+	public Map<String, Object> getDefaultSettings() {
+		return new HashMap<>();
 	}
 
 	@Override
@@ -58,11 +61,5 @@ public class TextfieldWidget implements FieldWidget {
 		// Add Default Value to element list
 		elements.add(defaultValue);
 
-	}
-
-
-	@Override
-	public boolean supports(String type) {
-		return "string".equals(type);
 	}
 }

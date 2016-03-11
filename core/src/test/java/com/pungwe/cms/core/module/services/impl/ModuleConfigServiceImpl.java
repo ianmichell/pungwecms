@@ -29,7 +29,7 @@ public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfig
 	}
 
 	@Override
-	public void registerModule(Class<?> entryPoint, URL moduleLocation) {
+	public ModuleConfigImpl registerModule(Class<?> entryPoint, URL moduleLocation) {
 
 		// Create module config holder
 		ModuleConfigImpl config = new ModuleConfigImpl();
@@ -44,6 +44,8 @@ public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfig
 
 		// add to the list of modules
 		modules.add(config);
+
+		return config;
 	}
 
 	@Override

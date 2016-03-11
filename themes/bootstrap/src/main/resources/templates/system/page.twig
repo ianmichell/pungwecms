@@ -1,13 +1,9 @@
 <!-- Create the main container -->
-{% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
+{% set container = (theme.settings.fluid_container) ? 'container-fluid' : 'container' %}
 {% if regions['navigation'] %}
     {% block navbar %}
-        {% set navbar_classes = [
-        'navbar',
-        theme.settings.navbar_inverse ? 'navbar-inverse' : 'navbar-default',
-        theme.settings.navbar_position ? 'navbar-' ~ theme.settings.navbar_position : container
-        ] %}
-        <nav role="navigation" class="navbar">
+        {% set navbar_classes = ['navbar', (theme.settings.navbar_inverse) ? 'navbar-inverse' : 'navbar-default', (theme.settings.navbar_position) ? concat('navbar-', theme.settings.navbar_position) : container] %}
+        <nav role="navigation" class="{{ navbar_classes }}">
             {{ render(regions['navigation']) }}
         </nav>
     {% endblock %}
@@ -16,12 +12,13 @@
 {% block main %}
 
     {# Content #}
-    {% set content_classes = [
-    regions['sidebar_first'] and regions['sidebar_second'] ? 'col-sm-6',
-    regions['sidebar_first'] and regions['sidebar_second'] is empty ? 'col-sm-9',
-    regions['sidebar_second'] and regions['sidebar_first'] is empty ? 'col-sm-9',
-    regions['sidebar_first'] is empty and regions['sidebar_second'] is empty ? 'col-sm-12'
-    ] %}
+    {% if regions['sidebar_first'] and regions['sidebar_second'] %}
+        {% set content_classes = "col-sm-6" %}
+    {% elseif regions['sidebar_first'] is not empty or regions['sidebar_second'] is not empty %}
+        {% set content_classes = "col-sm-9" %}
+    {% else %}
+        {% set content_classes = "col-sm-12" %}
+    {% endif %}
 
     <div class="main-content {{ container }}" role="main">
 
@@ -61,6 +58,7 @@
             {% endblock %}
         {% endif %}
 
+        <div class="row">
         {% if regions['sidebar_first'] %}
             {% block sidebar_first %}
                 <aside role="complementary" class="sidebar_first col-sm-3">
@@ -84,6 +82,7 @@
                 </div>
             {% endblock %}
         {% endif %}
+        </div>
     </div>
 {% endblock %}
 

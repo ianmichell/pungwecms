@@ -67,7 +67,7 @@ public class PungweJtwigViewResolver extends AbstractTemplateViewResolver {
 	@Override
 	protected AbstractUrlBasedView buildView(String viewName) throws Exception {
 		AbstractUrlBasedView abstractUrlBasedView = super.buildView(viewName);
-		abstractUrlBasedView.setUrl(urlResolver().resolve(getPrefix(), viewName, getSuffix()));
+		abstractUrlBasedView.setUrl(viewName);
 		return abstractUrlBasedView;
 	}
 
@@ -174,9 +174,5 @@ public class PungweJtwigViewResolver extends AbstractTemplateViewResolver {
 		return new DelegateFunctionResolver(configuration.render().functionRepository(),
 				new InputDelegateMethodParametersResolver(
 						parameterResolverFactory(converter)));
-	}
-
-	private ResourceUrlResolver urlResolver() {
-		return IdentityUrlResolver.INSTANCE;
 	}
 }

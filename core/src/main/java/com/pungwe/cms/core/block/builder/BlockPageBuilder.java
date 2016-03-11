@@ -57,7 +57,7 @@ public class BlockPageBuilder implements PageBuilder {
 		AtomicBoolean hasContentBlock = new AtomicBoolean(false);
 		// Check for content block, if none, then check for content region and add the relevant content...
 		blocksByRegion.values().parallelStream().forEach(configList -> {
-			Optional<BlockConfig> found = configList.parallelStream().filter(blockConfig -> blockConfig.getName() == MainContentBlock.class.getAnnotation(Block.class).value()).findFirst();
+			Optional<BlockConfig> found = configList.parallelStream().filter(blockConfig -> blockConfig.getName().equals(MainContentBlock.class.getAnnotation(Block.class).value())).findFirst();
 			if (found.isPresent()) {
 				hasContentBlock.set(true);
 			}

@@ -18,7 +18,7 @@ public interface ModuleConfigService<M extends ModuleConfig> {
 	 * @param entryPoint The module class
 	 * @param moduleLocation The jar file the module is contained in
 	 */
-	void registerModule(Class<?> entryPoint, URL moduleLocation);
+	M registerModule(Class<?> entryPoint, URL moduleLocation);
 
 	void removeModules(String... modules);
 

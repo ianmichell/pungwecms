@@ -8,6 +8,7 @@ import com.pungwe.cms.core.utils.services.HookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,6 +17,8 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,6 +62,16 @@ public class ModuleManagementService {
 		// Fetch the module config
 		ModuleConfig config = getModuleConfigService().getModuleConfig(module);
 
+		return enable(config);
+	}
+
+	public void enable(Collection<String> modules) {
+		for (String module : modules) {
+			enable(module);
+		}
+	}
+
+	protected boolean enable(ModuleConfig config) {
 		// Fetch the module class
 		try {
 			Class<?> c = Class.forName(config.getEntryPoint());
@@ -74,7 +87,7 @@ public class ModuleManagementService {
 				}
 			}
 
-			getModuleConfigService().setModuleEnabled(module, true);
+			getModuleConfigService().setModuleEnabled(ma.name(), true);
 
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -100,6 +113,7 @@ public class ModuleManagementService {
 
 		// Get a list of enabled modules
 		Set<ModuleConfig> enabled = getModuleConfigService().listEnabledModules();
+
 		enabled.forEach(config -> {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
@@ -163,10 +177,11 @@ public class ModuleManagementService {
 	 * @see Module @Module
 	 */
 	public void scan() {
-
+		List<String> defaultEnabledModules = applicationContext.getBean("defaultEnabledModules", List.class);
 		// Important to remove all missing modules first, so scanning the classpath is quicker
 		removeMissingModules();
-
+		// If we have enabled modules then we should not attempt to enable those in the config file...
+		final boolean enabledModules = !getModuleConfigService().listEnabledModules().isEmpty();
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AnnotationTypeFilter(Module.class));
 		Set<BeanDefinition> modules = scanner.findCandidateComponents("*");
@@ -179,6 +194,9 @@ public class ModuleManagementService {
 			}
 		});
 
+		if (!enabledModules && defaultEnabledModules != null && !defaultEnabledModules.isEmpty()) {
+			enable(defaultEnabledModules);
+		}
 	}
 
 	public void removeMissingModules() {

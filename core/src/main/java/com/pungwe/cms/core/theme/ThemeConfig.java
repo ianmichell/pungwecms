@@ -16,6 +16,9 @@ public interface ThemeConfig {
 	boolean isEnabled();
 	void setEnabled(boolean enabled);
 
+	boolean isInstalled();
+	void setInstalled(boolean installed);
+
 	boolean isDefaultTheme();
 	void setDefaultTheme(boolean defaultTheme);
 

@@ -1,13 +1,19 @@
 package com.pungwe.cms.core.theme.resolver;
 
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.resource.ClasspathJtwigResource;
 import com.lyncode.jtwig.resource.FileJtwigResource;
 import com.lyncode.jtwig.resource.JtwigResource;
 import com.lyncode.jtwig.resource.WebJtwigResource;
 import com.lyncode.jtwig.resource.loader.JtwigResourceResolver;
+import com.pungwe.cms.core.theme.resource.ThemeViewResource;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
+import org.springframework.core.io.UrlResource;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +54,9 @@ public class ThemeResourceResolver implements JtwigResourceResolver {
 		if (url.startsWith("classpath:")) {
 			return new ClasspathJtwigResource(url);
 		} else if (url.startsWith("file:")) {
-			return new FileJtwigResource(url);
+			return new ThemeViewResource(url);
 		}
 		return new WebJtwigResource(servletContext, url);
+//		return new ThemeViewResource(url);
 	}
 }

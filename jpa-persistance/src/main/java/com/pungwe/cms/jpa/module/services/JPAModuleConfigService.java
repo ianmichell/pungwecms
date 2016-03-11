@@ -26,7 +26,7 @@ public class JPAModuleConfigService implements ModuleConfigService<ModuleConfigI
 
 	@Override
 	@Transactional
-	public void registerModule(Class<?> entryPoint, URL moduleLocation) {
+	public ModuleConfigImpl registerModule(Class<?> entryPoint, URL moduleLocation) {
 
 		// Create module config holder
 		ModuleConfigImpl config = new ModuleConfigImpl();
@@ -42,10 +42,10 @@ public class JPAModuleConfigService implements ModuleConfigService<ModuleConfigI
 
 		/// Set the name of the module
 		config.setName(StringUtils.isEmpty(moduleInfo.name()) ? entryPoint.getSimpleName().toLowerCase() : moduleInfo.name());
-		config.setModuleLocation(moduleLocation.getFile());
+		config.setModuleLocation(moduleLocation.toExternalForm());
 		config.setEntryPoint(entryPoint.getName()); // class and package
 
-		moduleConfigRepository.save(config);
+		return moduleConfigRepository.save(config);
 	}
 
 	@Override

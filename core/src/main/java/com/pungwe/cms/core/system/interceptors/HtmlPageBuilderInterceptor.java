@@ -26,7 +26,7 @@ public class HtmlPageBuilderInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		// Ensure we have a view...
-		if (!modelAndView.hasView()) {
+		if (modelAndView == null || !modelAndView.hasView()) {
 			return;
 		}
 		// rewrites the model and view to wrap it with HtmlElement and PageElement.

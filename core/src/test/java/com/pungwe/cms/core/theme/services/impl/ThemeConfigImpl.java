@@ -12,6 +12,7 @@ public class ThemeConfigImpl implements ThemeConfig {
 	private String name;
 	private String version;
 	private boolean enabled;
+	private boolean installed;
 	private boolean defaultTheme;
 	private boolean defaultAdminTheme;
 	protected String entryPoint;
@@ -46,6 +47,16 @@ public class ThemeConfigImpl implements ThemeConfig {
 	@Override
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	@Override
+	public boolean isInstalled() {
+		return installed;
+	}
+
+	@Override
+	public void setInstalled(boolean installed) {
+		this.installed = installed;
 	}
 
 	@Override

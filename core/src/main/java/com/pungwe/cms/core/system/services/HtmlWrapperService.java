@@ -157,7 +157,7 @@ public class HtmlWrapperService {
 	}
 
 	protected <T> List<T> processHook(Class<T> elementType, String hook) throws InvocationTargetException, IllegalAccessException {
-		final List<T> results = new LinkedList<>();
+		List<T> results = new LinkedList<>();
 		hookService.executeHook(hook, (clazz, result) -> {
 			if (result != null && elementType.isAssignableFrom(result.getClass())) {
 				results.add((T) result);

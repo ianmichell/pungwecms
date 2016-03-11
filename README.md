@@ -215,19 +215,18 @@ Fields are rendered using widgets and formatters.
 Widgets are used to render the actual form entry component and formatters are used to render a field for display.
 
 ####Field Widgets
-Field Widgets are used to render form elements for a specific widget. These classes should be annotated with the @Component stereotype or created using the @Bean annotation in your module definition. 
+Field Widgets are used to render form elements for a specific widget. These classes should be annotated with the @FieldWidget stereotype and implement the FieldWidgetDefinition interface. 
 
 Theses should be treated as singleton beans and should not be used like a traditional object instance.
 
 ```java
 
-@Component("my_widget")
-public MyWidget implements FieldWidget {
+@FieldWidget(value="my_widget", label="My Widget", supports="string")
+public MyWidget implements FieldWidgetDefinition {
 	
-	// This might get deprecated in favour of the bean name!
 	@Override
-	public String getName() {
-		return "my_widget";
+	public Map<String, Object> getDefaultSettings() {
+		return new HashMap<>();
 	}
 	
 	@Override
@@ -239,17 +238,12 @@ public MyWidget implements FieldWidget {
 	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState form, Map<String, Object> settings) {
 	...
 	}
-	
-	@Override
-	public boolean supports(String fieldType) {
-		...
-	}
 }
 
 ```
 
 ####Field Formatters
-Field Formatters are used to render fields. These classes like their widget counterparts should be declared with the @Component stereotype annotation. 
+Field Formatters are used to render fields. These classes like their widget counterparts should be declared with the @FieldFormatter stereotype annotation and implement the FieldFormatterDefinition interface. 
 
 These should be treated as singleton beans and should not be used a like traditional object instance.
 

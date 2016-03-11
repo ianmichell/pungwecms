@@ -4,8 +4,10 @@ import com.pungwe.cms.core.annotations.stereotypes.Theme;
 import com.pungwe.cms.core.annotations.util.Hook;
 import com.pungwe.cms.core.block.services.BlockManagementService;
 import com.pungwe.cms.core.element.HeaderRenderedElement;
+import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.LinkElement;
 import com.pungwe.cms.core.element.basic.ScriptElement;
+import com.pungwe.cms.core.element.basic.TableElement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
@@ -33,18 +35,28 @@ public class Bootstrap {
 	}
 
 	// Execute CSS AND JS Hooks
-	@Hook("css")
+	@Hook("html_css")
 	public void attachCSS(List<HeaderRenderedElement> css) {
 		css.add(new LinkElement("stylesheet", "/bower_components/bootstrap/dist/css/bootstrap.min.css", "text/css"));
 	}
 
-	@Hook("js_top")
+	@Hook("html_js_top")
 	public void hookJSTop(List<ScriptElement> js) {
 		js.add(new ScriptElement("/bower_components/jquery/dist/jquery.min.js", "text/javascript"));
 	}
 
-	@Hook("js_bottom")
+	@Hook("html_js_bottom")
 	public void hookJSBottom(List<ScriptElement> js) {
-		js.add(new ScriptElement("/bower_components/bootstrap/dist/bootstrap.min.js", "text/javascript"));
+		js.add(new ScriptElement("/bower_components/bootstrap/dist/js/bootstrap.min.js", "text/javascript"));
+	}
+
+	@Hook("element_alter")
+	public void hookElementAlter(RenderedElement element) {
+		if (element == null) {
+			return;
+		}
+		if (element instanceof TableElement) {
+			((TableElement) element).addAttribute("class", "table");
+		}
 	}
 }
