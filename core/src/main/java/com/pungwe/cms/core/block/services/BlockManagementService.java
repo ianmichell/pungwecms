@@ -95,14 +95,9 @@ public class BlockManagementService {
 	public List<BlockDefinition> listAllBlocks() {
 		final List<BlockDefinition> blocks = new LinkedList<>();
 		// Main Context
-		Map<String, Object> mainContextBlocks = applicationContext.getBeansWithAnnotation(Block.class);
+		Map<String, Object> mainContextBlocks = moduleManagementService.getModuleContext().getBeansWithAnnotation(Block.class);
 		mainContextBlocks.entrySet().parallelStream().filter(b -> b != null && b instanceof BlockDefinition).forEach(b -> {
 			blocks.add((BlockDefinition)b);
-		});
-		// Module Context
-		Map<String, Object> moduleContextBlocks = moduleManagementService.getModuleContext().getBeansWithAnnotation(Block.class);
-		moduleContextBlocks.entrySet().parallelStream().filter(b -> b != null && b instanceof BlockDefinition).forEach(b -> {
-			blocks.add((BlockDefinition) b);
 		});
 		return blocks;
 	}

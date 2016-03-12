@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.*;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
@@ -22,52 +23,80 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 
-import java.util.*;
+import javax.servlet.MultipartConfigElement;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by ian on 20/01/2016.
  */
 @Configuration()
 @Import({
-		EmbeddedServletContainerAutoConfiguration.class,
 		// Web MVC
 		WebMvcAutoConfiguration.class,
 		HttpMessageConvertersAutoConfiguration.class,
 		ErrorMvcAutoConfiguration.class,
-		DispatcherServletAutoConfiguration.class,
 		// Security
 		SecurityAutoConfiguration.class,
-		// Server Properties / Property Source
-		ServerPropertiesAutoConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class,
 		// Jackson
 		JacksonAutoConfiguration.class,
 		// Aop
 		AopAutoConfiguration.class,
+		// Servlet Container
+		EmbeddedServletContainerAutoConfiguration.class,
+		// Server Properties / Property Source
+		ServerPropertiesAutoConfiguration.class,
+		PropertyPlaceholderAutoConfiguration.class
 })
-@EnableWebMvc
 // We only want to scan the core package
-@ComponentScan(basePackages = {"com.pungwe.cms.core"})
+@ComponentScan(
+		basePackages = {"com.pungwe.cms.core"}
+)
 public class BaseApplicationConfig extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
 
 	@Autowired
 	ApplicationContext applicationContext;
 
 	@Autowired
-	HtmlPageBuilderInterceptor htmlTemplateRenderingInterceptor;
+	private ServerProperties server;
+
+	@Autowired
+	private WebMvcProperties webMvcProperties;
+
+	@Autowired(required = false)
+	private MultipartConfigElement multipartConfig;
+
+	@Autowired
+	protected HtmlPageBuilderInterceptor htmlTemplateRenderingInterceptor;
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(htmlTemplateRenderingInterceptor);
+	}
 
 	@Bean
 	public LocaleResolver localeResolver() {
 		return new SessionLocaleResolver();
+	}
+
+	@Bean
+	public DispatcherServlet dispatcherServlet() {
+		return new DispatcherServlet();
+	}
+
+	@Bean
+	public ServletRegistrationBean dispatcherServletRegistration() {
+		ServletRegistrationBean registrationBean = new ServletRegistrationBean(dispatcherServlet(), server.getServletMapping());
+		registrationBean.setName("dispatcherServletRegistration");
+		return registrationBean;
 	}
 
 	@Bean
@@ -92,11 +121,6 @@ public class BaseApplicationConfig extends WebMvcAutoConfiguration.WebMvcAutoCon
 		PungweJtwigViewResolver resolver = new PungweJtwigViewResolver("classpath:templates/", ".twig");
 		resolver.configuration().render().functionRepository().include(new TemplateFunctions(applicationContext, resolver, localeResolver()));
 		return resolver;
-	}
-
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(htmlTemplateRenderingInterceptor);
 	}
 
 	@Bean()

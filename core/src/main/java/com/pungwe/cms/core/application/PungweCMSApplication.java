@@ -7,12 +7,17 @@ import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.Set;
 

@@ -25,7 +25,7 @@ public class PageBuilderService {
 	protected ThemeManagementService themeManagementService;
 
 	@Autowired
-	protected ModuleManagementService moduleManagementService;
+	protected ApplicationContext applicationContext;
 
 	// Uses the http request and the content object to load and build a page based on the URL and current theme! Just LIKE MAGIC!
 	public PageElement buildPage(HttpServletRequest request, Map<String, Object> model) {
@@ -36,9 +36,8 @@ public class PageBuilderService {
 			pageElement.addRegion(region, new LinkedList<RenderedElement>());
 		}
 		// Build the page with a page builder! Defaults to BlockPageBuilder
-		ApplicationContext moduleContext = moduleManagementService.getModuleContext();
 		// FIXME: Build with a page manager.
-		PageBuilder builder = moduleContext.getBean(BlockPageBuilder.class);
+		PageBuilder builder = applicationContext.getBean(BlockPageBuilder.class);
 		builder.build(request, pageElement, model);
 		return pageElement;
 	}

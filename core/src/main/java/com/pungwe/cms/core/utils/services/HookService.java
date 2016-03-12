@@ -19,6 +19,9 @@ import java.util.*;
 public class HookService {
 
 	@Autowired
+	ApplicationContext applicationContext;
+
+	@Autowired
 	ModuleManagementService moduleManagementService;
 
 	@Autowired
@@ -38,7 +41,6 @@ public class HookService {
 	}
 
 	public void executeHook(Class<?> c, String name, HookCallback callback, Object... parameters) throws InvocationTargetException, IllegalAccessException {
-
 
 		if (moduleManagementService.getModuleContext() != null) {
 			executeHook(moduleManagementService.getModuleContext(), c, name, callback, parameters);

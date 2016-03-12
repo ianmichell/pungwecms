@@ -5,21 +5,28 @@ import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
 import com.pungwe.cms.modules.dependency.ModuleWithDependency;
 import com.pungwe.cms.modules.test.TestComponent;
 import com.pungwe.cms.modules.test.TestModule;
+import com.pungwe.cms.test.AbstractWebTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import java.util.Optional;
 import java.util.Set;
@@ -32,9 +39,9 @@ import static org.junit.Assert.assertTrue;
  * Created by ian on 21/01/2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(ModuleManagementServiceTest.AppConfig.class)
-@WebAppConfiguration("src/main/resources")
-public class ModuleManagementServiceTest {
+@SpringApplicationConfiguration(classes = ModuleManagementServiceTest.AppConfig.class)
+@WebAppConfiguration(value="src/main/resources")
+public class ModuleManagementServiceTest extends AbstractWebTest {
 
 	@Configuration
 	@ComponentScan(basePackages = {"com.pungwe.cms.core"})
@@ -45,17 +52,7 @@ public class ModuleManagementServiceTest {
 		public ModuleConfigService moduleConfigService() {
 			return new ModuleConfigServiceImpl();
 		}
-	}
 
-	private MockMvc mockMvc;
-
-	@Autowired
-	WebApplicationContext wac;
-
-	@Before
-	public void setup()
-	{
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Autowired
@@ -63,9 +60,6 @@ public class ModuleManagementServiceTest {
 
 	@Autowired
 	ModuleManagementService managementService;
-
-	@Autowired
-	ApplicationContext ctx;
 
 	@Test
 	public void testScan() {
@@ -97,10 +91,10 @@ public class ModuleManagementServiceTest {
 
 		// Start the module management events
 		managementService.startEnabledModules();
+//		webApplicationContext.refresh();
 
 		// Application events for module
-		ApplicationContext ctx = managementService.getModuleContext();
-		TestComponent tc = ctx.getBean(TestComponent.class);
+		TestComponent tc = managementService.getModuleContext().getBean(TestComponent.class);
 
 		assertNotNull("Test Component was null", tc);
 	}
@@ -115,10 +109,10 @@ public class ModuleManagementServiceTest {
 
 		// Start all enabled modules
 		managementService.startEnabledModules();
+//		webApplicationContext.refresh();
 
 		// Check the dependency injection
-		ApplicationContext ctx = managementService.getModuleContext();
-		ModuleWithDependency dep = ctx.getBean(ModuleWithDependency.class);
+		ModuleWithDependency dep = managementService.getModuleContext().getBean(ModuleWithDependency.class);
 		assertTrue("Could not autowire the testcomponent", dep.isCommponentInjected());
 	}
 

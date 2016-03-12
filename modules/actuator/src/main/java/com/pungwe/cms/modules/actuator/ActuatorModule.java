@@ -2,8 +2,12 @@ package com.pungwe.cms.modules.actuator;
 
 import com.pungwe.cms.core.annotations.stereotypes.Module;
 import org.springframework.boot.actuate.autoconfigure.*;
+import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Created by ian on 20/01/2016.
@@ -14,6 +18,7 @@ import org.springframework.context.annotation.PropertySource;
 )
 @Import({
 		// Actuator
+		PropertyPlaceholderAutoConfiguration.class,
 		ManagementServerPropertiesAutoConfiguration.class,
 		EndpointMBeanExportAutoConfiguration.class,
 		HealthIndicatorAutoConfiguration.class,

@@ -7,15 +7,31 @@ import com.pungwe.cms.core.utils.CommonHooks;
 import com.pungwe.cms.core.utils.services.HookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.ServletConfigAware;
+import org.springframework.web.context.ServletContextAware;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
@@ -33,9 +49,8 @@ public class ModuleManagementService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ModuleManagementService.class);
 
-	private AnnotationConfigApplicationContext moduleContext;
+	private AnnotationConfigWebApplicationContext moduleContext;
 
-	// FIXME: Never going to work on a different application context :(
 	@Autowired
 	private ModuleConfigService moduleConfigService;
 
@@ -43,7 +58,7 @@ public class ModuleManagementService {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	HookService hookService;
+	private HookService hookService;
 
 	protected ModuleConfigService<ModuleConfig> getModuleConfigService() {
 		return moduleConfigService;
@@ -107,7 +122,11 @@ public class ModuleManagementService {
 		}
 
 		// Create a new events
-		moduleContext = new AnnotationConfigApplicationContext();
+		moduleContext = new AnnotationConfigWebApplicationContext();
+		moduleContext.setId("module-application-context");
+		if (GenericWebApplicationContext.class.isAssignableFrom(applicationContext.getClass())) {
+			moduleContext.setServletContext(((GenericWebApplicationContext) applicationContext).getServletContext());
+		}
 		// Set the parent to the root application events
 		moduleContext.setParent(applicationContext);
 
@@ -117,8 +136,8 @@ public class ModuleManagementService {
 		enabled.forEach(config -> {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
+				// register the enabled module
 				moduleContext.register(c);
-
 				// Execute hook install
 			} catch (ClassNotFoundException e) {
 				return;
@@ -127,18 +146,25 @@ public class ModuleManagementService {
 
 		// Refresh the events
 		moduleContext.refresh();
+	}
 
+	// Execute hooks
+	@EventListener
+	public void onRefreshedEvent(ContextRefreshedEvent event) {
+
+		Set<ModuleConfig> enabled = getModuleConfigService().listEnabledModules();
 		// Execute hook install
-		enabled.forEach(config -> {
+		enabled.stream().filter(moduleConfig -> !moduleConfig.isInstalled()).forEach(config -> {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
-				String name = c.getAnnotation(Module.class).name();
 				// Execute hook install
-				hookService.executeHook(c, CommonHooks.INSTALL);
+				hookService.executeHook(applicationContext, c, CommonHooks.INSTALL);
 
-				moduleConfigService.setInstalled(name, true);
+				moduleConfigService.setInstalled(config.getName(), true);
 
 			} catch (ClassNotFoundException e) {
+				LOG.error("Missing module found: " + config.getEntryPoint(), e);
+				moduleConfigService.removeModules(config.getName());
 				return;
 			} catch (IllegalAccessException e) {
 				throw new IllegalArgumentException(e);
@@ -146,10 +172,6 @@ public class ModuleManagementService {
 				throw new IllegalArgumentException(e);
 			}
 		});
-	}
-
-	public ApplicationContext getModuleContext() {
-		return moduleContext;
 	}
 
 	/**
@@ -163,7 +185,7 @@ public class ModuleManagementService {
 		if (config != null) {
 			try {
 				Class c = Class.forName(config.getEntryPoint());
-				return moduleContext.getBeanNamesForType(c).length > 0;
+				return applicationContext.getBeanNamesForType(c).length > 0;
 			} catch (ClassNotFoundException ex) {
 				return false;
 			}
@@ -212,4 +234,7 @@ public class ModuleManagementService {
 		getModuleConfigService().removeModules(missing);
 	}
 
+	public ApplicationContext getModuleContext() {
+		return moduleContext;
+	}
 }
