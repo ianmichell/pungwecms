@@ -144,6 +144,7 @@ public class ThemeManagementService {
 
 				// Fetch the theme info
 				Theme themeInfo = c.getAnnotation(Theme.class);
+				ctx.setId("theme-application-contex-" + themeInfo.name());
 
 				// Find the parent application context for the theme and set it
 				ApplicationContext parent = getThemeContext(themeInfo.parent());

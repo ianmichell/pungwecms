@@ -2,6 +2,7 @@ package com.pungwe.cms.core.application;
 
 import com.pungwe.cms.core.annotations.stereotypes.PersistenceDriver;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
+import com.pungwe.cms.core.module.config.ModuleContextConfig;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -31,7 +33,7 @@ public class PungweCMSApplication {
 
 		SpringApplicationBuilder builder = new SpringApplicationBuilder();
 		// FIXME: This should probably be done in a utility class
-		builder.initializers(applicationContext -> {
+		builder.sources(BaseApplicationConfig.class).initializers(applicationContext -> {
 
 			// Set the id of the application context
 			applicationContext.setId("parent-application-context");
@@ -56,6 +58,8 @@ public class PungweCMSApplication {
 
 				if (applicationContext instanceof AnnotationConfigEmbeddedWebApplicationContext) {
 					((AnnotationConfigEmbeddedWebApplicationContext) applicationContext).register(c);
+				} else if (applicationContext instanceof AnnotationConfigWebApplicationContext) {
+					((AnnotationConfigWebApplicationContext) applicationContext).register(c);
 				} else if (applicationContext instanceof AnnotationConfigApplicationContext) {
 					((AnnotationConfigApplicationContext) applicationContext).register(c);
 				} else {
@@ -64,20 +68,23 @@ public class PungweCMSApplication {
 				return;
 			}
 		}).listeners(event -> {
-			/* Scan for modules and enable them */
-			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("parent-application-context")) {
-				ModuleManagementService moduleManagementService = ((ContextRefreshedEvent) event).getApplicationContext().getBean(ModuleManagementService.class);
-				moduleManagementService.scan();
-				moduleManagementService.startEnabledModules();
-			}
-		}).listeners(event -> {
 			// do something for themes
 			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("parent-application-context")) {
-				ThemeManagementService themeManagementService = ((ContextRefreshedEvent)event).getApplicationContext().getBean(ThemeManagementService.class);
-				themeManagementService.scan();
+				ThemeManagementService themeManagementService = ((ContextRefreshedEvent) event).getApplicationContext().getBean(ThemeManagementService.class);
+				if (((ContextRefreshedEvent)event).getApplicationContext().getEnvironment().getProperty("themes.startup.scan", Boolean.class, true)) {
+					themeManagementService.scan();
+				}
 				themeManagementService.startEnabledThemes();
 			}
-		}).sources(BaseApplicationConfig.class).registerShutdownHook(true).run(args);
+		}).child(ModuleContextConfig.class).initializers(childContext -> {
+			childContext.setId("module-application-context");
+			ModuleManagementService moduleManagementService = childContext.getParent().getBean(ModuleManagementService.class);
+			moduleManagementService.setModuleContext(childContext);
+			if (childContext.getParent().getEnvironment().getProperty("modules.startup.scan", Boolean.class, true)) {
+				moduleManagementService.scan();
+			}
+			moduleManagementService.startEnabledModules();
+		}).registerShutdownHook(true).run(args);
 	}
 
 	public static void main(String[] args) {

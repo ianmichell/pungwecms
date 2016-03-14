@@ -13,9 +13,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.util.UUID;
 
@@ -36,7 +38,13 @@ public class InstallControllerTest extends AbstractWebTest {
 	@Before
 	public void setup() throws Exception {
 		super.setup();
+		AnnotationConfigWebApplicationContext moduleContext = new AnnotationConfigWebApplicationContext();
+		moduleContext.setServletContext(webApplicationContext.getServletContext());
+		moduleContext.setId("module-application-context");
+		moduleContext.setParent(webApplicationContext);
+		moduleManagementService.setModuleContext(moduleContext);
 		moduleManagementService.startEnabledModules();
+		moduleContext.refresh();
 		// Add a block
 		BlockConfigImpl titleBlock = new BlockConfigImpl();
 		titleBlock.setId(UUID.randomUUID().toString());

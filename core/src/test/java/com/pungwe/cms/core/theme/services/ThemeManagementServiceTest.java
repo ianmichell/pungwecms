@@ -16,10 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.util.List;
 import java.util.Set;
@@ -82,6 +80,15 @@ public class ThemeManagementServiceTest {
 
 	@Autowired
 	ModuleManagementService moduleManagementService;
+
+	@Before
+	public void setupModuleContext() {
+		AnnotationConfigWebApplicationContext moduleContext = new AnnotationConfigWebApplicationContext();
+		moduleContext.setServletContext(wac.getServletContext());
+		moduleContext.setId("module-application-context");
+		moduleContext.setParent(wac);
+		moduleManagementService.setModuleContext(moduleContext);
+	}
 
 	@Test
 	public void testScan() throws Exception {
@@ -143,6 +150,8 @@ public class ThemeManagementServiceTest {
 		moduleManagementService.enable("test_module");
 
 		moduleManagementService.startEnabledModules();
+
+		((AnnotationConfigWebApplicationContext)moduleManagementService.getModuleContext()).refresh();
 
 		// Register the appropriate themes
 		themeConfigService.registerTheme(TestTheme.class, TestTheme.class.getProtectionDomain().getCodeSource().getLocation());

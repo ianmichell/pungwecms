@@ -5,6 +5,7 @@ import org.springframework.boot.actuate.autoconfigure.*;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -29,5 +30,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 		TraceWebFilterAutoConfiguration.class,
 		TraceRepositoryAutoConfiguration.class,
 })
+@EnableWebMvc
+@ComponentScan(basePackages = "com.pungwe.cms.modules.actuator")
 public class ActuatorModule {
 }

@@ -28,6 +28,14 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
 	protected SortedSet<FieldGroupConfig> fieldGroups;
 	protected SortedSet<FieldConfig> fields;
 
+	public EntityDefinitionImpl() {
+
+	}
+
+	public EntityDefinitionImpl(EntityTypeInfoImpl id) {
+		this.id = id;
+	}
+
 	@Override
 	@EmbeddedId
 	public EntityTypeInfoImpl getId() {

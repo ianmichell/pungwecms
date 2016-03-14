@@ -16,9 +16,13 @@ jpa:
         show_sql: true
 
 modules:
+  startup:
+    scan: false
   enabled:
     - node
     - text
 
 themes:
+  startup:
+    scan: false
   default: "bootstrap"

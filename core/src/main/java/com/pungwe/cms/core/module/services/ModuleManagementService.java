@@ -34,6 +34,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ public class ModuleManagementService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ModuleManagementService.class);
 
-	private AnnotationConfigWebApplicationContext moduleContext;
+	private ApplicationContext moduleContext;
 
 	@Autowired
 	private ModuleConfigService moduleConfigService;
@@ -117,40 +118,40 @@ public class ModuleManagementService {
 
 	public void startEnabledModules() {
 
-		if (moduleContext != null && moduleContext.isActive()) {
-			moduleContext.close();
-		}
-
-		// Create a new events
-		moduleContext = new AnnotationConfigWebApplicationContext();
-		moduleContext.setId("module-application-context");
-		if (GenericWebApplicationContext.class.isAssignableFrom(applicationContext.getClass())) {
-			moduleContext.setServletContext(((GenericWebApplicationContext) applicationContext).getServletContext());
-		}
-		// Set the parent to the root application events
-		moduleContext.setParent(applicationContext);
+		assert moduleContext != null;
 
 		// Get a list of enabled modules
 		Set<ModuleConfig> enabled = getModuleConfigService().listEnabledModules();
 
+		final List<Class<?>> moduleClasses = new LinkedList<>();
 		enabled.forEach(config -> {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
-				// register the enabled module
-				moduleContext.register(c);
+				moduleClasses.add(c);
 				// Execute hook install
 			} catch (ClassNotFoundException e) {
 				return;
 			}
 		});
 
-		// Refresh the events
-		moduleContext.refresh();
+		if (moduleContext instanceof AnnotationConfigEmbeddedWebApplicationContext) {
+			((AnnotationConfigEmbeddedWebApplicationContext) moduleContext).register(moduleClasses.toArray(new Class<?>[0]));
+		} else if (moduleContext instanceof AnnotationConfigWebApplicationContext) {
+			((AnnotationConfigWebApplicationContext) moduleContext).register(moduleClasses.toArray(new Class<?>[0]));
+		} else if (moduleContext instanceof AnnotationConfigApplicationContext) {
+			((AnnotationConfigApplicationContext) moduleContext).register(moduleClasses.toArray(new Class<?>[0]));
+		} else {
+			throw new IllegalArgumentException("Application context is not annotation based");
+		}
 	}
 
 	// Execute hooks
 	@EventListener
 	public void onRefreshedEvent(ContextRefreshedEvent event) {
+
+		if (event.getApplicationContext().getId() != "module-application-context") {
+			return;
+		}
 
 		Set<ModuleConfig> enabled = getModuleConfigService().listEnabledModules();
 		// Execute hook install
@@ -236,5 +237,9 @@ public class ModuleManagementService {
 
 	public ApplicationContext getModuleContext() {
 		return moduleContext;
+	}
+
+	public void setModuleContext(ApplicationContext moduleContext) {
+		this.moduleContext = moduleContext;
 	}
 }

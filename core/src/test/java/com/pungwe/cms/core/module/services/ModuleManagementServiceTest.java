@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -61,6 +58,15 @@ public class ModuleManagementServiceTest extends AbstractWebTest {
 	@Autowired
 	ModuleManagementService managementService;
 
+	@Before
+	public void beforeTest() {
+		AnnotationConfigWebApplicationContext moduleContext = new AnnotationConfigWebApplicationContext();
+		moduleContext.setServletContext(webApplicationContext.getServletContext());
+		moduleContext.setId("module-application-context");
+		moduleContext.setParent(webApplicationContext);
+		managementService.setModuleContext(moduleContext);
+	}
+
 	@Test
 	public void testScan() {
 
@@ -91,6 +97,7 @@ public class ModuleManagementServiceTest extends AbstractWebTest {
 
 		// Start the module management events
 		managementService.startEnabledModules();
+		((AnnotationConfigWebApplicationContext)managementService.getModuleContext()).refresh();
 //		webApplicationContext.refresh();
 
 		// Application events for module
@@ -109,6 +116,7 @@ public class ModuleManagementServiceTest extends AbstractWebTest {
 
 		// Start all enabled modules
 		managementService.startEnabledModules();
+		((AnnotationConfigWebApplicationContext)managementService.getModuleContext()).refresh();
 //		webApplicationContext.refresh();
 
 		// Check the dependency injection

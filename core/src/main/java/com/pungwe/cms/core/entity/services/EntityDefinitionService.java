@@ -23,7 +23,7 @@ public interface EntityDefinitionService<ED extends EntityDefinition> {
 
 	ED get(String type, String bundle);
 
-	Page<List<ED>> list(String type, Pageable page);
+	Page<ED> list(String type, Pageable page);
 
 	void create(ED instance);
 
