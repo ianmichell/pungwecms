@@ -12,10 +12,10 @@ import java.util.concurrent.Callable;
  * Created by ian on 14/03/2016.
  */
 @Controller
-@RequestMapping("/admin/reporting/system/beans")
+@RequestMapping("/admin/reporting/system/metrics")
 public class SystemMetricsController {
 
-	@RequestMapping(method= RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET)
 	public Callable<String> metrics(Model model) {
 		return () -> {
 			model.addAttribute("title", "Metrics");

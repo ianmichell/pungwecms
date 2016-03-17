@@ -69,7 +69,7 @@ public class PungweCMSApplication {
 			}
 		}).listeners(event -> {
 			// do something for themes
-			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("parent-application-context")) {
+			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("module-application-context")) {
 				ThemeManagementService themeManagementService = ((ContextRefreshedEvent) event).getApplicationContext().getBean(ThemeManagementService.class);
 				if (((ContextRefreshedEvent)event).getApplicationContext().getEnvironment().getProperty("themes.startup.scan", Boolean.class, true)) {
 					themeManagementService.scan();

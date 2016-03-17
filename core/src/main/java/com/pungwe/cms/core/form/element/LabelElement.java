@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
+import com.pungwe.cms.core.element.AbstractContentElement;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
@@ -13,9 +14,8 @@ import java.util.Collection;
  * Created by ian on 24/02/2016.
  */
 @ThemeInfo("form/label")
-public class LabelElement extends AbstractRenderedElement {
+public class LabelElement extends AbstractContentElement {
 
-	protected RenderedElement content;
 	protected AbstractFormElement<?> forElement;
 
 	public LabelElement() {
@@ -23,11 +23,11 @@ public class LabelElement extends AbstractRenderedElement {
 	}
 
 	public LabelElement(String label) {
-		this.content = new PlainTextElement(label);
+		setContent(label);
 	}
 
 	public LabelElement(RenderedElement content) {
-		this.content = content;
+		setContent(content);
 	}
 
 	public LabelElement(String label, AbstractFormElement<?> forElement) {
@@ -35,7 +35,7 @@ public class LabelElement extends AbstractRenderedElement {
 	}
 
 	public LabelElement(RenderedElement content, AbstractFormElement<?> forElement) {
-		this.content = content;
+		setContent(content);
 		this.forElement = forElement;
 	}
 
@@ -50,19 +50,6 @@ public class LabelElement extends AbstractRenderedElement {
 	@ModelAttribute("forElement")
 	public String getFor() {
 		return forElement != null ? forElement.getHtmlId() : "";
-	}
-
-	@ModelAttribute("content")
-	public RenderedElement getContent() {
-		return content;
-	}
-
-	public void setContent(RenderedElement content) {
-		this.content = content;
-	}
-
-	public void setContent(String content) {
-		this.content = new PlainTextElement(content);
 	}
 
 	@Override

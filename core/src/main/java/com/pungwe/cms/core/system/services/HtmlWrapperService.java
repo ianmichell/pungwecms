@@ -43,6 +43,9 @@ public class HtmlWrapperService {
 			wrappedModelAndView.setViewName(modelAndView.getViewName());
 		}
 
+		// Preprocess content
+		hookService.executeHook("preprocess_template", modelAndView.getViewName(), modelAndView.getModel());
+
 		// Clear the original model
 		modelAndView.clear();
 

@@ -6,6 +6,7 @@ import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.HeaderElement;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PageTitleBlock implements BlockDefinition {
 	@Override
 	public void build(List<RenderedElement> elements, Map<String, Object> settings, Map<String, Object> variables) {
 		// If don't have the title variable, don't bother doing anything
-		if (!variables.containsKey("title")) {
+		if (!variables.containsKey("title") || StringUtils.isEmpty(variables.get("title"))) {
 			return;
 		}
 		// FIXME: This should automatically be H1 by default, or the tag defined by the settings...

@@ -1,8 +1,6 @@
-<fieldset{{ attributes }}>
+<fieldset{{ attributes }}{{ printAttribute("class", join(classes)) }}>
     {% if legend %}
         <legend>{{ render(legend) }}</legend>
     {% endif %}
-    {% for child in children %}
-        {{  render(child) }}
-    {% endfor %}
+    {{ render(content) }}
 </fieldset>

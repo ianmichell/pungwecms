@@ -27,8 +27,9 @@ public class BlockLayoutController {
 	protected BlockManagementService blockManagementService;
 
 	@MenuItem(
+			menu = "system",
 			name = "block-layout",
-			parent = "system.admin.structure",
+			parent = "admin.structure",
 			title = "Block Layout",
 			description = "Manage your block layout"
 	)

@@ -1,0 +1,7 @@
+{% if content %}
+    {% block block_view %}
+        <div class="block {{ blockName }}" id="{{ blockId }}">
+            {{ render(content) }}
+        </div>
+    {% endblock %}
+{% endif %}

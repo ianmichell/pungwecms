@@ -1,2 +1,2 @@
 {{ render(label) }}
-<input type="text" name="{{ name }}" value="{{ value }}" size="{{ size }}"{{ attributes }} />
+<input type="text" name="{{ name }}" value="{{ value }}" size="{{ size }}"{{ attributes }}{{ printAttribute("class", join(classes)) }} />

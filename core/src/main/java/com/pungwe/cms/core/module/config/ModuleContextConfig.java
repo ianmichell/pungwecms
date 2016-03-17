@@ -3,15 +3,19 @@ package com.pungwe.cms.core.module.config;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.system.interceptors.HtmlPageBuilderInterceptor;
 import com.pungwe.cms.core.theme.PungweJtwigViewResolver;
+import com.pungwe.cms.core.theme.cache.ThemeViewCache;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
@@ -53,12 +57,15 @@ import java.util.Arrays;
 		JacksonAutoConfiguration.class,
 		// Aop
 		AopAutoConfiguration.class,
+		// Caching
+		CacheAutoConfiguration.class
 })
 @ComponentScan(
 		basePackages = {"com.pungwe.cms.core"},
 		excludeFilters = @ComponentScan.Filter(value={Configuration.class, Service.class})
 )
 @EnableWebMvc
+@EnableCaching
 public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
 
 	@Autowired
@@ -99,7 +106,7 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
 		return messageSource;
 	}
 
-	@Bean()
+	@Bean
 	public ContentNegotiatingViewResolver viewResolver(BeanFactory beanFactory) {
 		ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
 		contentNegotiatingViewResolver.setContentNegotiationManager(beanFactory.getBean(ContentNegotiationManager.class));

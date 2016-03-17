@@ -1,13 +1,11 @@
 package com.pungwe.cms.modules.actuator.controller;
 
+import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
-import com.pungwe.cms.core.module.services.ModuleManagementService;
-import com.pungwe.cms.core.theme.services.ThemeManagementService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.*;
-import org.springframework.context.support.LiveBeansView;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +24,23 @@ public class SystemHealthController {
 	@Autowired
 	List<HealthIndicator> healthIndicators;
 
-	@RequestMapping(method= RequestMethod.GET)
+	@MenuItem(
+			name = "health",
+			parent = "admin.reporting.system",
+			menu = "system",
+			title = "System Health",
+			description = "Displays a table of system / application health information"
+	)
+	@RequestMapping(method = RequestMethod.GET)
+	@Cacheable("actuator.health")
 	public Callable<String> health(final Model model) {
 		return () -> {
 			final TableElement tableElement = new TableElement();
-			tableElement.addHeaderRow(new TableElement.Header(new PlainTextElement("Key")), new TableElement.Header(new PlainTextElement("Value")));
+			tableElement.addHeaderRow(
+					new TableElement.Header(new PlainTextElement("Source")),
+					new TableElement.Header(new PlainTextElement("Key")),
+					new TableElement.Header(new PlainTextElement("Value"))
+			);
 			healthIndicators.forEach(healthIndicator -> {
 				healthIndicator.health().getDetails().forEach((key, value) -> {
 					tableElement.addRow(

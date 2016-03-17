@@ -31,8 +31,9 @@ public class NodeTypeController {
 
 	// FIXME: Inject a hook service, this will allow module developers to modify this module
 	@MenuItem(
+			menu = "system",
 			name = "content-types",
-			parent = "system.admin.structure",
+			parent = "admin.structure",
 			title = "Content Types",
 			description = "Manage your content types"
 	)
@@ -76,33 +77,34 @@ public class NodeTypeController {
 			// Table of entity types
 			model.addAttribute("content", table);
 
-			return "node_type_list";
+			return "node_type/list";
 		};
 	}
 
 	@MenuItem(
-			name = "node.type.add",
-			parent = "system.admin.structure.node.content-types",
+			menu = "system",
+			name = "add",
+			parent = "admin.structure.content-types",
 			title = "Add a new Content Type"
 	)
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public Callable<String> add(Model model) {
 		return () -> {
-			return "node_type_add";
+			return "node_type/add";
 		};
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public Callable<String> add(Model model, BindingResult result) {
 		return () -> {
-			return "node_type_add";
+			return "node_type/add";
 		};
 	}
 
 	@RequestMapping(value = "/edit/{id}")
 	public Callable<String> edit(@PathVariable("id") String id) {
 		return () -> {
-			return "node_type_edit";
+			return "node_type/edit";
 		};
 	}
 
@@ -116,7 +118,7 @@ public class NodeTypeController {
 	@RequestMapping(value = "/delete_confirm/{id}")
 	public Callable<String> deleteConfirm(@PathVariable("id") String id, Model model) {
 		return () -> {
-			return "delete_confirm";
+			return "node_type/delete_confirm";
 		};
 	}
 }

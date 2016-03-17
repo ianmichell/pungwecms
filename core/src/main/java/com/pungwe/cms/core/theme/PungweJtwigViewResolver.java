@@ -17,13 +17,15 @@ import com.lyncode.jtwig.functions.resolver.api.FunctionResolver;
 import com.lyncode.jtwig.functions.resolver.impl.CompoundFunctionResolver;
 import com.lyncode.jtwig.functions.resolver.impl.DelegateFunctionResolver;
 import com.lyncode.jtwig.resource.loader.JtwigResourceResolver;
-import com.lyncode.jtwig.services.api.url.ResourceUrlResolver;
-import com.lyncode.jtwig.services.impl.url.IdentityUrlResolver;
+import com.pungwe.cms.core.theme.cache.ThemeViewCache;
 import com.pungwe.cms.core.theme.resolver.ThemeResourceResolver;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by ian on 19/01/2016.
@@ -46,6 +48,9 @@ public class PungweJtwigViewResolver extends AbstractTemplateViewResolver {
 	@Autowired
 	ThemeManagementService themeManagementService;
 
+	@Autowired(required = false)
+	CacheManager cacheManager;
+
 	public PungweJtwigViewResolver(String prefix, String suffix) {
 		this();
 		setPrefix(prefix);
@@ -57,6 +62,13 @@ public class PungweJtwigViewResolver extends AbstractTemplateViewResolver {
 		setContentType("text/html; charset=UTF-8");
 
 		parameterResolver.withResolver(new HttpRequestParameterResolver());
+	}
+
+	@PostConstruct
+	public void setupCache() {
+		if (cached && cacheManager != null) {
+			cache = new ThemeViewCache(cacheManager);
+		}
 	}
 
 	@Override

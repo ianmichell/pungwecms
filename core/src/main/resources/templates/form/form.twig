@@ -1,4 +1,4 @@
-<form{{ attributes }}>
+<form{{ attributes }}{{ printAttribute("class", join(classes)) }}>
     {% for child in children %}
         {{ render(child) }}
     {% endfor %}

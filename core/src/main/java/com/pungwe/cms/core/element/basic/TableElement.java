@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
+import com.pungwe.cms.core.element.AbstractContentElement;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -129,24 +130,13 @@ public class TableElement extends AbstractRenderedElement {
 	}
 
 	@ThemeInfo("basic/table/column")
-	public static class Column extends AbstractRenderedElement {
+	public static class Column extends AbstractContentElement {
 
 		public Column() {
 		}
 
-		public Column(RenderedElement content) {
-			this.content = content;
-		}
-
-		protected RenderedElement content;
-
-		@ModelAttribute("content")
-		public RenderedElement getContent() {
-			return content;
-		}
-
-		public void setContent(RenderedElement content) {
-			this.content = content;
+		public Column(RenderedElement... content) {
+			setContent(content);
 		}
 
 		@Override

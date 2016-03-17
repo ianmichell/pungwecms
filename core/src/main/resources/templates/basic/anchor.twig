@@ -1,1 +1,1 @@
-<a{{ attributes }}>{{ content | render }}</a>
+<a{{ attributes }}{{ printAttribute("class", join(classes)) }}>{{ content | render }}</a>

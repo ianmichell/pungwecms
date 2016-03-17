@@ -12,9 +12,13 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractRenderedElement implements RenderedElement {
 
+	protected boolean wrapped = false;
+
 	protected int weight;
 	// FIXME: Should this be here?
 	protected Map<String, String> attributes;
+
+	protected List<String> classes;
 
 	@Override
 	public String getHtmlId() {
@@ -37,6 +41,16 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	}
 
 	@Override
+	public boolean isWrapped() {
+		return wrapped;
+	}
+
+	@Override
+	public void setWrapped(boolean wrapped) {
+		this.wrapped = wrapped;
+	}
+
+	@Override
 	public Map<String, String> getAttributes() {
 		if (attributes == null) {
 			attributes = new LinkedHashMap<>();
@@ -53,6 +67,11 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 		return getAttributes().get(name);
 	}
 
+	@Override
+	public String getAttribute(String name, String defaultValue) {
+		return getAttributes().getOrDefault(name, defaultValue);
+	}
+
 	public void addAttribute(String attribute, String value) {
 		getAttributes().put(attribute, value);
 	}
@@ -63,8 +82,27 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	public String getAttributesAsString() {
 		String attributes = "";
 		if (!getAttributes().isEmpty()) {
-			attributes = " " + getAttributes().entrySet().stream().filter(e -> !excludedAttributes().contains(e.getKey())).map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
+			attributes = " " + getAttributes().entrySet().stream().filter(e -> !excludedAttributes().contains(e.getKey()) || e.getKey().equals("class")).map(e -> e.getKey() + "=\"" + e.getValue() + "\"").collect(Collectors.joining(" "));
 		}
 		return attributes;
+	}
+
+	@Override
+	@ModelAttribute("classes")
+	public List<String> getClasses() {
+		if (classes == null) {
+			classes = new LinkedList<>();
+		}
+		return classes;
+	}
+
+	@Override
+	public void setClasses(List<String> classes) {
+		if (classes == null) {
+			this.classes = null;
+		}
+		List<String> copyOfClasses = new ArrayList<>(classes.size());
+		copyOfClasses.addAll(classes);
+		this.classes = copyOfClasses;
 	}
 }

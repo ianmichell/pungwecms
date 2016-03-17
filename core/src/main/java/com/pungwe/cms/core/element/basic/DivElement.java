@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
+import com.pungwe.cms.core.element.AbstractContentElement;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,28 +15,14 @@ import java.util.List;
  * Created by ian on 08/03/2016.
  */
 @ThemeInfo("basic/div")
-public class DivElement extends AbstractRenderedElement {
+public class DivElement extends AbstractContentElement {
 
-	protected List<RenderedElement> content;
+	public DivElement() {
 
-	@ModelAttribute("content")
-	public List<RenderedElement> getContent() {
-		if (content == null) {
-			content = new LinkedList<>();
-		}
-		return content;
 	}
 
-	public void setContent(List<RenderedElement> content) {
-		this.content = content;
-	}
-
-	public void addContent(RenderedElement... content) {
-		addContent(Arrays.asList(content));
-	}
-
-	public void addContent(Collection<RenderedElement> content) {
-		getContent().addAll(content);
+	public DivElement(List<RenderedElement> content) {
+		setContent(content);
 	}
 
 	@Override

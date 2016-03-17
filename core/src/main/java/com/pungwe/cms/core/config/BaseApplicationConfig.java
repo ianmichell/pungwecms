@@ -7,7 +7,9 @@ import com.pungwe.cms.core.annotations.stereotypes.FieldFormatter;
 import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.module.config.ModuleContextConfig;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,8 @@ import java.util.List;
  */
 @Configuration()
 @Import({
-		PropertyPlaceholderAutoConfiguration.class
+		PropertyPlaceholderAutoConfiguration.class,
+		CacheAutoConfiguration.class
 })
 // We only want to scan the core package
 @ComponentScan(
@@ -38,6 +41,7 @@ import java.util.List;
 				@ComponentScan.Filter(value = FieldFormatter.class)
 		}
 )
+@EnableCaching
 public class BaseApplicationConfig {
 
 	@Bean()

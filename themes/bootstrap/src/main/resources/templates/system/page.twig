@@ -2,9 +2,11 @@
 {% set container = (theme.settings.fluid_container) ? 'container-fluid' : 'container' %}
 {% if regions['navigation'] %}
     {% block navbar %}
-        {% set navbar_classes = ['navbar', (theme.settings.navbar_inverse) ? 'navbar-inverse' : 'navbar-default', (theme.settings.navbar_position) ? concat('navbar-', theme.settings.navbar_position) : container] %}
-        <nav role="navigation" class="{{ navbar_classes }}">
-            {{ render(regions['navigation']) }}
+        {% set navbar_classes = ['navbar', (theme.settings.navbar_inverse) ? 'navbar-inverse' : 'navbar-default', (theme.settings.navbar_position) ? concat('navbar-', theme.settings.navbar_position) : 'navbar-static-top'] %}
+        <nav role="navigation" class="{{ navbar_classes|join(' ') }}">
+            <div class="{{ container }}">
+                {{ render(regions['navigation']) }}
+            </div>
         </nav>
     {% endblock %}
 {% endif %}

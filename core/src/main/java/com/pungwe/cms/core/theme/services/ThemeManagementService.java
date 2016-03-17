@@ -144,7 +144,7 @@ public class ThemeManagementService {
 
 				// Fetch the theme info
 				Theme themeInfo = c.getAnnotation(Theme.class);
-				ctx.setId("theme-application-contex-" + themeInfo.name());
+				ctx.setId("theme-application-context-" + themeInfo.name());
 
 				// Find the parent application context for the theme and set it
 				ApplicationContext parent = getThemeContext(themeInfo.parent());
@@ -304,7 +304,6 @@ public class ThemeManagementService {
 			// do nothing
 		}
 		List<String> themePaths = new ArrayList<>(1);
-//		themePaths.add(prefix + config.getName() + "/" + viewName + suffix);
 		if (url != null) {
 			themePaths.add(url.toExternalForm());
 		}
@@ -374,5 +373,12 @@ public class ThemeManagementService {
 			return null;
 		}
 		return config.getName();
+	}
+
+	public List<ApplicationContext> getThemeContextsAsList() {
+		if (this.themeContexts == null) {
+			return new LinkedList<>();
+		}
+		return themeContexts.values().stream().collect(Collectors.toList());
 	}
 }

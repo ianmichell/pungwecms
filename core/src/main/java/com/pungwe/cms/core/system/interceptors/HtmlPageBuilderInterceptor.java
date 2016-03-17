@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.system.interceptors;
 
 import com.pungwe.cms.core.system.services.HtmlWrapperService;
+import com.pungwe.cms.core.utils.services.HookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class HtmlPageBuilderInterceptor extends HandlerInterceptorAdapter {
 		if (modelAndView == null || !modelAndView.hasView()) {
 			return;
 		}
+
 		// rewrites the model and view to wrap it with HtmlElement and PageElement.
 		// This will work with JSON response as well, if you have client side executed themes
 		htmlWrapperService.wrapModelAndView(request, modelAndView);

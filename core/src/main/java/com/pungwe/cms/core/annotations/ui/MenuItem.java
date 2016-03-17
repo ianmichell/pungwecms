@@ -22,4 +22,7 @@ public @interface MenuItem {
 
 	String route() default "";
 
+	String menu();
+
+	int weight() default 0;
 }

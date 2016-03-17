@@ -7,6 +7,7 @@ import com.lyncode.jtwig.util.render.RenderHttpServletResponse;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.services.RenderedElementService;
 import com.pungwe.cms.core.utils.services.HookService;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by ian on 14/02/2016.
@@ -63,7 +65,16 @@ public class TemplateFunctions {
 			RenderedElementService renderedElementService = applicationContext.getBean(RenderedElementService.class);
 			HookService hookService = applicationContext.getBean(HookService.class);
 			hookService.executeHook("element_alter", input);
-			ModelAndView modelAndView = renderedElementService.convertToModelAndView(input);
+			final MutableObject<RenderedElement> elementToRender = new MutableObject<>(input);
+			if (!input.isWrapped()) {
+				hookService.executeHook("element_wrapper", (c, o) -> {
+					if (o != null && o instanceof RenderedElement && !input.isWrapped()) {
+						input.setWrapped(true);
+						elementToRender.setValue((RenderedElement) o);
+					}
+				}, input);
+			}
+			ModelAndView modelAndView = renderedElementService.convertToModelAndView(elementToRender.getValue());
 			return render(request, modelAndView);
 		} catch (Exception ex) {
 			throw new FunctionException(ex);

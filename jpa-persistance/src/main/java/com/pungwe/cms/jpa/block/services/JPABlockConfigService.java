@@ -37,6 +37,7 @@ public class JPABlockConfigService implements BlockConfigService<BlockConfigImpl
 		blockConfig.setRegion(region);
 		blockConfig.setTheme(theme);
 		blockConfig.setWeight(weight);
+		blockConfig.setSettings(defaultSettings);
 		// Save the block!
 		blockConfigRepository.save(blockConfig);
 	}

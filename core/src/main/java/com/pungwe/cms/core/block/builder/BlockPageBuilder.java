@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.block.builder;
 
 import com.pungwe.cms.core.annotations.stereotypes.Block;
+import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.block.services.BlockManagementService;
@@ -11,7 +12,9 @@ import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.system.builder.PageBuilder;
 import com.pungwe.cms.core.system.element.templates.PageElement;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
+import com.pungwe.cms.core.utils.services.HookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,6 +40,9 @@ public class BlockPageBuilder implements PageBuilder {
 	@Autowired
 	protected ModuleManagementService moduleManagementService;
 
+	@Autowired
+	protected HookService hookService;
+
 	@Override
 	public void build(final HttpServletRequest request, final PageElement page, final Map<String, Object> model) {
 		// Fetch the relevant block config for the current theme...
@@ -49,7 +55,10 @@ public class BlockPageBuilder implements PageBuilder {
 				if (!block.isPresent()) {
 					return;
 				}
-				elements.addAll(buildBlock(blockConfig, block.get(), model));
+				RenderedElement blockElement = blockManagementService.buildBlockElement(blockConfig, block.get(), model);
+				if (blockElement != null) {
+					elements.add(blockElement);
+				}
 			});
 			page.addRegion(entry.getKey(), elements);
 		});
@@ -66,16 +75,10 @@ public class BlockPageBuilder implements PageBuilder {
 		if (!hasContentBlock.get() && blocksByRegion.containsKey("content") && model.containsKey("content")) {
 			Object content = model.get("content");
 			if (content != null && content instanceof RenderedElement) {
-				page.addRegion("content", (RenderedElement)content);
+				page.addRegion("content", (RenderedElement) content);
 			} else if (content instanceof ModelAndView) {
-				page.addRegion("content", new ModelAndViewElement((ModelAndView)content));
+				page.addRegion("content", new ModelAndViewElement((ModelAndView) content));
 			}
 		}
-	}
-
-	private List<RenderedElement> buildBlock(BlockConfig blockConfig, BlockDefinition block, final Map<String, Object> model) {
-		List<RenderedElement> elements = new LinkedList<>();
-		block.build(elements, blockConfig.getSettings(), model);
-		return elements;
 	}
 }

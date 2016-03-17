@@ -1,7 +1,9 @@
 package com.pungwe.cms.core.element;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
+import com.pungwe.cms.core.element.basic.PlainTextElement;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -24,4 +26,28 @@ public interface RenderedElement {
 
 	String getAttribute(String name);
 
+	String getAttribute(String name, String defaultValue);
+
+	boolean isWrapped();
+
+	void setWrapped(boolean parent);
+
+	List<String> getClasses();
+
+	default void setClasses(String... classes) {
+		setClasses(Arrays.asList(classes));
+	}
+
+	default void addClass(String... c) {
+		addClass(Arrays.asList(c));
+	}
+
+	default void addClass(List<String> c) {
+		List<String> classes = getClasses();
+		if (classes != null) {
+			classes.addAll(c);
+		}
+	}
+
+	void setClasses(List<String> classes);
 }

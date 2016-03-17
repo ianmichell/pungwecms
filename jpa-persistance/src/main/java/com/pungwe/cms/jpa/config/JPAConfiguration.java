@@ -2,11 +2,13 @@ package com.pungwe.cms.jpa.config;
 
 import com.pungwe.cms.core.annotations.stereotypes.PersistenceDriver;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -34,8 +36,10 @@ import java.util.Properties;
 @Import({
 		DataSourceAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class,
-		HibernateJpaAutoConfiguration.class
+		HibernateJpaAutoConfiguration.class,
+		CacheAutoConfiguration.class
 })
+@EnableCaching
 public class JPAConfiguration {
 
 	@Value("${jpa.driver.class}")

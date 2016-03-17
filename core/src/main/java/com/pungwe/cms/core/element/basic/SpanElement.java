@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
+import com.pungwe.cms.core.element.AbstractContentElement;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,7 +13,7 @@ import java.util.LinkedList;
  * Created by ian on 03/03/2016.
  */
 @ThemeInfo("basic/span")
-public class SpanElement extends AbstractRenderedElement {
+public class SpanElement extends AbstractContentElement {
 
 	protected RenderedElement content;
 
@@ -20,25 +21,12 @@ public class SpanElement extends AbstractRenderedElement {
 
 	}
 
-	public SpanElement(String content) {
-		this(new PlainTextElement(content));
-	}
-
-	public SpanElement(RenderedElement content) {
+	public SpanElement(String... content) {
 		setContent(content);
 	}
 
-	@ModelAttribute("content")
-	public RenderedElement getContent() {
-		return content;
-	}
-
-	public void setContent(RenderedElement content) {
-		this.content = content;
-	}
-
-	public void setContent(String content) {
-		setContent(new PlainTextElement(content));
+	public SpanElement(RenderedElement... content) {
+		setContent(content);
 	}
 
 	@Override
