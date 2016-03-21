@@ -2,7 +2,6 @@ package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractContentElement;
-import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +15,7 @@ import java.util.Collection;
 @ThemeInfo("form/label")
 public class LabelElement extends AbstractContentElement {
 
-	protected AbstractFormElement<?> forElement;
+	protected AbstractFormRenderedElement<?> forElement;
 
 	public LabelElement() {
 
@@ -30,20 +29,20 @@ public class LabelElement extends AbstractContentElement {
 		setContent(content);
 	}
 
-	public LabelElement(String label, AbstractFormElement<?> forElement) {
+	public LabelElement(String label, AbstractFormRenderedElement<?> forElement) {
 		this(new PlainTextElement(label), forElement);
 	}
 
-	public LabelElement(RenderedElement content, AbstractFormElement<?> forElement) {
+	public LabelElement(RenderedElement content, AbstractFormRenderedElement<?> forElement) {
 		setContent(content);
 		this.forElement = forElement;
 	}
 
-	public AbstractFormElement<?> getForElement() {
+	public AbstractFormRenderedElement<?> getForElement() {
 		return forElement;
 	}
 
-	public void setForElement(AbstractFormElement<?> forElement) {
+	public void setForElement(AbstractFormRenderedElement<?> forElement) {
 		this.forElement = forElement;
 	}
 

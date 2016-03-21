@@ -1,6 +1,8 @@
 package com.pungwe.cms.core.module.config;
 
 import com.pungwe.cms.core.config.BaseApplicationConfig;
+import com.pungwe.cms.core.form.processors.FormHandlerMappingPostProcessor;
+import com.pungwe.cms.core.form.processors.FormModelAttributeMethodProcessor;
 import com.pungwe.cms.core.system.interceptors.HtmlPageBuilderInterceptor;
 import com.pungwe.cms.core.theme.PungweJtwigViewResolver;
 import com.pungwe.cms.core.theme.cache.ThemeViewCache;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -36,6 +39,7 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 
 import javax.servlet.MultipartConfigElement;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by ian on 12/03/2016.
@@ -89,13 +93,13 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
 	}
 
 	@Bean
-	public LocaleResolver localeResolver() {
-		return new SessionLocaleResolver();
+	public FormHandlerMappingPostProcessor formHandlerMappingPostProcessor() {
+		return new FormHandlerMappingPostProcessor();
 	}
 
 	@Bean
-	public DispatcherServlet dispatcherServlet() {
-		return new DispatcherServlet();
+	public LocaleResolver localeResolver() {
+		return new SessionLocaleResolver();
 	}
 
 	@Bean

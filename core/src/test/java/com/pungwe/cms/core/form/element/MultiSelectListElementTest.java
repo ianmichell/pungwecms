@@ -43,7 +43,7 @@ public class MultiSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		MultiSelectListElement element = new MultiSelectListElement();
+		MultiSelectListRenderedElement element = new MultiSelectListRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue(Arrays.asList("default value", "some value"));
 		element.setName("string");
@@ -56,7 +56,7 @@ public class MultiSelectListElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("Option 1 is not correct", "some value", doc.select("select option").get(0).val());
 		assertEquals("Option 2 is not correct", "default value", doc.select("select option").get(1).val());
 		assertEquals("Option 3 is not correct", "another value", doc.select("select option").get(2).val());
@@ -73,7 +73,7 @@ public class MultiSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		MultiSelectListElement element = new MultiSelectListElement();
+		MultiSelectListRenderedElement element = new MultiSelectListRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue(Arrays.asList("default value", "some value"));
 		element.setName("string");
@@ -87,7 +87,7 @@ public class MultiSelectListElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("Option 1 is not correct", "some value", doc.select("select option").get(0).val());
 		assertEquals("Option 2 is not correct", "default value", doc.select("select option").get(1).val());
 		assertEquals("Option 3 is not correct", "another value", doc.select("select option").get(2).val());

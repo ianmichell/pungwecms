@@ -40,7 +40,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		StringRenderedElement element = new StringRenderedElement();
 		element.setValue("Test");
 		element.setName("string");
 		element.setLabel("Label");
@@ -48,7 +48,7 @@ public class StringElementTest extends AbstractWebTest {
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Attributes has content", "", element.getAttributesAsString());
-		assertEquals("Name does not match", "string[0]", doc.select("input[type=text]").first().attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.select("input[type=text]").first().attr("name"));
 		assertEquals("String Value does not match", "Test", doc.select("input[type=text]").first().attr("value"));
 		assertEquals("String element size is not 60", "60", doc.select("input[type=text]").first().attr("size"));
 	}
@@ -58,7 +58,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		StringRenderedElement element = new StringRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -67,7 +67,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("String Value does not match", "Default Value", doc.getElementById("string").attr("value"));
 		assertEquals("String element size is not 60", "60", doc.getElementById("string").attr("size"));
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
@@ -79,17 +79,17 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		StringRenderedElement element = new StringRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
 		element.setLabel(new LabelElement("String"));
 		element.setRequired(true);
-		element.setDetla(1);
+		element.setDelta(1);
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[1]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[1].value", doc.getElementById("string").attr("name"));
 		assertEquals("String Value does not match", "Default Value", doc.getElementById("string").attr("value"));
 		assertEquals("String element size is not 60", "60", doc.getElementById("string").attr("size"));
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
@@ -101,7 +101,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		StringRenderedElement element = new StringRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -110,7 +110,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("String Value does not match", "not default", doc.getElementById("string").attr("value"));
 		assertEquals("String element size is not 60", "60", doc.getElementById("string").attr("size"));
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
@@ -122,7 +122,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		StringRenderedElement element = new StringRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -131,7 +131,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("String Value does not match", "Default Value", doc.getElementById("string").attr("value"));
 		assertEquals("String element size is not 20", "20", doc.getElementById("string").attr("size"));
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));

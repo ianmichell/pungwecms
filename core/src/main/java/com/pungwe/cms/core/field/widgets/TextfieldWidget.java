@@ -7,7 +7,7 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidgetDefinition;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
-import com.pungwe.cms.core.form.element.StringElement;
+import com.pungwe.cms.core.form.element.StringRenderedElement;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,7 @@ public class TextfieldWidget implements FieldWidgetDefinition {
 	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
 
 		// Text Field is a type of String element
-		StringElement element = new StringElement();
+		StringRenderedElement element = new StringRenderedElement();
 		element.setLabel(field.getLabel());
 		element.setName("value");
 		element.setRequired(field.isRequired());
@@ -41,7 +41,7 @@ public class TextfieldWidget implements FieldWidgetDefinition {
 	@Override
 	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
 
-		StringElement size = new StringElement();
+		StringRenderedElement size = new StringRenderedElement();
 		size.setName("size");
 		size.setLabel("Size");
 		size.setDefaultValue(60 + "");
@@ -51,7 +51,7 @@ public class TextfieldWidget implements FieldWidgetDefinition {
 		elements.add(size);
 
 		// Text Field is a type of String element
-		StringElement defaultValue = new StringElement();
+		StringRenderedElement defaultValue = new StringRenderedElement();
 		defaultValue.setLabel("Default Value");
 		defaultValue.setName("defaultValue");
 		defaultValue.setDefaultValue("");

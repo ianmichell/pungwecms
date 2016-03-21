@@ -63,9 +63,9 @@ public class PrimaryMenuBlock implements BlockDefinition {
 		// Build the menu!
 		List<MenuConfig> menuItems = null;
 		if (menu == "system") {
-			menuItems = menuManagementService.getMenu(menu, "admin");
+			menuItems = menuManagementService.getMenuItems(menu, "admin");
 		} else {
-			menuItems = menuManagementService.getTopLevelMenu(menu);
+			menuItems = menuManagementService.getTopLevelMenuItems(menu);
 		}
 
 		if (menuItems.isEmpty()) {

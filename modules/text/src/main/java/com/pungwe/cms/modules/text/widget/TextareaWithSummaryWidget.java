@@ -6,7 +6,7 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.widgets.TextareaWidget;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
-import com.pungwe.cms.core.form.element.TextareaElement;
+import com.pungwe.cms.core.form.element.TextareaRenderedElement;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class TextareaWithSummaryWidget extends TextareaWidget {
 	@Override
 	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
 
-		TextareaElement element = new TextareaElement();
+		TextareaRenderedElement element = new TextareaRenderedElement();
 		element.setLabel(field.getLabel());
 		element.setName("value");
 		element.setRequired(field.isRequired());
@@ -32,7 +32,7 @@ public class TextareaWithSummaryWidget extends TextareaWidget {
 
 		// FIXME: Switch for show summary
 		// Text Field is a type of String element
-		TextareaElement summary = new TextareaElement();
+		TextareaRenderedElement summary = new TextareaRenderedElement();
 		summary.setLabel(field.getLabel() + " Summary");
 		summary.setName("summary");
 		summary.setRequired(field.isRequired());

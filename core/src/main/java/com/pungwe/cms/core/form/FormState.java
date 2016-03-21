@@ -1,22 +1,61 @@
 package com.pungwe.cms.core.form;
 
+import org.springframework.beans.AbstractNestablePropertyAccessor;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.validation.Errors;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ian on 08/01/2016.
  */
-public interface FormState<T> {
+public class FormState extends AbstractNestablePropertyAccessor {
 
-	T getFormData();
+	protected Map<String, Object> formData;
+	protected Errors errors;
+	protected boolean rebuild;
 
-	void setFormData(T data);
+	public Map<String, Object> getFormData() {
+		if (formData == null) {
+			formData = new HashMap<>();
+		}
+		return formData;
+	}
 
-	Errors getErrors();
+	public void setFormData(Map<String, Object> formData) {
+		this.formData = formData;
+	}
 
-	void setErrors(Errors errors);
+	public Errors getErrors() {
+		return errors;
+	}
 
-	boolean needsRebuild();
+	public void setErrors(Errors errors) {
+		this.errors = errors;
+	}
 
-	void setRebuild(boolean rebuild);
+	public boolean isRebuild() {
+		return rebuild;
+	}
 
+	public void setRebuild(boolean rebuild) {
+		this.rebuild = rebuild;
+	}
+
+	@Override
+	protected PropertyHandler getLocalPropertyHandler(String propertyName) {
+		return null;
+	}
+
+	@Override
+	protected AbstractNestablePropertyAccessor newNestedPropertyAccessor(Object object, String nestedPath) {
+		return null;
+	}
+
+	@Override
+	protected NotWritablePropertyException createNotWritablePropertyException(String propertyName) {
+		return null;
+	}
 }

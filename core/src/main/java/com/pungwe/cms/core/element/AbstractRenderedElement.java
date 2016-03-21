@@ -1,7 +1,5 @@
 package com.pungwe.cms.core.element;
 
-import com.pungwe.cms.core.form.element.AbstractFormElement;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;

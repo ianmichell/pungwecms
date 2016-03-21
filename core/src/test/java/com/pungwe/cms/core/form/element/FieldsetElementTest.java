@@ -43,7 +43,7 @@ public class FieldsetElementTest extends AbstractWebTest {
 
 		FieldsetElement fieldsetElement = new FieldsetElement();
 		fieldsetElement.setLegend("Fieldset");
-		fieldsetElement.addAttribute("class", "myclass");
+		fieldsetElement.addClass("myclass");
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), fieldsetElement);
 		Document doc = Jsoup.parse(output);
@@ -57,25 +57,25 @@ public class FieldsetElementTest extends AbstractWebTest {
 
 		FieldsetElement fieldsetElement = new FieldsetElement();
 		fieldsetElement.setLegend("Fieldset");
-		fieldsetElement.addAttribute("class", "myclass");
+		fieldsetElement.addClass("myclass");
 
-		StringElement child1 = new StringElement();
+		StringRenderedElement child1 = new StringRenderedElement();
 		child1.setLabel("Child 1");
 		child1.setName("child");
 
-		StringElement child2 = new StringElement();
+		StringRenderedElement child2 = new StringRenderedElement();
 		child2.setName("child");
 		child2.setLabel("Child 2");
-		child2.setDetla(1);
+		child2.setDelta(1);
 
-		fieldsetElement.addChild(child1, child2);
+		fieldsetElement.addContent(child1, child2);
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), fieldsetElement);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Fieldset element text does not match", "Fieldset", doc.select("fieldset legend").first().text());
 		assertEquals("Fieldset element class is not correct", "myclass", doc.select("fieldset").first().attr("class"));
-		assertEquals("Fieldset child does not match", "child[0]", doc.select("fieldset input[type=text]").get(0).attr("name"));
-		assertEquals("Fieldset child does not match", "child[1]", doc.select("fieldset input[type=text]").get(1).attr("name"));
+		assertEquals("Fieldset child does not match", "child[0].value", doc.select("fieldset input[type=text]").get(0).attr("name"));
+		assertEquals("Fieldset child does not match", "child[1].value", doc.select("fieldset input[type=text]").get(1).attr("name"));
 	}
 
 	@Test
@@ -84,24 +84,24 @@ public class FieldsetElementTest extends AbstractWebTest {
 
 		FieldsetElement fieldsetElement = new FieldsetElement();
 		fieldsetElement.setLegend("Fieldset");
-		fieldsetElement.addAttribute("class", "myclass");
+		fieldsetElement.addClass("myclass");
 
-		StringElement child1 = new StringElement();
+		StringRenderedElement child1 = new StringRenderedElement();
 		child1.setLabel("Child 1");
 		child1.setName("child");
 
-		StringElement child2 = new StringElement();
+		StringRenderedElement child2 = new StringRenderedElement();
 		child2.setName("child");
 		child2.setLabel("Child 2");
-		child2.setDetla(1);
+		child2.setDelta(1);
 
-		fieldsetElement.setChildren(Arrays.asList(child1, child2));
+		fieldsetElement.setContent(Arrays.asList(child1, child2));
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), fieldsetElement);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Fieldset element text does not match", "Fieldset", doc.select("fieldset legend").first().text());
 		assertEquals("Fieldset element class is not correct", "myclass", doc.select("fieldset").first().attr("class"));
-		assertEquals("Fieldset child does not match", "child[0]", doc.select("fieldset input[type=text]").get(0).attr("name"));
-		assertEquals("Fieldset child does not match", "child[1]", doc.select("fieldset input[type=text]").get(1).attr("name"));
+		assertEquals("Fieldset child does not match", "child[0].value", doc.select("fieldset input[type=text]").get(0).attr("name"));
+		assertEquals("Fieldset child does not match", "child[1].value", doc.select("fieldset input[type=text]").get(1).attr("name"));
 	}
 }

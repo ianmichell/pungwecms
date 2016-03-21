@@ -1,10 +1,10 @@
 {{ render(label) }}
-<select name="{{ name }}"{{ attributes }}{{ printAttribute("class", join(classes)) }} multiple>
+<select name="{{ name }}"{{ attributes }}{{ printAttribute("class", join(classes, ' ')) }} multiple>
     {%  for option in options %}
-        {% if value.contains(option.value) %}
-            <option value="{{ option.value }}" selected>{{ option.key }}</option>
+        {% if value.contains(option.key) %}
+            <option value="{{ option.key }}" selected>{{ option.value }}</option>
         {%  else %}
-            <option value="{{ option.value }}">{{ option.key }}</option>
+            <option value="{{ option.key }}">{{ option.value }}</option>
         {% endif %}
     {% endfor %}
 </select>

@@ -39,7 +39,7 @@ public class SpanElementTest extends AbstractWebTest {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 		SpanElement element = new SpanElement();
 		element.setContent("Test");
-		element.addAttribute("class", "myclass");
+		element.addClass("myclass");
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Element class is incorrect", "myclass", doc.body().select("span").first().className());
@@ -50,7 +50,7 @@ public class SpanElementTest extends AbstractWebTest {
 	 public void testWithStringConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 		SpanElement element = new SpanElement("Test");
-		element.addAttribute("class", "myclass");
+		element.addClass("myclass");
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Element class is incorrect", "myclass", doc.body().select("span").first().className());

@@ -47,7 +47,7 @@ public class HtmlElementTest extends AbstractWebTest {
 
 		HtmlElement element = new HtmlElement();
 		element.setTitle(Arrays.asList("Title"));
-		element.addAttribute("class", "page");
+		element.addClass("page");
 		element.addBodyAttribute("class", "body");
 		element.addToCss(new LinkElement("stylesheet", "styles.css"));
 		element.addToHead(new MetaElement("description", "HTML Element Test"));
@@ -56,16 +56,16 @@ public class HtmlElementTest extends AbstractWebTest {
 
 		// Page Content
 		SpanElement top = new SpanElement("Top");
-		top.addAttribute("class", "top");
+		top.addClass("top");
 		element.addToPageTop(top);
 
 		SpanElement content = new SpanElement("Content");
 		content.setHtmlId("main_content");
-		content.addAttribute("class", "content");
+		content.addClass("content");
 		element.addToPageContent(content);
 
 		SpanElement bottom = new SpanElement("Bottom");
-		bottom.addAttribute("class", "bottom");
+		bottom.addClass("bottom");
 		element.addToPageBottom(bottom);
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), element);
@@ -102,7 +102,7 @@ public class HtmlElementTest extends AbstractWebTest {
 		element.setBodyAttributes(bodyAttributes);
 
 		element.setTitle(Arrays.asList("Title"));
-		element.addAttribute("class", "page");
+		element.addClass("page");
 		element.addBodyAttribute("class", "body");
 		element.addToCss(new LinkElement("stylesheet", "styles.css"));
 		element.addToHead(new MetaElement("description", "HTML Element Test"));
@@ -111,16 +111,16 @@ public class HtmlElementTest extends AbstractWebTest {
 
 		// Page Content
 		SpanElement top = new SpanElement("Top");
-		top.addAttribute("class", "top");
+		top.addClass("top");
 		element.addToPageTop(top);
 
 		SpanElement content = new SpanElement("Content");
 		content.setHtmlId("main_content");
-		content.addAttribute("class", "content");
+		content.addClass("content");
 		element.addToPageContent(content);
 
 		SpanElement bottom = new SpanElement("Bottom");
-		bottom.addAttribute("class", "bottom");
+		bottom.addClass("bottom");
 		element.addToPageBottom(bottom);
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), element);

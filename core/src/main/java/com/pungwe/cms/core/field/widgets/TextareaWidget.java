@@ -6,8 +6,8 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidgetDefinition;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
-import com.pungwe.cms.core.form.element.StringElement;
-import com.pungwe.cms.core.form.element.TextareaElement;
+import com.pungwe.cms.core.form.element.StringRenderedElement;
+import com.pungwe.cms.core.form.element.TextareaRenderedElement;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,7 @@ public class TextareaWidget implements FieldWidgetDefinition {
 	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
 
 		// Text Field is a type of String element
-		TextareaElement element = new TextareaElement();
+		TextareaRenderedElement element = new TextareaRenderedElement();
 		element.setLabel(field.getLabel());
 		element.setName("value");
 		element.setRequired(field.isRequired());
@@ -42,7 +42,7 @@ public class TextareaWidget implements FieldWidgetDefinition {
 	@Override
 	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
 
-		StringElement rows = new StringElement();
+		StringRenderedElement rows = new StringRenderedElement();
 		rows.setName("rows");
 		rows.setLabel("Rows");
 		rows.setDefaultValue(5 + "");

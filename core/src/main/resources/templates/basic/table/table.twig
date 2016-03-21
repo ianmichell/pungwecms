@@ -1,5 +1,5 @@
 {% block table %}
-<table{{ attributes }}{{ printAttribute("class", join(classes)) }}>
+<table{{ attributes }}{{ printAttribute("class", join(classes, ' ')) }}>
     {%  if caption %}
     <caption>{{ render(caption) }}</caption>
     {%  endif %}

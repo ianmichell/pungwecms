@@ -1,10 +1,10 @@
 {{ render(label) }}
-<select name="{{ name }}"{{ attributes }}{{ printAttribute("class", join(classes)) }}>
+<select name="{{ name }}"{{ attributes }}{{ printAttribute("class", join(classes, ' ')) }}>
     {%  for option in options %}
-        {% if option.value == value %}
-        <option value="{{ option.value }}" selected>{{ option.key }}</option>
+        {% if option.key == value %}
+        <option value="{{ option.key }}" selected>{{ option.value }}</option>
         {%  else %}
-        <option value="{{ option.value }}">{{ option.key }}</option>
+        <option value="{{ option.key }}">{{ option.value }}</option>
         {% endif %}
     {% endfor %}
 </select>

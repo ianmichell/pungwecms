@@ -1,4 +1,4 @@
-<tr{{ attributes }}{{ printAttribute("class", join(classes)) }}>
+<tr{{ attributes }}{{ printAttribute("class", join(classes, ' ')) }}>
     {%  for col in columns %}
         {{ render(col) }}
     {%  endfor %}

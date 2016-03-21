@@ -6,6 +6,6 @@ import com.pungwe.cms.core.annotations.ui.ThemeInfo;
  * Created by ian on 20/02/2016.
  */
 @ThemeInfo("form/hidden")
-public class HiddenElement extends AbstractFormElement<String> {
+public class HiddenRenderedElement extends AbstractFormRenderedElement<String> {
 
 }

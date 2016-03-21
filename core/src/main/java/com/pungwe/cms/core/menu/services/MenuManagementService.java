@@ -3,7 +3,9 @@ package com.pungwe.cms.core.menu.services;
 import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.annotations.ui.MenuItems;
 import com.pungwe.cms.core.menu.MenuConfig;
+import com.pungwe.cms.core.menu.MenuInfo;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
+import com.pungwe.cms.core.system.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -17,6 +19,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by ian on 08/03/2016.
@@ -26,6 +30,9 @@ public class MenuManagementService {
 
 	@Autowired
 	MenuConfigService<? extends MenuConfig> menuConfigService;
+
+	@Autowired
+	MenuInfoService menuInfoService;
 
 	@Autowired
 	ModuleManagementService moduleManagementService;
@@ -165,15 +172,51 @@ public class MenuManagementService {
 		return config;
 	}
 
+	public List<MenuInfo> listMenusByLanguage(String language) {
+		return menuInfoService.findAllByLanguage(language);
+	}
+
+	public Optional<MenuInfo> getMenu(String id, String language) {
+		return menuInfoService.getMenu(id, language);
+	}
+
+	public void saveMenuInfo(MenuInfo... menuInfo) {
+		menuInfoService.save(menuInfo);
+	}
+
 	public List<MenuConfig> getMenuTreeByUrl(String menu, String url) {
 		return (List<MenuConfig>) menuConfigService.menuTreeForUrl(menu, url);
 	}
 
-	public List<MenuConfig> getTopLevelMenu(String menu) {
+	public List<MenuConfig> getTopLevelMenuItems(String menu) {
 		return (List<MenuConfig>)menuConfigService.getTopLevelMenuItems(menu);
 	}
 
-	public List<MenuConfig> getMenu(String menu, String parent) {
+	public List<MenuConfig> getMenuItems(String menu, String parent) {
 		return (List<MenuConfig>)menuConfigService.getMenuItems(menu, parent);
+	}
+
+	public MenuInfo createMenu(String title, String description, String language) {
+		MenuInfo info = menuInfoService.newInstance(UUID.randomUUID().toString(), title, description, language);
+		List<MenuInfo> result = menuInfoService.save(info);
+		if (result.isEmpty()) {
+			throw new RuntimeException("Could not create menu: " + title);
+		}
+		return result.get(0);
+	}
+
+	public MenuInfo updateMenu(String id, String title, String description, String language) {
+		MenuInfo info = getMenu(id, language).orElse(null);
+		if (info == null) {
+			throw new ResourceNotFoundException("Menu with id: " + id + " not found");
+		}
+		info.setTitle(title);
+		info.setDescription(description);
+		info.setLanguage(language);
+		List<MenuInfo> result = menuInfoService.save(info);
+		if (result.isEmpty()) {
+			throw new RuntimeException("Could not update menu: " + id);
+		}
+		return result.get(0);
 	}
 }

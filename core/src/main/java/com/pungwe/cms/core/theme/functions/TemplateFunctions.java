@@ -64,7 +64,6 @@ public class TemplateFunctions {
 		try {
 			RenderedElementService renderedElementService = applicationContext.getBean(RenderedElementService.class);
 			HookService hookService = applicationContext.getBean(HookService.class);
-			hookService.executeHook("element_alter", input);
 			final MutableObject<RenderedElement> elementToRender = new MutableObject<>(input);
 			if (!input.isWrapped()) {
 				hookService.executeHook("element_wrapper", (c, o) -> {
@@ -74,6 +73,7 @@ public class TemplateFunctions {
 					}
 				}, input);
 			}
+			hookService.executeHook("element_alter", elementToRender.getValue());
 			ModelAndView modelAndView = renderedElementService.convertToModelAndView(elementToRender.getValue());
 			return render(request, modelAndView);
 		} catch (Exception ex) {

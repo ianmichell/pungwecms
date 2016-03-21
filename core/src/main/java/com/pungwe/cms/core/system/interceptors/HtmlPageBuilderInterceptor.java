@@ -31,6 +31,10 @@ public class HtmlPageBuilderInterceptor extends HandlerInterceptorAdapter {
 			return;
 		}
 
+		if (modelAndView.getViewName().startsWith("forward:") || modelAndView.getViewName().startsWith("redirect:")) {
+			return;
+		}
+
 		// rewrites the model and view to wrap it with HtmlElement and PageElement.
 		// This will work with JSON response as well, if you have client side executed themes
 		htmlWrapperService.wrapModelAndView(request, modelAndView);

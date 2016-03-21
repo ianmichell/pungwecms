@@ -51,24 +51,24 @@ public class FormElementTest extends AbstractWebTest {
 
 		FieldsetElement fieldsetElement1 = new FieldsetElement();
 		fieldsetElement1.setLegend("My Form");
-		fieldsetElement1.addAttribute("class", "myclass");
+		fieldsetElement1.addClass("myclass");
 
-		StringElement child1 = new StringElement();
+		StringRenderedElement child1 = new StringRenderedElement();
 		child1.setHtmlId("string");
 		child1.setLabel("Child 1");
 		child1.setName("child");
 
-		fieldsetElement1.addChild(child1);
+		fieldsetElement1.addContent(child1);
 
 		FieldsetElement fieldsetElement2 = new FieldsetElement();
-		fieldsetElement2.addAttribute("class", "form-actions");
+		fieldsetElement2.addClass("form-actions");
 
-		InputButtonElement child2 = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "Submit");
+		InputButtonRenderedElement child2 = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Submit");
 		child2.setName("submit");
 
-		fieldsetElement2.addChild(child2);
+		fieldsetElement2.addContent(child2);
 
-		element.addChild(fieldsetElement1, fieldsetElement2);
+		element.addContent(fieldsetElement1, fieldsetElement2);
 
 		TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
@@ -93,10 +93,10 @@ public class FormElementTest extends AbstractWebTest {
 
 		assertEquals("Fieldset element text does not match", "My Form", doc.select("fieldset legend").first().text());
 		assertEquals("Fieldset element class is not correct", "myclass", doc.select("fieldset").get(0).attr("class"));
-		assertEquals("Fieldset child does not match", "child[0]", doc.select("fieldset input[type=text]").get(0).attr("name"));
+		assertEquals("Fieldset child does not match", "child[0].value", doc.select("fieldset input[type=text]").get(0).attr("name"));
 
 		assertEquals("Fieldset element class is not correct", "form-actions", doc.select("fieldset").get(1).attr("class"));
-		assertEquals("Fieldset child does not match", "submit[0]", doc.select("fieldset input[type=submit]").first().attr("name"));
+		assertEquals("Fieldset child does not match", "submit", doc.select("fieldset input[type=submit]").first().attr("name"));
 	}
 
 	@Test
@@ -113,24 +113,24 @@ public class FormElementTest extends AbstractWebTest {
 
 		FieldsetElement fieldsetElement1 = new FieldsetElement();
 		fieldsetElement1.setLegend("My Form");
-		fieldsetElement1.addAttribute("class", "myclass");
+		fieldsetElement1.addClass("myclass");
 
-		StringElement child1 = new StringElement();
+		StringRenderedElement child1 = new StringRenderedElement();
 		child1.setHtmlId("string");
 		child1.setLabel("Child 1");
 		child1.setName("child");
 
-		fieldsetElement1.addChild(child1);
+		fieldsetElement1.addContent(child1);
 
 		FieldsetElement fieldsetElement2 = new FieldsetElement();
-		fieldsetElement2.addAttribute("class", "form-actions");
+		fieldsetElement2.addClass("form-actions");
 
-		InputButtonElement child2 = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "Submit");
+		InputButtonRenderedElement child2 = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Submit");
 		child2.setName("submit");
 
-		fieldsetElement2.addChild(child2);
+		fieldsetElement2.addContent(child2);
 
-		element.setChildren(Arrays.asList(fieldsetElement1, fieldsetElement2));
+		element.setContent(Arrays.asList(fieldsetElement1, fieldsetElement2));
 
 		TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
@@ -155,9 +155,9 @@ public class FormElementTest extends AbstractWebTest {
 
 		assertEquals("Fieldset element text does not match", "My Form", doc.select("fieldset legend").first().text());
 		assertEquals("Fieldset element class is not correct", "myclass", doc.select("fieldset").get(0).attr("class"));
-		assertEquals("Fieldset child does not match", "child[0]", doc.select("fieldset input[type=text]").get(0).attr("name"));
+		assertEquals("Fieldset child does not match", "child[0].value", doc.select("fieldset input[type=text]").get(0).attr("name"));
 
 		assertEquals("Fieldset element class is not correct", "form-actions", doc.select("fieldset").get(1).attr("class"));
-		assertEquals("Fieldset child does not match", "submit[0]", doc.select("fieldset input[type=submit]").first().attr("name"));
+		assertEquals("Fieldset child does not match", "submit", doc.select("fieldset input[type=submit]").first().attr("name"));
 	}
 }

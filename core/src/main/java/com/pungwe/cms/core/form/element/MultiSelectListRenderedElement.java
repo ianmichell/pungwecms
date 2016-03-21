@@ -9,7 +9,7 @@ import java.util.*;
  * Created by ian on 25/02/2016.
  */
 @ThemeInfo("form/multi_select")
-public class MultiSelectListElement extends AbstractFormElement<List<String>> {
+public class MultiSelectListRenderedElement extends AbstractFormRenderedElement<List<String>> {
 
 	protected Map<String, String> options;
 
@@ -26,6 +26,6 @@ public class MultiSelectListElement extends AbstractFormElement<List<String>> {
 	}
 
 	public void addOption(String label, String value) {
-		this.getOptions().put(label, value);
+		this.getOptions().put(value, label);
 	}
 }

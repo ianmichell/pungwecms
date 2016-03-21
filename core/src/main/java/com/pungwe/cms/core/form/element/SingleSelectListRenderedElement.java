@@ -9,7 +9,7 @@ import java.util.*;
  * Created by ian on 09/01/2016.
  */
 @ThemeInfo("form/select")
-public class SingleSelectListElement extends AbstractFormElement<String> {
+public class SingleSelectListRenderedElement extends AbstractFormRenderedElement<String> {
 
 	protected Map<String, String> options;
 
@@ -26,6 +26,6 @@ public class SingleSelectListElement extends AbstractFormElement<String> {
 	}
 
 	public void addOption(String label, String value) {
-		this.getOptions().put(label, value);
+		this.getOptions().putIfAbsent(value, label);
 	}
 }

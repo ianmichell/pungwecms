@@ -42,14 +42,14 @@ public class HiddenElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		HiddenElement element = new HiddenElement();
+		HiddenRenderedElement element = new HiddenRenderedElement();
 		element.setHtmlId("hidden");
 		element.setDefaultValue("Default Value");
 		element.setName("hidden");
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "hidden[0]", doc.getElementById("hidden").attr("name"));
+		assertEquals("Name does not match", "hidden[0].value", doc.getElementById("hidden").attr("name"));
 		assertEquals("Hidden Value does not match", "Default Value", doc.getElementById("hidden").attr("value"));
 	}
 }

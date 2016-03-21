@@ -28,7 +28,7 @@ public class InstallController {
 					new TableElement.Header(new PlainTextElement("Operations"))
 			);
 			table.setCaption(new PlainTextElement("Table Caption"));
-			table.addAttribute("class", "table table-striped");
+			table.addClass("table table-striped");
 
 			model.addAttribute("title", "Pungwe CMS Installation");
 			model.addAttribute("content", table);

@@ -39,51 +39,51 @@ public class InputButtonElementTest extends AbstractWebTest {
 	/** Code Coverage */
 	@Test
 	public void testEnum() throws Exception {
-		InputButtonElement.InputButtonType[] values = InputButtonElement.InputButtonType.values();
-		assertArrayEquals(new InputButtonElement.InputButtonType[] {InputButtonElement.InputButtonType.SUBMIT, InputButtonElement.InputButtonType.RESET, InputButtonElement.InputButtonType.BUTTON}, values);
+		InputButtonRenderedElement.InputButtonType[] values = InputButtonRenderedElement.InputButtonType.values();
+		assertArrayEquals(new InputButtonRenderedElement.InputButtonType[] {InputButtonRenderedElement.InputButtonType.SUBMIT, InputButtonRenderedElement.InputButtonType.RESET, InputButtonRenderedElement.InputButtonType.BUTTON}, values);
 
 		// Value of (why it comes up in coverage report, I don't know...
-		assertEquals(InputButtonElement.InputButtonType.BUTTON, InputButtonElement.InputButtonType.valueOf("BUTTON"));
-		assertEquals(InputButtonElement.InputButtonType.RESET, InputButtonElement.InputButtonType.valueOf("RESET"));
-		assertEquals(InputButtonElement.InputButtonType.SUBMIT, InputButtonElement.InputButtonType.valueOf("SUBMIT"));
+		assertEquals(InputButtonRenderedElement.InputButtonType.BUTTON, InputButtonRenderedElement.InputButtonType.valueOf("BUTTON"));
+		assertEquals(InputButtonRenderedElement.InputButtonType.RESET, InputButtonRenderedElement.InputButtonType.valueOf("RESET"));
+		assertEquals(InputButtonRenderedElement.InputButtonType.SUBMIT, InputButtonRenderedElement.InputButtonType.valueOf("SUBMIT"));
 	}
 
 	@Test
 	public void testRenderInputButtonWithTypeConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		InputButtonElement element = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT);
+		InputButtonRenderedElement element = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT);
 		element.setName("button");
 		element.setValue("My Button");
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Button value is not correct", "My Button", doc.body().select("input[type=submit]").attr("value"));
-		assertEquals("Button name is not correct", "button[0]", doc.body().select("input[type=submit]").attr("name"));
+		assertEquals("Button name is not correct", "button", doc.body().select("input[type=submit]").attr("name"));
 	}
 
 	@Test
 	public void testRenderInputButtonWithTypeValueConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		InputButtonElement element = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "My Button");
+		InputButtonRenderedElement element = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "My Button");
 		element.setName("button");
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Button value is not correct", "My Button", doc.body().select("input[type=submit]").attr("value"));
-		assertEquals("Button name is not correct", "button[0]", doc.body().select("input[type=submit]").attr("name"));
+		assertEquals("Button name is not correct", "button", doc.body().select("input[type=submit]").attr("name"));
 	}
 
 	@Test
 	public void testRenderInputButtonWithTypeNameValueConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		InputButtonElement element = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "button", "My Button");
+		InputButtonRenderedElement element = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "button", "My Button");
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
 		assertEquals("Button value is not correct", "My Button", doc.body().select("input[type=submit]").attr("value"));
-		assertEquals("Button name is not correct", "button[0]", doc.body().select("input[type=submit]").attr("name"));
+		assertEquals("Button name is not correct", "button", doc.body().select("input[type=submit]").attr("name"));
 	}
 }

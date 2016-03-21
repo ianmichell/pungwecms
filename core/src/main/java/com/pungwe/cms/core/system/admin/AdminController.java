@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
@@ -47,14 +46,14 @@ public class AdminController {
 		return () -> {
 			DivElement element = new DivElement();
 			element.setHtmlId("admin_structure_menu");
-			element.addAttribute("class", "admin-list");
-			List<MenuConfig> menuItems = menuManagementService.getMenu("system", "admin.structure");
+			element.addClass("admin-list");
+			List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.structure");
 
 			List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
 				HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
-				label.addAttribute("class", "item-label");
+				label.addClass("item-label");
 				ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
-				description.addAttribute("class", "item-description");
+				description.addClass("item-description");
 
 				AnchorElement anchor = new AnchorElement();
 				anchor.setTitle(menuConfig.getDescription());
@@ -85,14 +84,14 @@ public class AdminController {
 		return () -> {
 			DivElement element = new DivElement();
 			element.setHtmlId("admin_structure_menu");
-			element.addAttribute("class", "admin-list");
-			List<MenuConfig> menuItems = menuManagementService.getMenu("system", "admin.reporting");
+			element.addClass("admin-list");
+			List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.reporting");
 
 			List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
 				HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
-				label.addAttribute("class", "item-label");
+				label.addClass("item-label");
 				ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
-				description.addAttribute("class", "item-description");
+				description.addClass("item-description");
 
 				AnchorElement anchor = new AnchorElement();
 				anchor.setTitle(menuConfig.getDescription());
@@ -123,14 +122,14 @@ public class AdminController {
 		return () -> {
 			DivElement element = new DivElement();
 			element.setHtmlId("admin_structure_menu");
-			element.addAttribute("class", "admin-list");
-			List<MenuConfig> menuItems = menuManagementService.getMenu("system", "admin.reporting.system");
+			element.addClass("admin-list");
+			List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.reporting.system");
 
 			List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
 				HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
-				label.addAttribute("class", "item-label");
+				label.addClass("item-label");
 				ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
-				description.addAttribute("class", "item-description");
+				description.addClass("item-description");
 
 				AnchorElement anchor = new AnchorElement();
 				anchor.setTitle(menuConfig.getDescription());

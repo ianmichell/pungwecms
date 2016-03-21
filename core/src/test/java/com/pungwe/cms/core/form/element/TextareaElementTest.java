@@ -40,7 +40,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		TextareaElement element = new TextareaElement();
+		TextareaRenderedElement element = new TextareaRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -51,7 +51,7 @@ public class TextareaElementTest extends AbstractWebTest {
 		String output = functions.render(new MockHttpServletRequest(), element);
 		System.out.println(output);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("Name does not match", "5", doc.getElementById("string").attr("rows"));
 		assertEquals("Name does not match", "10", doc.getElementById("string").attr("cols"));
 		assertEquals("Textarea Value does not match", "Default Value", doc.getElementById("string").text());
@@ -64,7 +64,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		TextareaElement element = new TextareaElement();
+		TextareaRenderedElement element = new TextareaRenderedElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -73,7 +73,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);
-		assertEquals("Name does not match", "string[0]", doc.getElementById("string").attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
 		assertEquals("Textarea Value does not match", "not default", doc.getElementById("string").text());
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
 		assertEquals("Label value does not match", "String", doc.select("label").first().text());
@@ -84,7 +84,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		TextareaElement element = new TextareaElement();
+		TextareaRenderedElement element = new TextareaRenderedElement();
 		element.setValue("Test");
 		element.setName("string");
 		element.setLabel("String");
@@ -96,7 +96,7 @@ public class TextareaElementTest extends AbstractWebTest {
 		Document doc = Jsoup.parse(output);
 
 		assertEquals("Attributes has content", "", element.getAttributesAsString());
-		assertEquals("Name does not match", "string[0]", doc.select("textarea").first().attr("name"));
+		assertEquals("Name does not match", "string[0].value", doc.select("textarea").first().attr("name"));
 		assertEquals("String Value does not match", "Test", doc.select("textarea").first().text());
 		assertEquals("Textarea element rows is not 20", "20", doc.select("textarea").first().attr("rows"));
 		assertEquals("Textarea element columns is not 80", "80", doc.select("textarea").first().attr("cols"));

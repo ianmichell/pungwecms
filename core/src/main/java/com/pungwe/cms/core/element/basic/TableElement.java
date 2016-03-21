@@ -139,6 +139,10 @@ public class TableElement extends AbstractRenderedElement {
 			setContent(content);
 		}
 
+		public Column(String... content) {
+			setContent(content);
+		}
+
 		@Override
 		protected Collection<String> excludedAttributes() {
 			return new LinkedList<>();
@@ -150,7 +154,11 @@ public class TableElement extends AbstractRenderedElement {
 		public Header() {
 		}
 
-		public Header(RenderedElement content) {
+		public Header(RenderedElement... content) {
+			super(content);
+		}
+
+		public Header(String... content) {
 			super(content);
 		}
 	}

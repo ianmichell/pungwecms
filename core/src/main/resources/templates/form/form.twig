@@ -1,5 +1,3 @@
-<form{{ attributes }}{{ printAttribute("class", join(classes)) }}>
-    {% for child in children %}
-        {{ render(child) }}
-    {% endfor %}
+<form{{ attributes }}{{ printAttribute("class", join(classes, ' ')) }}>
+    {{ render(content) }}
 </form>
