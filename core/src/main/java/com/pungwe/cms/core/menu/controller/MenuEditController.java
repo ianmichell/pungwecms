@@ -30,6 +30,14 @@ import java.util.concurrent.Callable;
  */
 @Controller
 @RequestMapping("/admin/structure/menu/edit/{menuInfoId}")
+@MenuItem(
+        menu = "system",
+        parent = "admin.structure.menus",
+        name = "edit",
+        title = "Edit Menu",
+        description = "Edit Menu",
+        pattern = true
+)
 public class MenuEditController extends AbstractMenuInfoController {
 
 	@Autowired

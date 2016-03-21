@@ -31,4 +31,18 @@ public class Utils {
 		Map<String, String> variables = apm.extractUriTemplateVariables(bestMatchPattern, path);
 		return variables.getOrDefault(variableName, null);
 	}
+
+    public static boolean hasRequestPathVariable() {
+        String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        String bestMatchPattern = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        return !path.equals(bestMatchPattern);
+    }
+
+    public static String getRequestPathVariablePattern() {
+        if (!hasRequestPathVariable()) {
+            return null;
+        }
+        String bestMatchPattern = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        return bestMatchPattern;
+    }
 }

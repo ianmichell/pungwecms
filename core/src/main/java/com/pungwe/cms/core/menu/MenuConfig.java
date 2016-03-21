@@ -38,6 +38,9 @@ public interface MenuConfig extends Comparable<MenuConfig> {
 	int getWeight();
 	void setWeight(int weight);
 
+    boolean isPattern();
+    void setPattern(boolean pattern);
+
 	@Override
 	default int compareTo(MenuConfig o) {
 		if (o == null) {

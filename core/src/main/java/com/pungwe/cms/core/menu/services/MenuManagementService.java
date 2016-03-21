@@ -168,7 +168,7 @@ public class MenuManagementService {
 		}
 
 		// Add menu config
-		MenuConfig config = menuConfigService.newInstance(item.menu(), item.parent(), item.name(), item.title(), item.description(), false, "_self", path.toString(), item.weight());
+		MenuConfig config = menuConfigService.newInstance(item.menu(), item.parent(), item.name(), item.title(), item.description(), false, "_self", path.toString(), item.weight(), item.pattern());
 		return config;
 	}
 

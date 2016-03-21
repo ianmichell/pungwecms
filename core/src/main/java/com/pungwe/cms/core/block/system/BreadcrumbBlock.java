@@ -11,6 +11,7 @@ import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.menu.MenuConfig;
 import com.pungwe.cms.core.menu.services.MenuManagementService;
+import com.pungwe.cms.core.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -44,6 +45,10 @@ public class BreadcrumbBlock implements BlockDefinition {
 		// Request
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String currentPath = request.getRequestURI().substring(request.getContextPath().length());
+
+        if (Utils.hasRequestPathVariable()) {
+            currentPath = Utils.getRequestPathVariablePattern();
+        }
 
 		String menu = null;
 		if (settings.containsKey("menu")) {

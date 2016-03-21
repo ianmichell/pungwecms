@@ -13,7 +13,7 @@ public interface MenuConfigService<T extends MenuConfig> {
 
 	T newInstance();
 
-	T newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight);
+	T newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight, boolean pattern);
 
 	void saveMenuItem(T... menuItems);
 

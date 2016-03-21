@@ -24,7 +24,7 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 	}
 
 	@Override
-	public MenuConfigImpl newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight) {
+	public MenuConfigImpl newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight, boolean pattern) {
 		MenuConfigImpl config = newInstance();
 		config.setId(new StringBuilder().append(menu).append(".").append(parent).append(".").append(name).toString());
 		config.setMenu(menu);
@@ -43,6 +43,7 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 		}
 		menuPath.append(name);
 		config.setPath(menuPath.toString());
+        config.setPattern(pattern);
 		return config;
 	}
 

@@ -9,6 +9,7 @@ import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.menu.MenuConfig;
 import com.pungwe.cms.core.menu.services.MenuManagementService;
+import com.pungwe.cms.core.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -57,6 +58,10 @@ public class PrimaryMenuBlock implements BlockDefinition {
 		element.setHtmlId("primary_menu_" + menu);
 		element.addClass(settings.getOrDefault("menu_class", "").toString());
 
+        if (Utils.hasRequestPathVariable()) {
+            currentPath = Utils.getRequestPathVariablePattern();
+        }
+
 		// Get the active menu item
 		List<String> activeItems = menuManagementService.getMenuTreeByUrl(menu, currentPath).stream().map(activeItem -> activeItem.getId()).collect(Collectors.toList());
 
@@ -72,24 +77,24 @@ public class PrimaryMenuBlock implements BlockDefinition {
 			return;
 		}
 
-		menuItems.stream().sorted().forEach(menuConfig -> {
-			AnchorElement anchor = new AnchorElement();
-			anchor.setTitle(menuConfig.getDescription());
-			anchor.setContent(new PlainTextElement(menuConfig.getTitle()));
-			anchor.setTarget(menuConfig.getTarget());
-			// Set the url
-			Pattern p = Pattern.compile("^https?\\://|ftp\\://");
-			if (p.matcher(menuConfig.getUrl()).matches()) {
-				anchor.setHref(menuConfig.getUrl());
-			} else {
-				anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
-			}
-			ListElement.ListItem listItem = new ListElement.ListItem(anchor);
-			if (activeItems.contains(menuConfig.getId())) {
-				listItem.addClass(settings.getOrDefault("active_item_class", "active").toString());
-			}
-			element.addItem(listItem);
-		});
+		menuItems.stream().filter(menuConfig -> !menuConfig.isPattern()).sorted().forEach(menuConfig -> {
+            AnchorElement anchor = new AnchorElement();
+            anchor.setTitle(menuConfig.getDescription());
+            anchor.setContent(new PlainTextElement(menuConfig.getTitle()));
+            anchor.setTarget(menuConfig.getTarget());
+            // Set the url
+            Pattern p = Pattern.compile("^https?\\://|ftp\\://");
+            if (p.matcher(menuConfig.getUrl()).matches()) {
+                anchor.setHref(menuConfig.getUrl());
+            } else {
+                anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
+            }
+            ListElement.ListItem listItem = new ListElement.ListItem(anchor);
+            if (activeItems.contains(menuConfig.getId())) {
+                listItem.addClass(settings.getOrDefault("active_item_class", "active").toString());
+            }
+            element.addItem(listItem);
+        });
 
 		elements.add(element);
 	}

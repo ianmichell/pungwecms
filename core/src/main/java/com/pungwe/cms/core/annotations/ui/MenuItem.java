@@ -25,4 +25,10 @@ public @interface MenuItem {
 	String menu();
 
 	int weight() default 0;
+
+    /**
+     * Used for breadcrumb generation. This means that the menu item cannot be selected
+     * @return
+     */
+    boolean pattern() default false;
 }

@@ -19,10 +19,11 @@ modules:
   startup:
     scan: false
   enabled:
+    - actuator
     - node
     - text
 
 themes:
   startup:
-    scan: false
+    scan: true
   default: "bootstrap"

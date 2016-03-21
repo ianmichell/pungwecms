@@ -124,6 +124,10 @@ public class ModuleManagementService {
 		Set<ModuleConfig> enabled = getModuleConfigService().listEnabledModules();
 
 		final List<Class<?>> moduleClasses = new LinkedList<>();
+
+        if (enabled.isEmpty()) {
+            return;
+        }
 		enabled.forEach(config -> {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
@@ -133,6 +137,10 @@ public class ModuleManagementService {
 				return;
 			}
 		});
+
+        if (moduleClasses.isEmpty()) {
+            return;
+        }
 
 		if (moduleContext instanceof AnnotationConfigEmbeddedWebApplicationContext) {
 			((AnnotationConfigEmbeddedWebApplicationContext) moduleContext).register(moduleClasses.toArray(new Class<?>[0]));

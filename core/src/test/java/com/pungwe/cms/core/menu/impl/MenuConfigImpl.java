@@ -20,6 +20,7 @@ public class MenuConfigImpl implements MenuConfig {
 	protected boolean external;
 	protected String path;
 	protected int weight = 0;
+    protected boolean pattern = false;
 
 	@Override
 	public String getId() {
@@ -129,4 +130,14 @@ public class MenuConfigImpl implements MenuConfig {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
+
+    @Override
+    public boolean isPattern() {
+        return pattern;
+    }
+
+    @Override
+    public void setPattern(boolean pattern) {
+        this.pattern = pattern;
+    }
 }
