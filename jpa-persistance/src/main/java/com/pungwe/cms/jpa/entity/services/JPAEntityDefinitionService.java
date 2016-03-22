@@ -1,6 +1,6 @@
 package com.pungwe.cms.jpa.entity.services;
 
-import com.pungwe.cms.core.entity.EntityType;
+import com.pungwe.cms.core.entity.EntityTypeDefinition;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import com.pungwe.cms.jpa.entity.EntityDefinitionImpl;
@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by ian on 13/03/2016.
@@ -23,7 +21,7 @@ public class JPAEntityDefinitionService implements EntityDefinitionService<Entit
 	protected EntityDefinitionRepository entityDefinitionRepository;
 
 	@Override
-	public EntityDefinitionImpl newInstance(EntityType type, String bundle) {
+	public EntityDefinitionImpl newInstance(EntityTypeDefinition type, String bundle) {
 		EntityDefinitionImpl entityDefinition = new EntityDefinitionImpl(new EntityTypeInfoImpl(type.getType(), bundle));
 		entityDefinition.addField(type.getBaseFields().toArray(new FieldConfig[0]));
 		return entityDefinition;

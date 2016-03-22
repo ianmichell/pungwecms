@@ -1,4 +1,4 @@
-package com.pungwe.cms.modules.node.controllers;
+package com.pungwe.cms.modules.node.controllers.structure;
 
 import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.element.basic.AnchorElement;
@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
  */
 @Controller
 @RequestMapping("/admin/structure/content-types")
-public class NodeTypeController {
+public class ManageNodeTypesController {
 
 	@Autowired
 	protected EntityDefinitionService entityDefinitionService;
@@ -81,33 +81,6 @@ public class NodeTypeController {
 		};
 	}
 
-	@MenuItem(
-			menu = "system",
-			name = "add",
-			parent = "admin.structure.content-types",
-			title = "Add a new Content Type"
-	)
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public Callable<String> add(Model model) {
-		return () -> {
-			return "node_type/add";
-		};
-	}
-
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Callable<String> add(Model model, BindingResult result) {
-		return () -> {
-			return "node_type/add";
-		};
-	}
-
-	@RequestMapping(value = "/edit/{id}")
-	public Callable<String> edit(@PathVariable("id") String id) {
-		return () -> {
-			return "node_type/edit";
-		};
-	}
-
 	@RequestMapping(value = "/delete/{id}")
 	public Callable<String> delete(@PathVariable("id") String id) {
 		return () -> {
@@ -115,6 +88,14 @@ public class NodeTypeController {
 		};
 	}
 
+    /* Not a selectable item */
+    @MenuItem(
+            menu = "system",
+            name = "delete",
+            parent = "admin.structure.content-types",
+            title = "Confirm Deletion",
+            pattern = true
+    )
 	@RequestMapping(value = "/delete_confirm/{id}")
 	public Callable<String> deleteConfirm(@PathVariable("id") String id, Model model) {
 		return () -> {

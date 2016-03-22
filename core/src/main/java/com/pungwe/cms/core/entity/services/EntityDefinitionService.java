@@ -1,11 +1,9 @@
 package com.pungwe.cms.core.entity.services;
 
 import com.pungwe.cms.core.entity.EntityDefinition;
-import com.pungwe.cms.core.entity.EntityType;
+import com.pungwe.cms.core.entity.EntityTypeDefinition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 /**
  * Created by ian on 09/01/2016.
@@ -19,7 +17,7 @@ public interface EntityDefinitionService<ED extends EntityDefinition> {
 	 * @param bundle The entity bundle
 	 * @return
 	 */
-	ED newInstance(EntityType type, String bundle);
+	ED newInstance(EntityTypeDefinition type, String bundle);
 
 	ED get(String type, String bundle);
 

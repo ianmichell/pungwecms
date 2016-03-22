@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public interface Form {
 
 	String getFormId();
 
-	void build(FormElement element);
+	void build(FormElement element) throws InvocationTargetException, IllegalAccessException;
 
 	void validate(FormElement form, Errors errors);
 }

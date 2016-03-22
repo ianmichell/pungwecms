@@ -7,7 +7,9 @@ include 'modules'
 include 'modules:node'
 include 'modules:text'
 include 'modules:actuator'
-include 'webapp'
+include 'modules:taxonomy'
 include 'themes'
 include 'themes:bootstrap'
+include 'webapp'
+
 

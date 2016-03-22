@@ -1,4 +1,4 @@
-package com.pungwe.cms.modules.node.controllers;
+package com.pungwe.cms.modules.node.controllers.content;
 
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;

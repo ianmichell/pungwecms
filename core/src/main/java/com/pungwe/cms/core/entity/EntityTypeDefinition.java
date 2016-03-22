@@ -9,14 +9,8 @@ import java.util.List;
 /**
  * Created by ian on 09/01/2016.
  */
-public interface EntityType {
+public interface EntityTypeDefinition {
 
-	/**
-	 * The entity type name.
-	 *
-	 * @return the type of entity
-	 */
-	String getType();
 
 	/**
 	 * Creates a list of base fields for the entity type. These are added automatically when a new
