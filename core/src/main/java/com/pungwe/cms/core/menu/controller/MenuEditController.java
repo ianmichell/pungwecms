@@ -71,6 +71,11 @@ public class MenuEditController extends AbstractMenuInfoController {
 		});
 	}
 
+    @ModelAttribute("menuInfoId")
+    public String menuInfoId(@PathVariable("menuInfoId") String menuInfoId) {
+        return menuInfoId;
+    }
+
 	@RequestMapping(method=RequestMethod.GET)
 	public Callable<String> edit(Model model) {
 		return () -> {

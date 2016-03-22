@@ -40,9 +40,7 @@
             {% block header %}
                 <div class="row">
                     <div class="col-sm-12">
-                        <header class="page-header">
-                            {{ render(regions['header']) }}
-                        </header>
+                        {{ render(regions['header']) }}
                     </div>
                 </div>
             {% endblock %}
@@ -71,7 +69,7 @@
 
         {% if regions['content'] %}
             {% block content %}
-                <div role="document" class="main_content {{ content_classes }}">
+                <div role="document" class="region-content {{ content_classes }}">
                     {{ render(regions['content']) }}
                 </div>
             {% endblock %}

@@ -9,6 +9,7 @@ import com.pungwe.cms.core.element.model.ModelAndViewElement;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.theme.ThemeConfig;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
+import com.pungwe.cms.core.utils.services.HookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,9 @@ public class BlockManagementService {
 
 	@Autowired
 	protected ApplicationContext applicationContext;
+
+    @Autowired
+    protected HookService hookService;
 
 	public List<BlockConfig> getBlockConfigForDefaultTheme() {
 		String theme = themeManagementService.getDefaultThemeName();
@@ -148,7 +153,14 @@ public class BlockManagementService {
 		} else {
 			blockContent.setViewName("blocks/default");
 		}
-		ModelAndViewElement modelAndViewElement = new ModelAndViewElement();
+        try {
+            hookService.executeHook("block_alter", blockContent);
+        } catch (InvocationTargetException e) {
+            LOG.error("Could not execute hook block_alter", e);
+        } catch (IllegalAccessException e) {
+            LOG.error("Could not execute hook block_alter", e);
+        }
+        ModelAndViewElement modelAndViewElement = new ModelAndViewElement();
 		modelAndViewElement.setContent(blockContent);
 		return modelAndViewElement;
 	}

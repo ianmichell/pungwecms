@@ -13,6 +13,7 @@ import com.pungwe.cms.core.form.element.ButtonElement;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class Bootstrap {
 		blockManagementService.addBlockToTheme("bootstrap", "breadcrumb", "breadcrumb_block", -100, new HashMap<>());
 		blockManagementService.addBlockToTheme("bootstrap", "highlighted", "status_message_block", -100, new HashMap<>());
 		blockManagementService.addBlockToTheme("bootstrap", "navigation", "primary_menu_block", -100, primaryMenuSettings());
+        blockManagementService.addBlockToTheme("bootstrap", "content", "system_tasks_block", -101, new HashMap<>());
 		blockManagementService.addBlockToTheme("bootstrap", "content", "main_content_block", -100, new HashMap<>());
 		blockManagementService.addBlockToTheme("bootstrap", "sidebar_second", "secondary_menu_block", -100, new HashMap<>());
 	}
@@ -52,6 +54,7 @@ public class Bootstrap {
 	@Hook("html_css")
 	public void attachCSS(List<HeaderRenderedElement> css) {
 		css.add(new LinkElement("stylesheet", "/bower_components/bootstrap/dist/css/bootstrap.min.css", "text/css"));
+        css.add(new LinkElement("stylesheet", "/css/overrides.css", "text/css"));
 	}
 
 	@Hook("html_js_top")
@@ -121,6 +124,33 @@ public class Bootstrap {
 		icon.addClass("gyphicon", "glyphicon-plus");
 		addButton.getContent().add(0, icon);
 	}
+
+    @Hook("block_alter")
+    public void hookAlterSystemTasksBlock(ModelAndView blockModel) {
+        if (!blockModel.getModel().getOrDefault("blockName", "").equals("system_tasks_block")) {
+            return;
+        }
+
+        List<RenderedElement> elements = (List<RenderedElement>)blockModel.getModel().get("content");
+        if (elements.size() > 0) {
+            elements.get(0).addClass("nav", "nav-tabs");
+            ((ListElement)elements.get(0)).getItems().forEach(item -> {
+                item.addAttribute("role", "presentation");
+            });
+        }
+    }
+
+    @Hook("block_alter")
+    public void hookAlterPageTitleBlock(ModelAndView blockModel) {
+        if (!blockModel.getModel().getOrDefault("blockName", "").equals("page_title_block")) {
+            return;
+        }
+        List<RenderedElement> elements = (List<RenderedElement>)blockModel.getModel().get("content");
+        DivElement element = new DivElement();
+        element.addClass("page-header");
+        element.addContent(elements);
+        blockModel.addObject("content", element);
+    }
 
 	@Hook("element_wrapper")
 	public RenderedElement hookElementWrapper(RenderedElement element) {

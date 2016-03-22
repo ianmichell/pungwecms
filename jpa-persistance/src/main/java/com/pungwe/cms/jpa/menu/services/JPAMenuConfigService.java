@@ -29,9 +29,14 @@ public class JPAMenuConfigService implements MenuConfigService<MenuConfigImpl> {
 	}
 
 	@Override
-	public MenuConfigImpl newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight, boolean pattern) {
+	public MenuConfigImpl newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight, boolean pattern, boolean task) {
 		MenuConfigImpl config = newInstance();
-		config.setId(new StringBuilder().append(menu).append(".").append(parent).append(".").append(name).toString());
+        StringBuilder id = new StringBuilder().append(menu).append(".");
+        if (StringUtils.isNotBlank(parent)) {
+            id.append(parent).append(".");
+        }
+        id.append(name);
+		config.setId(id.toString());
 		config.setMenu(menu);
 		config.setParent(parent);
 		config.setName(name);
@@ -42,6 +47,7 @@ public class JPAMenuConfigService implements MenuConfigService<MenuConfigImpl> {
 		config.setUrl(url);
 		config.setWeight(weight);
         config.setPattern(pattern);
+        config.setTask(task);
 
 		StringBuilder menuPath = new StringBuilder();
 		if (StringUtils.isNotEmpty(parent)) {
