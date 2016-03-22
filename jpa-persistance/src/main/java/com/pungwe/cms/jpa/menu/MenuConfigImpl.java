@@ -34,6 +34,7 @@ public class MenuConfigImpl implements MenuConfig {
 	protected String path;
 	protected int weight = 0;
     protected boolean pattern = false;
+	protected boolean task = false;
 
 	@Override
 	@Id
@@ -165,4 +166,14 @@ public class MenuConfigImpl implements MenuConfig {
     public void setPattern(boolean pattern) {
         this.pattern = pattern;
     }
+
+	@Override
+	public boolean isTask() {
+		return task;
+	}
+
+	@Override
+	public void setTask(boolean task) {
+		this.task = task;
+	}
 }

@@ -99,4 +99,9 @@ public class JPAMenuConfigService implements MenuConfigService<MenuConfigImpl> {
 	public List<MenuConfigImpl> getMenuItems(String menu, String parent) {
 		return menuConfigRepository.findAllByMenuAndParent(menu, parent);
 	}
+
+	@Override
+	public List<MenuConfig> getMenuItemsByParent(String menu, String path, boolean task) {
+		return menuConfigRepository.findAllByMenuAndParentAndTask(menu, path, task);
+	}
 }

@@ -31,4 +31,6 @@ public @interface MenuItem {
      * @return
      */
     boolean pattern() default false;
+
+	boolean task() default false;
 }

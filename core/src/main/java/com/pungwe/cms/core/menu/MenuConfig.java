@@ -41,6 +41,9 @@ public interface MenuConfig extends Comparable<MenuConfig> {
     boolean isPattern();
     void setPattern(boolean pattern);
 
+	boolean isTask();
+	void setTask(boolean task);
+
 	@Override
 	default int compareTo(MenuConfig o) {
 		if (o == null) {
@@ -48,4 +51,6 @@ public interface MenuConfig extends Comparable<MenuConfig> {
 		}
 		return Integer.compare(this.getWeight(), o.getWeight());
 	}
+
+
 }

@@ -30,4 +30,6 @@ public interface MenuConfigService<T extends MenuConfig> {
 	List<T> getTopLevelMenuItems(String menu);
 
 	List<T> getMenuItems(String menu, String parent);
+
+	List<MenuConfig> getMenuItemsByParent(String menu, String path, boolean task);
 }

@@ -95,4 +95,9 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 	public List<MenuConfigImpl> getMenuItems(String menu, String parent) {
 		return menuItems.stream().filter(menuConfig -> menuConfig.getMenu().equals(menu) && menuConfig.getParent().equals(parent)).collect(Collectors.toList());
 	}
+
+	@Override
+	public List<MenuConfig> getMenuItemsByParent(String menu, String path, boolean task) {
+		return getMenuItems(menu, path).stream().filter(menuConfig -> menuConfig.isTask()).collect(Collectors.toList());
+	}
 }

@@ -219,4 +219,8 @@ public class MenuManagementService {
 		}
 		return result.get(0);
 	}
+
+	public List<MenuConfig> getTasksByPath(String menu, String path) {
+		return menuConfigService.getMenuItemsByParent(menu, path, true);
+	}
 }

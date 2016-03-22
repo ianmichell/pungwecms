@@ -36,7 +36,8 @@ import java.util.concurrent.Callable;
         name = "edit",
         title = "Edit Menu",
         description = "Edit Menu",
-        pattern = true
+        pattern = true,
+		task = true
 )
 public class MenuEditController extends AbstractMenuInfoController {
 
