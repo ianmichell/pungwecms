@@ -2,6 +2,7 @@ package com.pungwe.cms.core.entity.controller;
 
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
+import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
 import com.pungwe.cms.core.form.element.StringRenderedElement;
 import com.pungwe.cms.core.form.element.TextareaRenderedElement;
 import org.springframework.validation.Errors;
@@ -38,6 +39,12 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		bundleName.setRequired(true);
 		bundleName.setName("bundle");
 		element.addContent(bundleName);
+
+        InputButtonRenderedElement submit = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT);
+        submit.setValue("Submit");
+        submit.setName("submit");
+
+        element.addContent(submit);
 
 		buildInternal(element);
 	}
