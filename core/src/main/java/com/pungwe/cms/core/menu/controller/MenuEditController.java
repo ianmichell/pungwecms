@@ -50,8 +50,7 @@ public class MenuEditController extends AbstractMenuInfoController {
 	}
 
 	@Override
-	public void build(FormElement element) {
-		super.build(element);
+	protected void buildInternal(FormElement element) {
 		final String id = Utils.getRequestPathVariable("menuInfoId");
 		// Fetch the entity and set the relevant values
 		Optional<MenuInfo> info = menuManagementService.getMenu(id, LocaleContextHolder.getLocale().getLanguage());
@@ -71,7 +70,7 @@ public class MenuEditController extends AbstractMenuInfoController {
 		});
 	}
 
-    @ModelAttribute("menuInfoId")
+	@ModelAttribute("menuInfoId")
     public String menuInfoId(@PathVariable("menuInfoId") String menuInfoId) {
         return menuInfoId;
     }

@@ -1,10 +1,13 @@
 package com.pungwe.cms.modules.node.controllers.structure;
 
 import com.pungwe.cms.core.annotations.ui.MenuItem;
+import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.AnchorElement;
+import com.pungwe.cms.core.element.basic.ListElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
 import com.pungwe.cms.core.entity.EntityDefinition;
+import com.pungwe.cms.core.entity.controller.AbstractEntityTypeListController;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -24,7 +28,7 @@ import java.util.concurrent.Callable;
  */
 @Controller
 @RequestMapping("/admin/structure/content-types")
-public class ManageNodeTypesController {
+public class ManageNodeTypesController extends AbstractEntityTypeListController {
 
 	@Autowired
 	protected EntityDefinitionService entityDefinitionService;
@@ -38,47 +42,37 @@ public class ManageNodeTypesController {
 			description = "Manage your content types"
 	)
 	@RequestMapping(method = RequestMethod.GET)
-	public Callable<String> list(Model model, @RequestParam(value = "page", defaultValue = "1") int pageNumber, @RequestParam(value = "max", defaultValue = "25") int maxRows) {
+	public Callable<String> list(Model model) {
 		return () -> {
-			Page<EntityDefinition> entities = entityDefinitionService.list("node_type", new PageRequest(pageNumber, maxRows));
-
-			TableElement table = new TableElement();
-			table.addHeaderRow(
-					new TableElement.Header(new PlainTextElement("Title")),
-					new TableElement.Header(new PlainTextElement("Description")),
-					new TableElement.Header(new PlainTextElement("Operations"))
-			);
-			// Run through each record and create a table row per entity
-			for (EntityDefinition entity : entities) {
-				// Link the title to the edit operation for the entity
-				AnchorElement entityEditLink = new AnchorElement(
-						entity.getTitle(),
-						"/admin/structure/content-types/edit/" + entity.getId().getBundle(),
-						new PlainTextElement(entity.getTitle())
-				);
-				// Add a table row for the entity
-				table.addRow(
-						new TableElement.Column(entityEditLink),
-						new TableElement.Column(new PlainTextElement(entity.getDescription())),
-						new TableElement.Column(new PlainTextElement("Operations"))
-				);
-			}
-
-			// Page title
-			model.addAttribute("title", "Content Types");
-
-			// Page actions
-			model.addAttribute("actions", new AnchorElement(
-					"Add a new content type",
-					"/admin/structure/content-types/add",
-					new PlainTextElement("Add a content type")
-			));
-
-			// Table of entity types
-			model.addAttribute("content", table);
-
 			return "node_type/list";
 		};
+	}
+
+	@Override
+	protected String getEntityType() {
+		return "node";
+	}
+
+	@Override
+	protected String getTitle() {
+		return "Content Types";
+	}
+
+	@Override
+	protected void buildActions(List<RenderedElement> elements) {
+		elements.add(new AnchorElement(
+				"Add a new content type",
+				"/admin/structure/content-types/add",
+				new PlainTextElement("Add a content type")
+		));
+	}
+
+	@Override
+	protected void buildOperations(String bundle, ListElement operations) {
+		ListElement.ListItem edit = new ListElement.ListItem(new AnchorElement("Edit Content Type", "/admin/structure/content-types/" + bundle + "/edit", "Edit"));
+		edit.addClass("default-operation");
+		ListElement.ListItem fields = new ListElement.ListItem(new AnchorElement("Manage Fields", "/admin/structure/content-types/" + bundle + "/fields", "Manage Fields"));
+		operations.addItem(edit, fields);
 	}
 
 	@RequestMapping(value = "/delete/{id}")

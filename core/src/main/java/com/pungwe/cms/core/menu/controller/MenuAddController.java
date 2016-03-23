@@ -51,9 +51,9 @@ public class MenuAddController extends AbstractMenuInfoController {
 		return "Add Menu";
 	}
 
+
 	@Override
-	public void build(FormElement element) {
-		super.build(element);
+	protected void buildInternal(FormElement element) {
 		element.addSubmitHandler(form -> {
 			menuManagementService.createMenu((String)element.getValue("title", 0), (String)element.getValue("description", 0), (String)element.getValue("language", 0));
 		});

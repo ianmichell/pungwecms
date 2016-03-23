@@ -38,11 +38,17 @@ public class TemplateFunctions {
 
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter String template) throws FunctionException {
+		if (StringUtils.isEmpty(template)) {
+			return "";
+		}
 		return render(request, template, new HashMap<>());
 	}
 
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter String template, @Parameter Map<String, ?> parameters) throws FunctionException {
+		if (template == null) {
+			return "";
+		}
 		if (StringUtils.isEmpty(template)) {
 			return "";
 		}
@@ -52,6 +58,9 @@ public class TemplateFunctions {
 
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter Collection<T> input) throws FunctionException {
+		if (input == null) {
+			return "";
+		}
 		StringBuilder html = new StringBuilder();
 		for (T element : input) {
 			html.append(render(request, element)).append("\n");
@@ -62,6 +71,9 @@ public class TemplateFunctions {
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter T input) throws FunctionException {
 		try {
+			if (input == null) {
+				return "";
+			}
 			RenderedElementService renderedElementService = applicationContext.getBean(RenderedElementService.class);
 			HookService hookService = applicationContext.getBean(HookService.class);
 			final MutableObject<RenderedElement> elementToRender = new MutableObject<>(input);
@@ -83,6 +95,9 @@ public class TemplateFunctions {
 
 	@JtwigFunction(name = "render")
 	public <T extends ModelAndView> String render(HttpServletRequest request, @Parameter T model) throws FunctionException {
+		if (model == null) {
+			return "";
+		}
 		RenderHttpServletResponse responseWrapper = new RenderHttpServletResponse();
 		try {
 			if (model.getView() == null && StringUtils.isEmpty(model.getViewName())) {

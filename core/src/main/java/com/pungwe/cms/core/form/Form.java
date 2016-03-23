@@ -16,7 +16,7 @@ public interface Form {
 
 	String getFormId();
 
-	void build(FormElement element) throws InvocationTargetException, IllegalAccessException;
+	void build(FormElement element);
 
 	void validate(FormElement form, Errors errors);
 }
