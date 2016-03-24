@@ -3,3 +3,7 @@
 *.iml
 build
 target
+.project
+.settings
+.classpath
+.factorypath
