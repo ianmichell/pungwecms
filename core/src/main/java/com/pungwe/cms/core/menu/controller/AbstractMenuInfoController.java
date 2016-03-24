@@ -50,10 +50,14 @@ public abstract class AbstractMenuInfoController extends AbstractFormController 
 			language.addOption(locale.getDisplayName(currentLocale), locale.getLanguage());
 		});
 		language.setDefaultValue(currentLocale.getLanguage());
+
+		element.addContent(title, description, language);
+
+		buildInternal(element);
+
 		// Create Form
 		element.setMethod(RequestMethod.POST.name());
-		element.addContent(title, description, language, new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Save"));
-
+		element.addContent(new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Save"));
 	}
 
 	@Override

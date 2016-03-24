@@ -11,8 +11,6 @@ import com.pungwe.cms.core.element.model.ModelAndViewElement;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by ian on 05/03/2016.
  */
-@Block(value="status_message_block", label="Status Message Block", category="System")
+@Block(value = "status_message_block", label = "Status Message Block", category = "System")
 @ThemeInfo("blocks/status_message")
 public class StatusMessageBlock implements BlockDefinition {
 
@@ -39,38 +37,38 @@ public class StatusMessageBlock implements BlockDefinition {
 
 		// Check for bind errors!
 		AtomicBoolean hasErrors = new AtomicBoolean(false);
-		if (variables.entrySet().stream().filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult).findAny().isPresent()) {
-			UnorderedListElement listElement = new UnorderedListElement();
-			listElement.addClass("status-message");
-			// Get the content element...
-			Object content = variables.get("content");
-			for (Object item : (content instanceof Collection ? (Collection) content : Arrays.asList(content))) {
-				if (item instanceof ModelAndViewElement) {
-					item = ((ModelAndViewElement) item).getContent();
-				}
-				if (item instanceof ModelAndView) {
-					// Check for bind results
-					List<BindingResult> bindingResults = ((ModelAndView) item).getModel().entrySet().stream()
-							.filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult)
-							.map(entry -> (BindingResult) entry.getValue()).collect(Collectors.toList());
-					bindingResults.forEach(bindingResult -> {
-						if (!hasErrors.get()) {
-							hasErrors.set(bindingResult.hasErrors());
-						}
-						listElement.addItem(bindingResult.getAllErrors().stream().map(objectError -> new ListElement.ListItem(objectError.getDefaultMessage()))
-								.collect(Collectors.toList()).toArray(new ListElement.ListItem[0]));
-					});
+//		if (variables.entrySet().stream().filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult).findAny().isPresent()) {
+		UnorderedListElement listElement = new UnorderedListElement();
+		listElement.addClass("status-message");
+		// Get the content element...
+		Object content = variables.get("content");
+		for (Object item : (content instanceof Collection ? (Collection) content : Arrays.asList(content))) {
+			if (item instanceof ModelAndViewElement) {
+				item = ((ModelAndViewElement) item).getContent();
+			}
+			if (item instanceof ModelAndView) {
+				// Check for bind results
+				List<BindingResult> bindingResults = ((ModelAndView) item).getModel().entrySet().stream()
+						.filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult)
+						.map(entry -> (BindingResult) entry.getValue()).collect(Collectors.toList());
+				bindingResults.forEach(bindingResult -> {
+					if (!hasErrors.get()) {
+						hasErrors.set(bindingResult.hasErrors());
+					}
+					listElement.addItem(bindingResult.getAllErrors().stream().map(objectError -> new ListElement.ListItem(objectError.getDefaultMessage()))
+							.collect(Collectors.toList()).toArray(new ListElement.ListItem[0]));
+				});
 
-				}
-			}
-			if (hasErrors.get()) {
-				listElement.addClass("error-message");
-			}
-			if (listElement.getItems().size() > 0) {
-				elements.add(listElement);
-				return; // don't bother checking for other messages...
 			}
 		}
+		if (hasErrors.get()) {
+			listElement.addClass("error-message");
+		}
+		if (listElement.getItems().size() > 0) {
+			elements.add(listElement);
+			return; // don't bother checking for other messages...
+		}
+//		}
 
 		// Check for generic errors
 		if (variables.containsKey("status.message.error")) {

@@ -25,5 +25,5 @@ modules:
 
 themes:
   startup:
-    scan: true
+    scan: false
   default: "bootstrap"
