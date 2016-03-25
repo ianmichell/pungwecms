@@ -11,10 +11,12 @@ buildscript {
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.springframework:springloaded:1.2.4.RELEASE'
     }
 }
 
 allprojects {
+
     apply plugin: "io.spring.dependency-management"
     apply plugin: 'eclipse'
     apply plugin: 'idea'
@@ -113,4 +115,8 @@ subprojects {
             html.destination "${buildDir}/jacocoHtml"
         }
     }
+}
+
+project(':webapp') {
+    apply plugin: 'spring-boot'
 }

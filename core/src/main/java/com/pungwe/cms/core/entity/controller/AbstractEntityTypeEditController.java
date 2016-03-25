@@ -1,19 +1,30 @@
 package com.pungwe.cms.core.entity.controller;
 
+import com.pungwe.cms.core.entity.EntityDefinition;
+import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
-import com.pungwe.cms.core.form.element.FormElement;
-import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
-import com.pungwe.cms.core.form.element.StringRenderedElement;
-import com.pungwe.cms.core.form.element.TextareaRenderedElement;
+import com.pungwe.cms.core.form.element.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import javax.swing.text.html.parser.Entity;
+import java.lang.reflect.Field;
 
 /**
  * Created by ian on 22/03/2016.
  */
-public abstract class AbstractEntityTypeEditController extends AbstractFormController {
+public abstract class AbstractEntityTypeEditController extends AbstractFormController<EntityDefinition> {
+
+	@Autowired
+	protected EntityDefinitionService entityDefinitionService;
 
 	@Override
-	public void build(FormElement element) {
+	public void build(FormElement<EntityDefinition> element) {
+
+		FieldsetElement fieldsetElement = new FieldsetElement();
+		fieldsetElement.setHtmlId(getFormId().concat("_details"));
+		element.addContent(fieldsetElement);
 		// Title field
 		StringRenderedElement title = new StringRenderedElement();
 		title.setSize(60);
@@ -21,7 +32,7 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		title.setName("title");
 		title.setPlaceholder("Content Type Title");
 		title.setRequired(true);
-		element.addContent(title);
+		fieldsetElement.addContent(title);
 
 		// Description field
 		TextareaRenderedElement description = new TextareaRenderedElement();
@@ -30,7 +41,7 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		description.setPlaceholder("Administrative description");
 		description.setRows(5);
 		description.setLabel("Description");
-		element.addContent(description);
+		fieldsetElement.addContent(description);
 
 		StringRenderedElement bundleName = new StringRenderedElement();
 		bundleName.setLabel("Bundle Name");
@@ -38,15 +49,19 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		bundleName.setPlaceholder("Bundle Name");
 		bundleName.setRequired(true);
 		bundleName.setName("bundle");
-		element.addContent(bundleName);
-
-        InputButtonRenderedElement submit = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT);
-        submit.setValue("Submit");
-        submit.setName("submit");
-
-        element.addContent(submit);
+		fieldsetElement.addContent(bundleName);
 
 		buildInternal(element);
+
+		FieldsetElement formActions = new FieldsetElement();
+		formActions.setHtmlId(getFormId().concat("_actions"));
+		InputButtonRenderedElement submit = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT);
+		submit.setValue("Submit");
+		submit.setName("submit");
+
+		formActions.addContent(submit);
+
+		element.addContent(formActions);
 	}
 
 	@Override

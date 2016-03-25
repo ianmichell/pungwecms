@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Created by ian on 08/01/2016.
  */
-public interface Form {
+public interface Form<T> {
 
 	String getFormId();
 
-	void build(FormElement element);
+	void build(FormElement<T> element);
 
-	void validate(FormElement form, Errors errors);
+	void validate(FormElement<T> form, Errors errors);
 }

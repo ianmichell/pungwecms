@@ -114,15 +114,22 @@ public class Bootstrap {
 
 	@Hook("preprocess_template")
 	public void hookContentAlterAdminMenuPages(String template, Map<String, Object> model) {
-		if (!template.equals("menu/index")) {
+		if (!(template.equals("menu/index") || template.equals("node_type/list"))) {
 			return;
 		}
 
-		AnchorElement addButton = (AnchorElement)model.get("action");
-		addButton.addClass("btn btn-primary");
-		TextFormatElement icon = new TextFormatElement(TextFormatElement.Type.I);
-		icon.addClass("gyphicon", "glyphicon-plus");
-		addButton.getContent().add(0, icon);
+		if (model.containsKey("actions") && model.get("actions") instanceof List) {
+			((List<RenderedElement>)model.get("actions")).forEach(renderedElement -> {
+				if (!(renderedElement instanceof AnchorElement)) {
+					return;
+				}
+				AnchorElement addButton = (AnchorElement)renderedElement;
+				addButton.addClass("btn btn-primary");
+				TextFormatElement icon = new TextFormatElement(TextFormatElement.Type.I);
+				icon.addClass("gyphicon", "glyphicon-plus");
+				addButton.getContent().add(0, icon);
+			});
+		}
 	}
 
     @Hook("block_alter")

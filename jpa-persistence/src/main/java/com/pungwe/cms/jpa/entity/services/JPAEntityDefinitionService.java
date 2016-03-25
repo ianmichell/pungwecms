@@ -8,11 +8,14 @@ import com.pungwe.cms.jpa.entity.EntityDefinitionImpl;
 import com.pungwe.cms.jpa.entity.EntityTypeInfoImpl;
 import com.pungwe.cms.jpa.entity.repository.EntityDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 /**
@@ -24,6 +27,9 @@ public class JPAEntityDefinitionService implements EntityDefinitionService<Entit
 	@Autowired
 	protected EntityDefinitionRepository entityDefinitionRepository;
 
+	@Autowired
+	protected EntityManager entityManager;
+
 	@Override
 	public EntityDefinitionImpl newInstance(EntityTypeDefinition type, String bundle) {
 		EntityType typeInfo = AnnotationUtils.findAnnotation(type.getClass(), EntityType.class);
@@ -33,17 +39,25 @@ public class JPAEntityDefinitionService implements EntityDefinitionService<Entit
 	}
 
 	@Override
+	public EntityDefinitionImpl newInstance(EntityTypeDefinition type) {
+		return newInstance(type, null);
+	}
+
+	@Override
+	@Cacheable(value="entityDefinitions", key = "#root.methodName + '_' + #a0 + '_' + #a1")
 	public EntityDefinitionImpl get(String type, String bundle) {
 		return entityDefinitionRepository.findOne(new EntityTypeInfoImpl(type, bundle));
 	}
 
 	@Override
+	@Transactional
 	public Page<EntityDefinitionImpl> list(String type, Pageable page) {
-		return entityDefinitionRepository.findAllByType(type, page);
+		return entityDefinitionRepository.findByType(type, page);
 	}
 
 	@Override
 	@Transactional
+	@CacheEvict(value="entityDefinitions", allEntries = true)
 	public void create(EntityDefinitionImpl instance) {
 		entityDefinitionRepository.save(instance);
 	}

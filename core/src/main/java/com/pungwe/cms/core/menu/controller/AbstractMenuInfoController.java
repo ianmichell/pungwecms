@@ -5,6 +5,7 @@ import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
 import com.pungwe.cms.core.form.element.SingleSelectListRenderedElement;
 import com.pungwe.cms.core.form.element.StringRenderedElement;
+import com.pungwe.cms.core.menu.MenuInfo;
 import com.pungwe.cms.core.utils.Utils;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,10 @@ import java.util.Locale;
 /**
  * Created by ian on 19/03/2016.
  */
-public abstract class AbstractMenuInfoController extends AbstractFormController {
+public abstract class AbstractMenuInfoController extends AbstractFormController<MenuInfo> {
 
 	@Override
-	public void build(FormElement element) {
+	public void build(FormElement<MenuInfo> element) {
 		StringRenderedElement title = new StringRenderedElement();
 		title.setLabel("Title");
 		title.setName("title");

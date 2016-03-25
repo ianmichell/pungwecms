@@ -5,6 +5,8 @@ import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.FieldGroupConfig;
 import com.pungwe.cms.jpa.converter.HashMapBinaryJSONConverter;
 import com.pungwe.cms.jpa.converter.TreeSetBinaryJSONConverter;
+import com.pungwe.cms.jpa.converter.TreeSetFieldConfigBinaryJSONConverter;
+import com.pungwe.cms.jpa.converter.TreeSetFieldGroupBinaryJSONConverter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -101,7 +103,7 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
 
 	@Override
 	@Column(name = "field_groups")
-	@Convert(converter = TreeSetBinaryJSONConverter.class)
+	@Convert(converter = TreeSetFieldGroupBinaryJSONConverter.class)
 	public SortedSet<FieldGroupConfig> getFieldGroups() {
 		if (fieldGroups == null) {
 			fieldGroups = new TreeSet<>();
@@ -115,7 +117,7 @@ public class EntityDefinitionImpl implements EntityDefinition<EntityTypeInfoImpl
 
 	@Override
 	@Column(name = "fields")
-	@Convert(converter = TreeSetBinaryJSONConverter.class)
+	@Convert(converter = TreeSetFieldConfigBinaryJSONConverter.class)
 	public SortedSet<FieldConfig> getFields() {
 		if (fields == null) {
 			fields = new TreeSet<>();

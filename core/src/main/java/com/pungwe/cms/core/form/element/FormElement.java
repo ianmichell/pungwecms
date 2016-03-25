@@ -2,29 +2,26 @@ package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractContentElement;
-import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.handler.FormSubmitHandler;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.PropertyAccessorUtils;
-import org.springframework.util.ClassUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * Created by ian on 24/02/2016.
  */
 @Validated
 @ThemeInfo("form/form")
-public class FormElement extends AbstractContentElement {
+public class FormElement<T> extends AbstractContentElement {
 
+	// Target Object
+	private boolean rebuildRequired = false;
+	private T targetObject;
 	private Errors errors;
-	private List<FormSubmitHandler> submissionHandlers;
+	private List<FormSubmitHandler> submitHandlers;
 
 	public void setEnctype(String enctype) {
 		addAttribute("enctype", enctype);
@@ -163,24 +160,39 @@ public class FormElement extends AbstractContentElement {
 		return errors;
 	}
 
-	public List<FormSubmitHandler> getSubmissionHandlers() {
-		if (submissionHandlers == null) {
-			submissionHandlers = new ArrayList<>();
+	public List<FormSubmitHandler> getSubmitHandlers() {
+		if (submitHandlers == null) {
+			submitHandlers = new ArrayList<>();
 		}
-		return submissionHandlers;
+		return submitHandlers;
 	}
 
-	public void setSubmissionHandlers(List<FormSubmitHandler> submissionHandlers) {
-		this.submissionHandlers = submissionHandlers;
+	public void setSubmitHandlers(List<FormSubmitHandler> submitHandlers) {
+		this.submitHandlers = submitHandlers;
 	}
 
-	public void addSubmitHandler(FormSubmitHandler handler) {
-		getSubmissionHandlers().add(handler);
+	public void addSubmitHandler(FormSubmitHandler<T> handler) {
+		getSubmitHandlers().add(handler);
 	}
 
-	public void submit() throws Exception {
-		for (FormSubmitHandler handler : getSubmissionHandlers()) {
-			handler.submit(this);
-		}
+	public T getTargetObject() {
+		return targetObject;
+	}
+
+	public void setTargetObject(T targetObject) {
+		this.targetObject = targetObject;
+	}
+
+	public boolean isRebuildRequired() {
+		return rebuildRequired;
+	}
+
+	public void setRebuildRequired(boolean rebuildRequired) {
+		this.rebuildRequired = rebuildRequired;
+	}
+
+	public void hideField(String name, int delta) {
+		FormRenderedElement element = getField(name, delta);
+		element.setVisible(false);
 	}
 }

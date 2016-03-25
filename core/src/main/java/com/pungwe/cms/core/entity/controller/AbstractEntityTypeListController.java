@@ -25,7 +25,7 @@ public abstract class AbstractEntityTypeListController {
 	protected abstract String getEntityType();
 
 	@ModelAttribute("content")
-	public RenderedElement content(@RequestParam(value = "page", defaultValue = "1") int pageNumber, @RequestParam(value = "max", defaultValue = "25") int maxRows) {
+	public RenderedElement content(@RequestParam(value = "page", defaultValue = "0") int pageNumber, @RequestParam(value = "max", defaultValue = "25") int maxRows) {
 
 		Page<EntityDefinition> entities = entityDefinitionService.list(getEntityType(), new PageRequest(pageNumber, maxRows));
 

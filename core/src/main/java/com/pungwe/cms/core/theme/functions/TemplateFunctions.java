@@ -71,7 +71,7 @@ public class TemplateFunctions {
 	@JtwigFunction(name = "render")
 	public <T extends RenderedElement> String render (HttpServletRequest request, @Parameter T input) throws FunctionException {
 		try {
-			if (input == null) {
+			if (input == null || !input.isVisible()) {
 				return "";
 			}
 			RenderedElementService renderedElementService = applicationContext.getBean(RenderedElementService.class);
@@ -95,7 +95,7 @@ public class TemplateFunctions {
 
 	@JtwigFunction(name = "render")
 	public <T extends ModelAndView> String render(HttpServletRequest request, @Parameter T model) throws FunctionException {
-		if (model == null) {
+		if (model == null || model.getModel() == null || (!(Boolean)model.getModel().getOrDefault("element_visible", true))) {
 			return "";
 		}
 		RenderHttpServletResponse responseWrapper = new RenderHttpServletResponse();

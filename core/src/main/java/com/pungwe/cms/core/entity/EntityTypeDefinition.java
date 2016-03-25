@@ -24,7 +24,6 @@ public interface EntityTypeDefinition {
 	 * Builds an entity settings form.
 	 *
 	 * @param elements the list of elements for the form
-	 * @param state    the current form state.
 	 */
-	void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state);
+	void buildSettingsForm(List<RenderedElement> elements);
 }

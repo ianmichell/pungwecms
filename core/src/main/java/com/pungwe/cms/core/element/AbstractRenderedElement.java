@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractRenderedElement implements RenderedElement {
 
 	protected boolean wrapped = false;
+	protected boolean visible = true;
 
 	protected int weight;
 	// FIXME: Should this be here?
@@ -102,5 +103,16 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 		List<String> copyOfClasses = new ArrayList<>(classes.size());
 		copyOfClasses.addAll(classes);
 		this.classes = copyOfClasses;
+	}
+
+	@Override
+	@ModelAttribute("element_visible")
+	public boolean isVisible() {
+		return visible;
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 }

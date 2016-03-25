@@ -53,8 +53,8 @@ public class MenuAddController extends AbstractMenuInfoController {
 
 
 	@Override
-	protected void buildInternal(FormElement element) {
-		element.addSubmitHandler(form -> {
+	protected void buildInternal(FormElement<MenuInfo> element) {
+		element.addSubmitHandler((form, variables) -> {
 			menuManagementService.createMenu((String)element.getValue("title", 0), (String)element.getValue("description", 0), (String)element.getValue("language", 0));
 		});
 	}
@@ -67,12 +67,15 @@ public class MenuAddController extends AbstractMenuInfoController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public Callable<String> addSubmit(RedirectAttributes redirectAttributes, Model model, @Valid @ModelAttribute("form") FormElement form, BindingResult bindingResult) {
+	public Callable<String> addSubmit(RedirectAttributes redirectAttributes, Model model, @Valid @ModelAttribute("form") FormElement<MenuInfo> form, BindingResult bindingResult) {
 		return () -> {
 			if (bindingResult.hasErrors()) {
 				return "menu/add";
 			}
-			form.submit();
+			form.getSubmitHandlers().forEach(f -> {
+				// Form and any variables
+				f.submit(form, model.asMap());
+			});
 			redirectAttributes.addFlashAttribute("message.success", "Success! You've created a new menu: " + form.getValue("title", 0));
 			return "redirect:/admin/structure/menu";
 		};

@@ -15,13 +15,18 @@ import java.util.TreeSet;
 /**
  * Created by ian on 06/12/2015.
  */
-@Converter
-public class TreeSetBinaryJSONConverter implements AttributeConverter<SortedSet<?>, byte[]> {
+public abstract class TreeSetBinaryJSONConverter implements AttributeConverter<SortedSet<?>, byte[]> {
+
+	protected SmileFactory factory;
+	protected ObjectMapper mapper;
+
+	public TreeSetBinaryJSONConverter() {
+		factory = new SmileFactory();
+		mapper = new ObjectMapper(factory);
+	}
 
 	@Override
 	public byte[] convertToDatabaseColumn(SortedSet<?> attribute) {
-		SmileFactory factory = new SmileFactory();
-		ObjectMapper mapper = new ObjectMapper(factory);
 		try {
 			return mapper.writeValueAsBytes(attribute);
 		} catch (JsonProcessingException ex) {
@@ -31,8 +36,7 @@ public class TreeSetBinaryJSONConverter implements AttributeConverter<SortedSet<
 
 	@Override
 	public SortedSet<?> convertToEntityAttribute(byte[] dbData) {
-		SmileFactory factory = new SmileFactory();
-		ObjectMapper mapper = new ObjectMapper(factory);
+
 		try {
 			return mapper.readValue(dbData, TreeSet.class);
 		} catch (IOException ex) {

@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by ian on 08/01/2016.
  */
-public class FormState extends AbstractNestablePropertyAccessor {
+public class FormState {
 
 	protected Map<String, Object> formData;
 	protected Errors errors;
@@ -44,18 +44,4 @@ public class FormState extends AbstractNestablePropertyAccessor {
 		this.rebuild = rebuild;
 	}
 
-	@Override
-	protected PropertyHandler getLocalPropertyHandler(String propertyName) {
-		return null;
-	}
-
-	@Override
-	protected AbstractNestablePropertyAccessor newNestedPropertyAccessor(Object object, String nestedPath) {
-		return null;
-	}
-
-	@Override
-	protected NotWritablePropertyException createNotWritablePropertyException(String propertyName) {
-		return null;
-	}
 }

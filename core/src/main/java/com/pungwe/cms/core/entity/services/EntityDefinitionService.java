@@ -19,6 +19,8 @@ public interface EntityDefinitionService<ED extends EntityDefinition> {
 	 */
 	ED newInstance(EntityTypeDefinition type, String bundle);
 
+	ED newInstance(EntityTypeDefinition type);
+
 	ED get(String type, String bundle);
 
 	Page<ED> list(String type, Pageable page);

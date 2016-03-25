@@ -50,6 +50,6 @@ public class NodeEntityTypeDefinition implements EntityTypeDefinition {
 	}
 
 	@Override
-	public void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	public void buildSettingsForm(List<RenderedElement> elements) {
 	}
 }

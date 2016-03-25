@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.menu.controller;
 
 import com.pungwe.cms.core.annotations.ui.MenuItem;
+import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.AnchorElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
@@ -18,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
@@ -59,9 +57,15 @@ public class MenuListController {
 			});
 
 			model.addAttribute("title", "Menus");
-			model.addAttribute("action", new AnchorElement("Add a new menu", request.getContextPath() + "/admin/structure/menu/add", "Add menu"));
 			model.addAttribute("table", tableElement);
 			return "menu/index";
 		};
+	}
+
+	@ModelAttribute("actions")
+	public List<RenderedElement> actions(HttpServletRequest request) {
+		List<RenderedElement> elements = new ArrayList<>();
+		elements.add(new AnchorElement("Add a new menu", request.getContextPath() + "/admin/structure/menu/add", "Add menu"));
+		return elements;
 	}
 }

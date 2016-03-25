@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Created by ian on 19/03/2016.
  */
-public abstract class AbstractFormController implements Form {
+public abstract class AbstractFormController<T> implements Form<T> {
 
 	@Autowired
 	protected HookService hookService;
@@ -31,14 +31,15 @@ public abstract class AbstractFormController implements Form {
 	@ModelAttribute("form")
 	public FormElement buildForm() throws InvocationTargetException, IllegalAccessException {
 		Assert.hasText(getFormId());
-		FormElement element = new FormElement();
+		FormElement<T> element = new FormElement<T>();
 		element.setName(getFormId());
+		element.setMethod("post");
 		build(element);
 		hookService.executeHook("form_alter", getFormId(), element);
 		return element;
 	}
 
-	protected abstract void buildInternal(FormElement element);
+	protected abstract void buildInternal(FormElement<T> element);
 
 	@InitBinder("form")
 	public void initBinder(final WebDataBinder webDataBinder) {

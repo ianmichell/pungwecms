@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.menu.controller;
 
 import com.pungwe.cms.core.annotations.ui.MenuItem;
+import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.HiddenRenderedElement;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +52,7 @@ public class MenuEditController extends AbstractMenuInfoController {
 	}
 
 	@Override
-	protected void buildInternal(FormElement element) {
+	protected void buildInternal(FormElement<MenuInfo> element) {
 		final String id = Utils.getRequestPathVariable("menuInfoId");
 		// Fetch the entity and set the relevant values
 		Optional<MenuInfo> info = menuManagementService.getMenu(id, LocaleContextHolder.getLocale().getLanguage());
@@ -58,11 +60,12 @@ public class MenuEditController extends AbstractMenuInfoController {
 			// Throw a 404
 			throw new ResourceNotFoundException("Could not find menu with id: " + id);
 		}
+		element.setTargetObject(info.get());
 		element.setValue("title", 0, info.get().getTitle());
 		element.setValue("description", 0, info.get().getDescription());
 		element.setValue("language", 0, info.get().getLanguage());
 
-		element.addSubmitHandler(form -> {
+		element.addSubmitHandler((form, variables) -> {
 			if (form.getErrors() != null && form.getErrors().hasErrors()) {
 				return;
 			}
@@ -84,12 +87,14 @@ public class MenuEditController extends AbstractMenuInfoController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public Callable<String> submit(@PathVariable("menuInfoId") String id, Model model, @Valid @ModelAttribute("form") FormElement form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	public Callable<String> submit(@PathVariable("menuInfoId") String id, ModelMap model, @Valid @ModelAttribute("form") FormElement<EntityDefinition> form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		return () -> {
 			if (bindingResult.hasErrors()) {
 				return "menu/edit";
 			}
-			form.submit();
+			form.getSubmitHandlers().forEach(f -> {
+				f.submit(form, model);
+			});
 			redirectAttributes.addFlashAttribute("status.message.success", "Success! You've updated a new menu: " + form.getValue("title", 0));
 			redirectAttributes.addAttribute("menuInfoId", id);
 			return "redirect:/admin/structure/menu/edit/{menuInfoId}";

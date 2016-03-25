@@ -32,6 +32,9 @@ public interface RenderedElement {
 
 	void setWrapped(boolean parent);
 
+	boolean isVisible();
+	void setVisible(boolean visible);
+
 	List<String> getClasses();
 
 	default void setClasses(String... classes) {

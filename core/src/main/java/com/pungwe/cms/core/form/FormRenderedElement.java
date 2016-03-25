@@ -28,4 +28,5 @@ public interface FormRenderedElement<T> extends RenderedElement {
 
 	boolean hasError();
 	void setError(boolean error);
+
 }

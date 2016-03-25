@@ -1,6 +1,3 @@
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -9,8 +6,7 @@ dependencies {
     compile project(':core')
 
     // Persistance
-    runtime project(':jpa-persistance')
-//    runtime project(':mongodb-persistance')
+    runtime project(':jpa-persistence')
 
     // Modules
     runtime project(':modules:node')
