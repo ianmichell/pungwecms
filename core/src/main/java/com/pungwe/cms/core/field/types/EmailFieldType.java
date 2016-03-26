@@ -8,7 +8,7 @@ import com.pungwe.cms.core.field.widgets.EmailWidget;
  * Created by ian on 09/01/2016.
  */
 @FieldType(
-		name = "email",
+		value = "email_field",
 		label = "Email Address",
 		category = "General",
 		defaultWidget = EmailWidget.class,

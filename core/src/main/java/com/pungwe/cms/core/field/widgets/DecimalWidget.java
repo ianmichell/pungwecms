@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by ian on 10/01/2016.
  */
-@FieldWidget(value = "decimal_widget", label = "Decimal", supports = "decimal")
+@FieldWidget(value = "decimal_widget", label = "Decimal", supports = "decimal_field")
 public class DecimalWidget implements FieldWidgetDefinition {
 
 	@Override

@@ -9,7 +9,7 @@ import com.pungwe.cms.core.field.widgets.DecimalWidget;
  * Created by ian on 09/01/2016.
  */
 @FieldType(
-		name = "decimal",
+		value = "decimal_field",
 		label = "Decimal Number",
 		category = "General",
 		defaultWidget = DecimalWidget.class,

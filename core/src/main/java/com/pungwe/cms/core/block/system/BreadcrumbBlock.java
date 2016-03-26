@@ -7,6 +7,7 @@ import com.pungwe.cms.core.element.basic.AnchorElement;
 import com.pungwe.cms.core.element.basic.ListElement;
 import com.pungwe.cms.core.element.basic.OrderedListElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
+import com.pungwe.cms.core.element.model.ModelAndViewElement;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.menu.MenuConfig;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -50,6 +52,18 @@ public class BreadcrumbBlock implements BlockDefinition {
             currentPath = Utils.getRequestPathVariablePattern();
         }
 
+		Map uriVariables = new HashMap<>();
+		if (variables.containsKey("content")) {
+			Object content = variables.get("content");
+			if (content instanceof ModelAndViewElement) {
+				uriVariables.putAll(((ModelAndViewElement) content).getContent().getModel());
+			} else if (content instanceof ModelAndView) {
+				uriVariables.putAll(((ModelAndView) content).getModel());
+			}
+		} else {
+			uriVariables.putAll(variables);
+		}
+
 		String menu = null;
 		if (settings.containsKey("menu")) {
 			menu = settings.get("menu").toString();
@@ -73,7 +87,7 @@ public class BreadcrumbBlock implements BlockDefinition {
 				if (p.matcher(menuConfig.getUrl()).matches()) {
 					anchor.setHref(menuConfig.getUrl());
 				} else {
-					anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
+					anchor.setHref(Utils.processUrlVariables(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""), uriVariables));
 				}
 				element.addItem(new ListElement.ListItem(anchor));
 			} else {

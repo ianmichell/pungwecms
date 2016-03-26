@@ -9,7 +9,7 @@ import com.pungwe.cms.core.field.widgets.BooleanWidget;
  * Created by ian on 09/01/2016.
  */
 @FieldType(
-		name = "boolean",
+		value = "boolean_field",
 		label = "Boolean (Yes / No)",
 		category = "General",
 		defaultWidget = BooleanWidget.class,

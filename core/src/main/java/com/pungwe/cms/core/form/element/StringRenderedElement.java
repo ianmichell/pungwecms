@@ -17,6 +17,11 @@ public class StringRenderedElement extends AbstractFormRenderedElement<String> {
 	public StringRenderedElement() {
 	}
 
+	public StringRenderedElement(String name, String value) {
+		setName(name);
+		setValue(value);
+	}
+
 	@ModelAttribute("size")
 	public int getSize() {
 		return size;

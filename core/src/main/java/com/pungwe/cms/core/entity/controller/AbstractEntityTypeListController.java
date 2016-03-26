@@ -40,7 +40,7 @@ public abstract class AbstractEntityTypeListController {
 			// Link the title to the edit operation for the entity
 			AnchorElement entityEditLink = new AnchorElement(
 					entity.getTitle(),
-					"/admin/structure/content-types/edit/" + entity.getId().getBundle(),
+					editUrl(entity.getId().getBundle()),
 					new PlainTextElement(entity.getTitle())
 			);
 			ListElement operations = new UnorderedListElement();
@@ -50,7 +50,7 @@ public abstract class AbstractEntityTypeListController {
 			table.addRow(
 					new TableElement.Column(entityEditLink),
 					new TableElement.Column(new PlainTextElement(entity.getDescription())),
-					new TableElement.Column(new PlainTextElement("Operations"))
+					new TableElement.Column(operations)
 			);
 		}
 
@@ -74,4 +74,6 @@ public abstract class AbstractEntityTypeListController {
 	protected abstract void buildActions(List<RenderedElement> elements);
 
 	protected abstract void buildOperations(String bundle, ListElement operations);
+
+	protected abstract String editUrl(String id);
 }

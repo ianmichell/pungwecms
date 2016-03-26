@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by ian on 09/01/2016.
  */
-@FieldWidget(value="textarea_with_summary_widget", label="Textarea with Summary", supports = "string")
+@FieldWidget(value="textarea_with_summary_widget", label="Textarea with Summary", supports = "text_field")
 public class TextareaWithSummaryWidget extends TextareaWidget {
 
 	@Override

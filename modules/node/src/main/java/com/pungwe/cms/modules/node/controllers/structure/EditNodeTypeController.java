@@ -28,7 +28,7 @@ import java.util.concurrent.Callable;
 )
 @Controller
 @RequestMapping("/admin/structure/content-types/{nodeType}/edit")
-public class EditNodeTypesController extends AbstractEntityTypeEditController {
+public class EditNodeTypeController extends AbstractEntityTypeEditController {
 
 	@ModelAttribute("nodeType")
 	public String nodeType(@PathVariable("nodeType") String nodeType) {
@@ -40,6 +40,10 @@ public class EditNodeTypesController extends AbstractEntityTypeEditController {
 		final String nodeType = Utils.getRequestPathVariable("nodeType");
 		final EntityDefinition entityDefinition = entityDefinitionService.get("node", nodeType);
 		element.setTargetObject(entityDefinition);
+
+		// Set field values
+		element.setValue("title", 0, entityDefinition.getTitle());
+		element.setValue("description", 0, entityDefinition.getDescription());
 
 		// Remove the bundle field
 		element.hideField("bundle", 0);
@@ -57,6 +61,11 @@ public class EditNodeTypesController extends AbstractEntityTypeEditController {
 	@Override
 	public String getFormId() {
 		return "edit_node_type";
+	}
+
+	@ModelAttribute("title")
+	public String title() {
+		return "Edit Content Type";
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

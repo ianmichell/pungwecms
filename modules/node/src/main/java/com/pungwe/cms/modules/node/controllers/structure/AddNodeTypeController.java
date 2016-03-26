@@ -28,7 +28,7 @@ import java.util.concurrent.Callable;
 )
 @Controller
 @RequestMapping("/admin/structure/content-types/add")
-public class AddNodeTypesController extends AbstractEntityTypeEditController {
+public class AddNodeTypeController extends AbstractEntityTypeEditController {
 
 	@Autowired
 	protected EntityDefinitionService entityDefinitionService;
@@ -53,6 +53,7 @@ public class AddNodeTypesController extends AbstractEntityTypeEditController {
 
 
 			EntityDefinition definition = form.getTargetObject();
+			definition.getId().setBundle(bundleName);
 			definition.setTitle(title);
 			definition.setDescription(description);
 			entityDefinitionService.create(definition);
@@ -64,14 +65,19 @@ public class AddNodeTypesController extends AbstractEntityTypeEditController {
 		return "add_node_form";
 	}
 
+	@ModelAttribute("title")
+	public String title() {
+		return "Add a Content Type";
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
-	public Callable<String> add(Model model, @ModelAttribute("form") FormElement form, BindingResult result) {
+	public Callable<String> add(Model model, @ModelAttribute("form") FormElement<EntityDefinition> form, BindingResult result) {
 		return () -> {
 			if (result.hasErrors()) {
 				return "node_type/add";
 			}
 			form.getSubmitHandlers().forEach(f -> {
-
+				f.submit(form, model.asMap());
 			});
 			return "redirect:/admin/structure/content-types";
 		};

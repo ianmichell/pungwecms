@@ -59,6 +59,11 @@ public class ManageNodeTypesController extends AbstractEntityTypeListController 
 	}
 
 	@Override
+	protected String editUrl(String id) {
+		return "/admin/structure/content-types/" + id + "/edit";
+	}
+
+	@Override
 	protected void buildActions(List<RenderedElement> elements) {
 		elements.add(new AnchorElement(
 				"Add a new content type",

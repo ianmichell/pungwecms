@@ -22,9 +22,12 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
     apply plugin: "jacoco"
+    apply plugin: "maven"
+
 //    apply plugin: 'findbugs'
 //    apply plugin: 'checkstyle'
 //    apply plugin: 'pmd'
+
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

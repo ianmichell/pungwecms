@@ -109,7 +109,7 @@ public class SystemTasksBlock implements BlockDefinition {
                 if (p.matcher(menuConfig.getUrl()).matches()) {
                     anchor.setHref(menuConfig.getUrl());
                 } else {
-                    anchor.setHref(processUrlVariables(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""), uriVariables));
+                    anchor.setHref(Utils.processUrlVariables(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""), uriVariables));
                 }
                 ListElement.ListItem listItem = new ListElement.ListItem(anchor);
                 if (activeIds.contains(menuConfig.getId())) {
@@ -128,12 +128,6 @@ public class SystemTasksBlock implements BlockDefinition {
             }
         }
 
-	}
-
-    /** Expands the url template to a url using the most appropriate variables */
-	private String processUrlVariables(String url, Map<String, Object> variables) {
-        UriTemplate template = new UriTemplate(url);
-		return template.expand(variables).toString();
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import com.pungwe.cms.core.field.widgets.NumericWidget;
  * Created by ian on 09/01/2016.
  */
 @FieldType(
-		name = "numeric",
+		value = "numeric_field",
 		label = "Numeric",
 		category = "General",
 		defaultWidget = NumericWidget.class,

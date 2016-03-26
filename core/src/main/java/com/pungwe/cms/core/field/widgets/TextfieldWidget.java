@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by ian on 08/01/2016.
  */
-@FieldWidget(value = "textfield_widget", label="Textfield", supports = "string")
+@FieldWidget(value = "textfield_widget", label="Textfield", supports = "string_field")
 public class TextfieldWidget implements FieldWidgetDefinition {
 
 	@Override

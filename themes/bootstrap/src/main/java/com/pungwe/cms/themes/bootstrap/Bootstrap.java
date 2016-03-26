@@ -114,9 +114,6 @@ public class Bootstrap {
 
 	@Hook("preprocess_template")
 	public void hookContentAlterAdminMenuPages(String template, Map<String, Object> model) {
-		if (!(template.equals("menu/index") || template.equals("node_type/list"))) {
-			return;
-		}
 
 		if (model.containsKey("actions") && model.get("actions") instanceof List) {
 			((List<RenderedElement>)model.get("actions")).forEach(renderedElement -> {

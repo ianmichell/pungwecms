@@ -8,4 +8,12 @@ import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 @ThemeInfo("form/hidden")
 public class HiddenRenderedElement extends AbstractFormRenderedElement<String> {
 
+	public HiddenRenderedElement() {
+
+	}
+
+	public HiddenRenderedElement(String name, String value) {
+		setName(name);
+		setDefaultValue(value);
+	}
 }

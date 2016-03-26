@@ -4,6 +4,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.util.UriTemplate;
 
 import javax.servlet.ServletRequest;
 import java.text.Collator;
@@ -30,6 +31,12 @@ public class Utils {
 		AntPathMatcher apm = new AntPathMatcher();
 		Map<String, String> variables = apm.extractUriTemplateVariables(bestMatchPattern, path);
 		return variables.getOrDefault(variableName, null);
+	}
+
+	/** Expands the url template to a url using the most appropriate variables */
+	public static String processUrlVariables(String url, Map<String, Object> variables) {
+		UriTemplate template = new UriTemplate(url);
+		return template.expand(variables).toString();
 	}
 
     public static boolean hasRequestPathVariable() {

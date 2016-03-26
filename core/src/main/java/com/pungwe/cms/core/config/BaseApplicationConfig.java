@@ -6,11 +6,10 @@ import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.annotations.stereotypes.FieldFormatter;
 import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.annotations.stereotypes.Theme;
+import com.pungwe.cms.core.annotations.ui.FieldType;
 import com.pungwe.cms.core.module.config.ModuleContextConfig;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
@@ -42,6 +41,7 @@ import java.util.List;
                 @ComponentScan.Filter(value = Theme.class),
 				@ComponentScan.Filter(value = Controller.class),
 				@ComponentScan.Filter(value = RequestMapping.class),
+				@ComponentScan.Filter(value = FieldType.class),
 				@ComponentScan.Filter(value = FieldWidget.class),
 				@ComponentScan.Filter(value = FieldFormatter.class)
 		}

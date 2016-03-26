@@ -122,6 +122,19 @@ public class BlockManagementService {
 		return Optional.empty();
 	}
 
+	public Optional<Block> getBlockInfoByBlockName(String name) {
+		Optional<BlockDefinition> block = getBlockByName(name);
+		if (!block.isPresent()) {
+			return Optional.empty();
+		}
+		Block blockAnnotation = AnnotationUtils.findAnnotation(block.get().getClass(), Block.class);
+		if (blockAnnotation != null) {
+			return Optional.of(blockAnnotation);
+		} else {
+			return Optional.empty();
+		}
+	}
+
 	public void addBlockToTheme(String theme, String region, String block, int weight, Map<String, Object> themeSettings) {
 		Optional<BlockDefinition> blockDefinition = getBlockByName(block);
 		if (!blockDefinition.isPresent()) {

@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by ian on 10/01/2016.
  */
-@FieldWidget(value = "email_widget", label = "Email Address", supports = "email")
+@FieldWidget(value = "email_widget", label = "Email Address", supports = "email_field")
 public class EmailWidget implements FieldWidgetDefinition {
 
 	@Override

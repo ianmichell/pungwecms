@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by ian on 10/01/2016.
  */
-@FieldWidget(value = "numeric_widget", label = "Number", supports = "number")
+@FieldWidget(value = "numeric_widget", label = "Number", supports = "number_field")
 public class NumericWidget implements FieldWidgetDefinition {
 
 	@Override
