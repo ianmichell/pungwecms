@@ -64,11 +64,11 @@ public class BlockManagementService {
 		String themeName = themeManagementService.getCurrentThemeNameForRequest();
 
 		/* Fetch a list of regions */
-		List<String> regions = themeManagementService.getRegionsForDefaultThemeByRequest();
+		Map<String, String> regions = themeManagementService.getRegionsForDefaultThemeByRequest();
 
 		final Map<String, List<BlockConfig>> blocks = new LinkedHashMap<>();
-		regions.stream().forEach(s -> {
-			blocks.put(s, new LinkedList<BlockConfig>());
+		regions.forEach((k, v) -> {
+			blocks.put(k, new LinkedList<BlockConfig>());
 		});
 
 		/* Get a list of the blocks by region */

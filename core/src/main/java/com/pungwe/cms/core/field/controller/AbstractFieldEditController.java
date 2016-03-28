@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.field.controller;
 
-import com.pungwe.cms.core.annotations.ui.FieldType;
+import com.pungwe.cms.core.annotations.stereotypes.FieldType;
 import com.pungwe.cms.core.field.services.FieldTypeManagementService;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;

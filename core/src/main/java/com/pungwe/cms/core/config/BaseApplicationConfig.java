@@ -6,7 +6,7 @@ import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.annotations.stereotypes.FieldFormatter;
 import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.annotations.stereotypes.Theme;
-import com.pungwe.cms.core.annotations.ui.FieldType;
+import com.pungwe.cms.core.annotations.stereotypes.FieldType;
 import com.pungwe.cms.core.module.config.ModuleContextConfig;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;

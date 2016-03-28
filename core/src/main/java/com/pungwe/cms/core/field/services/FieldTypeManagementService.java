@@ -1,13 +1,12 @@
 package com.pungwe.cms.core.field.services;
 
 import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
-import com.pungwe.cms.core.annotations.ui.FieldType;
+import com.pungwe.cms.core.annotations.stereotypes.FieldType;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

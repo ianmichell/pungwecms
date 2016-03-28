@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
@@ -72,8 +73,8 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 
 	@Override
 	public void build(FormElement<BlockConfig> element) {
-		List<String> regions = themeManagementService.getRegionsForDefaultTheme();
-		List<BlockConfig> blocks = blockManagementService.getBlockConfigForDefaultTheme();
+		final Map<String, String> regions = themeManagementService.getRegionsForDefaultTheme();
+		final List<BlockConfig> blocks = blockManagementService.getBlockConfigForDefaultTheme();
 
 		final TableElement tableElement = new TableElement();
 		tableElement.addHeaderRow(
@@ -84,13 +85,14 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 				new TableElement.Header("Operations")
 		);
 
-		regions.forEach(r -> {
+		regions.forEach((k, v) -> {
 			// Add Region Header
-			TableElement.Header regionHeader = new TableElement.Header();
-			regionHeader.setContent(r);
+			final TableElement.Header regionHeader = new TableElement.Header();
+			regionHeader.setContent(v);
 			regionHeader.addAttribute("colspan", "5");
+			regionHeader.addAttribute("data-region", k);
 			tableElement.addRow(regionHeader);
-			List<BlockConfig> blocksForRegion = blocks.stream().filter(b -> b.getRegion().equals(r)).sorted((o1, o2) -> {
+			final List<BlockConfig> blocksForRegion = blocks.stream().filter(b -> b.getRegion().equals(k)).sorted((o1, o2) -> {
 				if (o1 == null) {
 					return -1;
 				} else if (o2 == null) {
@@ -115,8 +117,8 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 
 				// Region Selector
 				SingleSelectListRenderedElement regionSelect = new SingleSelectListRenderedElement();
-				regions.forEach(r1 -> {
-					regionSelect.addOption(r1, r1);
+				regions.forEach((k1, v1) -> {
+					regionSelect.addOption(k1, v1);
 				});
 				regionSelect.setValue(b.getRegion());
 

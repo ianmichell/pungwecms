@@ -15,4 +15,5 @@ dependencies {
 
     // Theme
     runtime project(':themes:bootstrap')
+    runtime project(':themes:adminLTE')
 }

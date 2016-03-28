@@ -1,0 +1,27 @@
+{
+  "name": "pungwe-cms-adminLTE",
+  "homepage": "https://github.com/thunderbird/pungwecms",
+  "authors": [
+    "Ian Michell <ianmichell@me.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "AdminLTE": "admin-lte#~2.3.3",
+    "font-awesome": "~4.5.0",
+    "jquery": "~2.2.2",
+    "bootstrap": "~3.3.6",
+    "respond": "~1.4.2",
+    "Ionicons": "ionicons#~2.0.1",
+    "html5shiv": "~3.7.3"
+  }
+}

@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.system.element.templates;
 
+import com.pungwe.cms.core.annotations.stereotypes.ThemeRegion;
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
@@ -13,8 +14,20 @@ import java.util.*;
 @ThemeInfo("system/page")
 public class PageElement extends AbstractRenderedElement {
 
-	public static final List<String> DEFAULT_REGIONS = Collections.unmodifiableList(Arrays.asList("header", "help", "primary_menu", "secondary_menu", "breadcrumb",
-			"highlighted", "sidebar_first", "content", "sidebar_second", "footer"));
+	public static final Map<String, String> DEFAULT_REGIONS = new LinkedHashMap<>();
+
+	static {
+		DEFAULT_REGIONS.put("header", "Header");
+		DEFAULT_REGIONS.put("help", "Help");
+		DEFAULT_REGIONS.put("primary_menu", "Primary Menu");
+		DEFAULT_REGIONS.put("secondary_menu", "Secondary Menu");
+		DEFAULT_REGIONS.put("breadcrumb", "Breadcrumb");
+		DEFAULT_REGIONS.put("highlighted", "Highlighted");
+		DEFAULT_REGIONS.put("sidebar_first", "First Sidebar");
+		DEFAULT_REGIONS.put("content", "Content");
+		DEFAULT_REGIONS.put("sidebar_second", "Second Sidebar");
+		DEFAULT_REGIONS.put("footer", "Footer");
+	}
 
 	protected Map<String, List<RenderedElement>> regions = new LinkedHashMap<>();
 

@@ -10,6 +10,7 @@ include 'modules:actuator'
 include 'modules:taxonomy'
 include 'themes'
 include 'themes:bootstrap'
+include 'themes:adminLTE'
 include 'webapp'
 
 

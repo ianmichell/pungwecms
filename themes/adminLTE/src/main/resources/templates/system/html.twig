@@ -1,0 +1,21 @@
+<!doctype html>
+<html{{ attributes }}{{ printAttribute("class", join(classes, ' ')) }}>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{ render(head) }}
+    <title>{{ title|join(" | ") }}</title>
+    {{ render(css) }}
+    {{ render(js_top) }}
+</head>
+<body class="hold-transition skin-blue sidebar-mini"{{ bodyAttributes }}>
+<a href="#main-content" class="sr-only sr-only-focusable">
+    Skip to main content
+</a>
+{{ render(page_top) }}
+{{ render(page_content) }}
+{{ render(page_bottom) }}
+{{ render(js_bottom) }}
+</body>
+</html>

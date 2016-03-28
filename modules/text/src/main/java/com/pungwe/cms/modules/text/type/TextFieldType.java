@@ -1,6 +1,6 @@
 package com.pungwe.cms.modules.text.type;
 
-import com.pungwe.cms.core.annotations.ui.FieldType;
+import com.pungwe.cms.core.annotations.stereotypes.FieldType;
 import com.pungwe.cms.modules.text.formatter.TextFormatter;
 import com.pungwe.cms.modules.text.widget.TextareaWithSummaryWidget;
 

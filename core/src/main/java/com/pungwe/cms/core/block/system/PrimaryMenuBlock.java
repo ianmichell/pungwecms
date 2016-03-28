@@ -90,6 +90,7 @@ public class PrimaryMenuBlock implements BlockDefinition {
                 anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
             }
             ListElement.ListItem listItem = new ListElement.ListItem(anchor);
+			listItem.addAttribute("data-menu-item-name", menuConfig.getName());
             if (activeItems.contains(menuConfig.getId())) {
                 listItem.addClass(settings.getOrDefault("active_item_class", "active").toString());
             }

@@ -29,5 +29,5 @@ public @interface Theme {
 	 */
 	String parent() default "";
 
-	String[] regions() default {};
+	ThemeRegion[] regions() default {};
 }

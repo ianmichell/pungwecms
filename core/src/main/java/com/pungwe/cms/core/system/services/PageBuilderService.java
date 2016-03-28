@@ -28,11 +28,11 @@ public class PageBuilderService {
 	protected ApplicationContext applicationContext;
 
 	// Uses the http request and the content object to load and build a page based on the URL and current theme! Just LIKE MAGIC!
-	public PageElement buildPage(HttpServletRequest request, Map<String, Object> model) {
-		List<String> regions = themeManagementService.getRegionsForDefaultThemeByRequest();
+	public PageElement buildPage(final HttpServletRequest request, final Map<String, Object> model) {
+		Map<String, String> regions = themeManagementService.getRegionsForDefaultThemeByRequest();
 		// Build the page element...
 		final PageElement pageElement = new PageElement();
-		for (String region : regions) {
+		for (String region : regions.keySet()) {
 			pageElement.addRegion(region, new LinkedList<RenderedElement>());
 		}
 		// Build the page with a page builder! Defaults to BlockPageBuilder

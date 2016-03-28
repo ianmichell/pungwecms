@@ -24,141 +24,149 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/admin")
-@MenuItems(items={
-		@MenuItem(menu = "system", name="admin", description = "Administration Homepage", title = "Admin"),
+@MenuItems(items = {
+        @MenuItem(menu = "system", name = "admin", description = "Administration Homepage", title = "Admin")
 })
 public class AdminController {
 
-	@Autowired
-	MenuManagementService menuManagementService;
+    @Autowired
+    MenuManagementService menuManagementService;
 
-	@RequestMapping(method= RequestMethod.GET)
-	public Callable<String> index() {
-		return () -> {
-			return "admin/index";
-		};
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public Callable<String> index() {
+        return () -> {
+            return "redirect:/admin/dashboard";
+        };
+    }
 
-	@MenuItem(menu = "system", parent="admin", name="structure", description = "Manage Website Structure", title = "Structure", weight = -102)
-	@RequestMapping(value="/structure", method = RequestMethod.GET)
-	@Cacheable("admin.structure")
-	public Callable<String> structure(HttpServletRequest request, final Model model) {
-		return () -> {
-			DivElement element = new DivElement();
-			element.setHtmlId("admin_structure_menu");
-			element.addClass("admin-list");
-			List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.structure");
+    @MenuItem(menu = "system", parent = "admin", name = "dashboard", description = "Administration Dashboard", title = "Dashboard", weight = -300)
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public Callable<String> dashboard() {
+        return () -> {
+            return "admin/index";
+        };
+    }
 
-			List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
-				HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
-				label.addClass("item-label");
-				ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
-				description.addClass("item-description");
+    @MenuItem(menu = "system", parent = "admin", name = "structure", description = "Manage Website Structure", title = "Structure", weight = -180)
+    @RequestMapping(value = "/structure", method = RequestMethod.GET)
+    @Cacheable("admin.structure")
+    public Callable<String> structure(HttpServletRequest request, final Model model) {
+        return () -> {
+            DivElement element = new DivElement();
+            element.setHtmlId("admin_structure_menu");
+            element.addClass("admin-list");
+            List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.structure");
 
-				AnchorElement anchor = new AnchorElement();
-				anchor.setTitle(menuConfig.getDescription());
-				anchor.setContent(label, description);
-				anchor.setTarget(menuConfig.getTarget());
-				// Set the url
-				Pattern p = Pattern.compile("^https?\\://|ftp\\://");
-				if (p.matcher(menuConfig.getUrl()).matches()) {
-					anchor.setHref(menuConfig.getUrl());
-				} else {
-					anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
-				}
-				return anchor;
-			}).collect(Collectors.toList());
-			element.setContent(menuItemElements);
+            List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
+                HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
+                label.addClass("item-label");
+                ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
+                description.addClass("item-description");
 
-			model.addAttribute("title", "Structure");
-			model.addAttribute("content", element);
+                AnchorElement anchor = new AnchorElement();
+                anchor.setTitle(menuConfig.getDescription());
+                anchor.setContent(label, description);
+                anchor.setTarget(menuConfig.getTarget());
+                // Set the url
+                Pattern p = Pattern.compile("^https?\\://|ftp\\://");
+                if (p.matcher(menuConfig.getUrl()).matches()) {
+                    anchor.setHref(menuConfig.getUrl());
+                } else {
+                    anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
+                }
+                return anchor;
+            }).collect(Collectors.toList());
+            element.setContent(menuItemElements);
 
-			return "admin/structure";
-		};
-	}
+            model.addAttribute("title", "Structure");
+            model.addAttribute("content", element);
 
-	@MenuItem(menu = "system", parent="admin", name="reporting", description = "Reports", title = "Reports", weight = -100)
-	@RequestMapping(value="/reporting", method = RequestMethod.GET)
-	@Cacheable("admin.reporting")
-	public Callable<String> reporting(HttpServletRequest request, Model model) {
-		return () -> {
-			DivElement element = new DivElement();
-			element.setHtmlId("admin_structure_menu");
-			element.addClass("admin-list");
-			List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.reporting");
+            return "admin/structure";
+        };
+    }
 
-			List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
-				HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
-				label.addClass("item-label");
-				ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
-				description.addClass("item-description");
+    @MenuItem(menu = "system", parent = "admin", name = "reporting", description = "Reports", title = "Reports", weight = -100)
+    @RequestMapping(value = "/reporting", method = RequestMethod.GET)
+    @Cacheable("admin.reporting")
+    public Callable<String> reporting(HttpServletRequest request, Model model) {
+        return () -> {
+            DivElement element = new DivElement();
+            element.setHtmlId("admin_structure_menu");
+            element.addClass("admin-list");
+            List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.reporting");
 
-				AnchorElement anchor = new AnchorElement();
-				anchor.setTitle(menuConfig.getDescription());
-				anchor.setContent(label, description);
-				anchor.setTarget(menuConfig.getTarget());
-				// Set the url
-				Pattern p = Pattern.compile("^https?\\://|ftp\\://");
-				if (p.matcher(menuConfig.getUrl()).matches()) {
-					anchor.setHref(menuConfig.getUrl());
-				} else {
-					anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
-				}
-				return anchor;
-			}).collect(Collectors.toList());
-			element.setContent(menuItemElements);
+            List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
+                HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
+                label.addClass("item-label");
+                ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
+                description.addClass("item-description");
 
-			model.addAttribute("title", "Reports");
-			model.addAttribute("content", element);
+                AnchorElement anchor = new AnchorElement();
+                anchor.setTitle(menuConfig.getDescription());
+                anchor.setContent(label, description);
+                anchor.setTarget(menuConfig.getTarget());
+                // Set the url
+                Pattern p = Pattern.compile("^https?\\://|ftp\\://");
+                if (p.matcher(menuConfig.getUrl()).matches()) {
+                    anchor.setHref(menuConfig.getUrl());
+                } else {
+                    anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
+                }
+                return anchor;
+            }).collect(Collectors.toList());
+            element.setContent(menuItemElements);
 
-			return "admin/reports";
-		};
-	}
+            model.addAttribute("title", "Reports");
+            model.addAttribute("content", element);
 
-	@MenuItem(menu = "system", parent="admin.reporting", name="system", description = "System Reports", title = "System Reports", weight = -101)
-	@RequestMapping(value="/reporting/system", method = RequestMethod.GET)
-	@Cacheable("admin.reporting.system")
-	public Callable<String> systemReporting(HttpServletRequest request, Model model) {
-		return () -> {
-			DivElement element = new DivElement();
-			element.setHtmlId("admin_structure_menu");
-			element.addClass("admin-list");
-			List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.reporting.system");
+            return "admin/reports";
+        };
+    }
 
-			List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
-				HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
-				label.addClass("item-label");
-				ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
-				description.addClass("item-description");
+    @MenuItem(menu = "system", parent = "admin.reporting", name = "system", description = "System Reports", title = "System Reports", weight = -101)
+    @RequestMapping(value = "/reporting/system", method = RequestMethod.GET)
+    @Cacheable("admin.reporting.system")
+    public Callable<String> systemReporting(HttpServletRequest request, Model model) {
+        return () -> {
+            DivElement element = new DivElement();
+            element.setHtmlId("admin_structure_menu");
+            element.addClass("admin-list");
+            List<MenuConfig> menuItems = menuManagementService.getMenuItems("system", "admin.reporting.system");
 
-				AnchorElement anchor = new AnchorElement();
-				anchor.setTitle(menuConfig.getDescription());
-				anchor.setContent(label, description);
-				anchor.setTarget(menuConfig.getTarget());
-				// Set the url
-				Pattern p = Pattern.compile("^https?\\://|ftp\\://");
-				if (p.matcher(menuConfig.getUrl()).matches()) {
-					anchor.setHref(menuConfig.getUrl());
-				} else {
-					anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
-				}
-				return anchor;
-			}).collect(Collectors.toList());
-			element.setContent(menuItemElements);
+            List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
+                HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
+                label.addClass("item-label");
+                ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
+                description.addClass("item-description");
 
-			model.addAttribute("title", "Reports - System");
-			model.addAttribute("content", element);
+                AnchorElement anchor = new AnchorElement();
+                anchor.setTitle(menuConfig.getDescription());
+                anchor.setContent(label, description);
+                anchor.setTarget(menuConfig.getTarget());
+                // Set the url
+                Pattern p = Pattern.compile("^https?\\://|ftp\\://");
+                if (p.matcher(menuConfig.getUrl()).matches()) {
+                    anchor.setHref(menuConfig.getUrl());
+                } else {
+                    anchor.setHref(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""));
+                }
+                return anchor;
+            }).collect(Collectors.toList());
+            element.setContent(menuItemElements);
 
-			return "admin/system";
-		};
-	}
+            model.addAttribute("title", "Reports - System");
+            model.addAttribute("content", element);
 
-	@MenuItem(menu = "system", parent="admin", name="configuration", description = "Manage Website Configuration", title = "Configuration", weight = -100)
-	@RequestMapping(value="/configuration", method = RequestMethod.GET)
-	public Callable<String> configuration(Model model) {
-		return () -> {
-			model.addAttribute("title", "Configuration");
-			return "admin/configuration";
-		};
-	}
+            return "admin/system";
+        };
+    }
+
+    @MenuItem(menu = "system", parent = "admin", name = "configuration", description = "Manage Website Configuration", title = "Configuration", weight = -50)
+    @RequestMapping(value = "/configuration", method = RequestMethod.GET)
+    public Callable<String> configuration(Model model) {
+        return () -> {
+            model.addAttribute("title", "Configuration");
+            return "admin/configuration";
+        };
+    }
 }

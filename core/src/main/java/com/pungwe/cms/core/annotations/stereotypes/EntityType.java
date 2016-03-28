@@ -9,14 +9,32 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by 917903 on 22/03/2016.
+ * Created by Ian Michell on 22/03/2016.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Component
 public @interface EntityType {
+
+    /**
+     * Bean name for the entity type component. This should generally be
+     * entity_[entity_name].
+     *
+     * @return the bean name for the EntityType.
+     */
     @AliasFor(annotation = Component.class, attribute = "value")
     String value();
+
+    /**
+     * The entity type label.
+     * @return the specified label
+     */
     String label();
+
+    /**
+     * An administrative description of the related entity type.
+     *
+     * @return the specified description
+     */
     String description() default "";
 }

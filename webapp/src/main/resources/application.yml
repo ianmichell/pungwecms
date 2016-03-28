@@ -27,3 +27,4 @@ themes:
   startup:
     scan: false
   default: "bootstrap"
+  defaultAdmin: "admin_lte"

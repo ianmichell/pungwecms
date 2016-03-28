@@ -37,7 +37,6 @@ public class StatusMessageBlock implements BlockDefinition {
 
 		// Check for bind errors!
 		AtomicBoolean hasErrors = new AtomicBoolean(false);
-//		if (variables.entrySet().stream().filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult).findAny().isPresent()) {
 		UnorderedListElement listElement = new UnorderedListElement();
 		listElement.addClass("status-message");
 		// Get the content element...
@@ -68,7 +67,6 @@ public class StatusMessageBlock implements BlockDefinition {
 			elements.add(listElement);
 			return; // don't bother checking for other messages...
 		}
-//		}
 
 		// Check for generic errors
 		if (variables.containsKey("status.message.error")) {

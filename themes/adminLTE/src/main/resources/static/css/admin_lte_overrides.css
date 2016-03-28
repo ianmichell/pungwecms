@@ -1,0 +1,16 @@
+.nav-tabs {
+    margin-bottom: 20px;
+}
+
+.list-group .list-group-item {
+    border-left: 0;
+    border-right: 0;
+}
+
+.list-group .list-group-item:first-child {
+    border-top: 0;
+}
+
+.list-group .list-group-item:last-child {
+    border-bottom: 0;
+}

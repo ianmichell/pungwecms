@@ -1,6 +1,6 @@
 package com.pungwe.cms.core.field.types;
 
-import com.pungwe.cms.core.annotations.ui.FieldType;
+import com.pungwe.cms.core.annotations.stereotypes.FieldType;
 import com.pungwe.cms.core.field.formatters.NumericFormatter;
 import com.pungwe.cms.core.field.widgets.NumericWidget;
 
