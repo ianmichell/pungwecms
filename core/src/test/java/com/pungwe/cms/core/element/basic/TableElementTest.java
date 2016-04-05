@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.element.basic;
 
 import com.lyncode.jtwig.functions.exceptions.FunctionException;
+import com.pungwe.cms.config.TestConfig;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import com.pungwe.cms.test.AbstractWebTest;
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  * Created by ian on 17/02/2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(BaseApplicationConfig.class)
+@SpringApplicationConfiguration({TestConfig.class, BaseApplicationConfig.class})
 public class TableElementTest extends AbstractWebTest {
 
 	@Autowired

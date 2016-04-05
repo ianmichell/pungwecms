@@ -2,14 +2,13 @@ package com.pungwe.cms.core.element.basic;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractContentElement;
-import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ian on 08/03/2016.
@@ -17,16 +16,24 @@ import java.util.List;
 @ThemeInfo("basic/div")
 public class DivElement extends AbstractContentElement {
 
-	public DivElement() {
+    public DivElement() {
 
-	}
+    }
 
-	public DivElement(List<RenderedElement> content) {
-		setContent(content);
-	}
+    public DivElement(String... content) {
+        setContent(Arrays.asList(content).stream().map(s -> new PlainTextElement(s)).collect(Collectors.toList()));
+    }
 
-	@Override
-	protected Collection<String> excludedAttributes() {
-		return new LinkedList<>();
-	}
+    public DivElement(RenderedElement... content) {
+        setContent(Arrays.asList(content));
+    }
+
+    public DivElement(List<RenderedElement> content) {
+        setContent(content);
+    }
+
+    @Override
+    protected Collection<String> excludedAttributes() {
+        return new LinkedList<>();
+    }
 }

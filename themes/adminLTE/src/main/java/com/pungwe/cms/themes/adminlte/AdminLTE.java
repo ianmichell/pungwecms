@@ -123,6 +123,10 @@ public class AdminLTE {
             }
         }
 
+        if (element instanceof DetailListElement) {
+            element.addClass("dl-horizontal");
+        }
+
         if (element instanceof TableElement) {
             ((TableElement) element).addClass("table", "table-striped");
         }

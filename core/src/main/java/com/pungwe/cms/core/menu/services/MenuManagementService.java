@@ -39,7 +39,8 @@ public class MenuManagementService {
 
 	@EventListener
 	public void buildSystemMenu(ContextRefreshedEvent event) {
-		if (!event.getApplicationContext().getId().equalsIgnoreCase("module-application-context")) {
+		boolean scanForMenuItems = event.getApplicationContext().getEnvironment().getProperty("menu.startup.scan", Boolean.class, true);
+		if (!event.getApplicationContext().getId().equalsIgnoreCase("module-application-context") || !scanForMenuItems) {
 			return;
 		}
 		// Fetch the module context and parent context... We should not have an issue with casting this...

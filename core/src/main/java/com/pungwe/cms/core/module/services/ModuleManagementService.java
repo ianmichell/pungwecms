@@ -250,4 +250,10 @@ public class ModuleManagementService {
 	public void setModuleContext(ApplicationContext moduleContext) {
 		this.moduleContext = moduleContext;
 	}
+
+	public List<Module> listAllModuleDetails() {
+		return moduleContext.getBeansWithAnnotation(Module.class).values().stream().map(o -> {
+			return AnnotationUtils.findAnnotation(o.getClass(), Module.class);
+		}).collect(Collectors.toList());
+	}
 }

@@ -15,7 +15,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @Module(
 		name = "actuator",
-		description = "A module for production deployment based on spring boot actuator"
+		label = "Actuator",
+		description = "A module for production deployment / system health based on spring boot actuator"
 )
 @Import({
 		// Actuator

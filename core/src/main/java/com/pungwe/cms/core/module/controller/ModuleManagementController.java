@@ -1,15 +1,4 @@
-package com.pungwe.cms.core.module.controller;
-
-import com.pungwe.cms.core.annotations.ui.MenuItem;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.concurrent.Callable;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -28,20 +17,158 @@ import java.util.concurrent.Callable;
  * under the License.
  * Created by ian on 28/03/2016.
  */
-@MenuItem(menu = "system", parent = "admin", name = "modules", title = "Modules", description = "Manage your modules", weight = -150)
+package com.pungwe.cms.core.module.controller;
+
+import com.pungwe.cms.core.annotations.stereotypes.Module;
+import com.pungwe.cms.core.annotations.ui.MenuItem;
+import com.pungwe.cms.core.element.basic.DetailListElement;
+import com.pungwe.cms.core.element.basic.DivElement;
+import com.pungwe.cms.core.element.basic.PlainTextElement;
+import com.pungwe.cms.core.element.basic.TableElement;
+import com.pungwe.cms.core.form.controller.AbstractFormController;
+import com.pungwe.cms.core.form.element.CheckboxElement;
+import com.pungwe.cms.core.form.element.FormElement;
+import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
+import com.pungwe.cms.core.form.element.LabelElement;
+import com.pungwe.cms.core.module.ModuleConfig;
+import com.pungwe.cms.core.module.services.ModuleConfigService;
+import com.pungwe.cms.core.module.services.ModuleManagementService;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+@MenuItem(menu = "system", parent = "admin", name = "modules", title = "Modules",
+        description = "Manage your modules", weight = -150)
 @Controller
 @RequestMapping("/admin/modules")
-public class ModuleManagementController {
+public class ModuleManagementController extends AbstractFormController {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(ModuleManagementController.class);
+
+    @Autowired
+    protected ModuleManagementService moduleManagementService;
+
+    @Autowired
+    protected ModuleConfigService moduleConfigService;
+
+    /**
+     * Page title model attribute
+     *
+     * @return the page title
+     */
     @ModelAttribute("title")
     public String title() {
         return "Modules";
     }
 
+    /**
+     * Returns a page with a table of modules.
+     *
+     * @param model the model for the controller action
+     * @return a callable object with a reference to the view being used.
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public Callable<String> get(Model model) {
+    public Callable<String> get(final Model model) {
         return () -> {
             return "admin/modules/index";
         };
+    }
+
+    @Override
+    public String getFormId() {
+        return "module-management-form";
+    }
+
+    @Override
+    public void build(final FormElement element) {
+        final TableElement tableElement = new TableElement();
+        tableElement.addHeaderRow(
+                new TableElement.Header("Enabled"),
+                new TableElement.Header("Name"),
+                new TableElement.Header("Description")
+        );
+
+        // Illustrates if a module is enabled or not.
+        final Set<ModuleConfig> moduleConfigList = moduleConfigService.listAllModules();
+
+        final Map<String, Module> annotations = new HashMap<String, Module>();
+        moduleConfigList.forEach(moduleConfig -> {
+            try {
+                Class<?> c = Class.forName(moduleConfig.getEntryPoint());
+                Module annotation = AnnotationUtils.findAnnotation(c, Module.class);
+                if (annotation == null) {
+                    LOGGER.error("Invalid module: " + moduleConfig.getName() + " class: " + moduleConfig.getEntryPoint());
+                    return; // skip this row
+                }
+                annotations.put(annotation.name(), annotation);
+            } catch (ClassNotFoundException ex) {
+                LOGGER.error("Class: " + moduleConfig.getEntryPoint() + " not found for module: " +
+                        moduleConfig.getName(), ex);
+            }
+        });
+        AtomicInteger delta = new AtomicInteger();
+        moduleConfigList.stream().filter(moduleConfig -> annotations.containsKey(moduleConfig.getName())).forEach(moduleConfig -> {
+            // We should not have a problem with loading classes, however if a classnotfoundexception is thrown
+            // ignore it and log as an error
+            final Module annotation = annotations.get(moduleConfig.getName());
+
+            // Checkbox
+            final CheckboxElement checkboxElement = new CheckboxElement("name", moduleConfig.getName());
+            checkboxElement.setHtmlId("module_enabled_" + moduleConfig.getName());
+            checkboxElement.setDelta(delta.getAndIncrement());
+            checkboxElement.setChecked(moduleConfig.isEnabled());
+
+            // Label
+            final LabelElement label = new LabelElement(StringUtils.isBlank(annotation.label()) ? annotation.name() : annotation.label());
+            label.setForElement(checkboxElement);
+
+            // Description
+            final DivElement description = new DivElement(annotation.description());
+            DetailListElement details = new DetailListElement();
+            details.addItem(
+                    new DetailListElement.DTItem("Module Name:"),
+                    new DetailListElement.DDItem(annotation.name()),
+                    new DetailListElement.DTItem("Dependencies:"),
+                    new DetailListElement.DDItem(annotations.values().stream()
+                            .filter(module -> Arrays.asList(annotation.dependencies())
+                                    .stream().map(dep -> dep.value()).collect(Collectors.toList())
+                                    .contains(module.name()))
+                            .map(a -> StringUtils.isBlank(a.label()) ? a.name() : a.label())
+                            .collect(Collectors.joining(", ")))
+            );
+
+            tableElement.addRow(
+                    new TableElement.Column(checkboxElement),
+                    new TableElement.Column(label),
+                    new TableElement.Column(description, details)
+            );
+        });
+
+        element.addContent(tableElement, new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Save"));
+    }
+
+    @Override
+    protected void buildInternal(FormElement element) {
+    }
+
+    @Override
+    public void validate(FormElement form, Errors errors) {
+
     }
 }

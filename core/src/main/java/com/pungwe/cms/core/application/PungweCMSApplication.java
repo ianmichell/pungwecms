@@ -67,15 +67,6 @@ public class PungweCMSApplication {
 				}
 				return;
 			}
-		}).listeners(event -> {
-			// do something for themes
-			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("module-application-context")) {
-				ThemeManagementService themeManagementService = ((ContextRefreshedEvent) event).getApplicationContext().getBean(ThemeManagementService.class);
-				if (((ContextRefreshedEvent)event).getApplicationContext().getEnvironment().getProperty("themes.startup.scan", Boolean.class, true)) {
-					themeManagementService.scan();
-				}
-				themeManagementService.startEnabledThemes();
-			}
 		}).child(ModuleContextConfig.class).initializers(childContext -> {
 			childContext.setId("module-application-context");
 			ModuleManagementService moduleManagementService = childContext.getParent().getBean(ModuleManagementService.class);
@@ -84,6 +75,15 @@ public class PungweCMSApplication {
 				moduleManagementService.scan();
 			}
 			moduleManagementService.startEnabledModules();
+		}).listeners(event -> {
+			// do something for themes
+			if (event instanceof ContextRefreshedEvent && ((ContextRefreshedEvent) event).getApplicationContext().getId().equalsIgnoreCase("module-application-context")) {
+				ThemeManagementService themeManagementService = ((ContextRefreshedEvent) event).getApplicationContext().getBean(ThemeManagementService.class);
+				if (((ContextRefreshedEvent) event).getApplicationContext().getEnvironment().getProperty("themes.startup.scan", Boolean.class, true)) {
+					themeManagementService.scan();
+				}
+				themeManagementService.startEnabledThemes();
+			}
 		}).registerShutdownHook(true).run(args);
 	}
 

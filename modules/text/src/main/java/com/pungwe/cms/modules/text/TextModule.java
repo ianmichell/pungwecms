@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @Module(
 		name = "text",
+        label = "Formatted Text",
 		description = "Extension to the spring field type. Provides formatted text")
 @ComponentScan("com.pungwe.cms.modules.text")
 public class TextModule {

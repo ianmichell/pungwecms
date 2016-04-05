@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -85,6 +86,7 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 				new TableElement.Header("Operations")
 		);
 
+        final AtomicInteger delta = new AtomicInteger(0);
 		regions.forEach((k, v) -> {
 			// Add Region Header
 			final TableElement.Header regionHeader = new TableElement.Header();
@@ -111,19 +113,26 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 				if (!blockInfo.isPresent()) {
 					return;
 				}
+
+                int d = delta.getAndIncrement();
+
 				// Generate columns for each one
 				// Block Id
 				HiddenRenderedElement blockId = new HiddenRenderedElement("blockId", String.valueOf(b.getId()));
+				blockId.setDelta(d);
 
 				// Region Selector
 				SingleSelectListRenderedElement regionSelect = new SingleSelectListRenderedElement();
+				regionSelect.setName("region");
+				regionSelect.setDelta(d);
 				regions.forEach((k1, v1) -> {
-					regionSelect.addOption(k1, v1);
+					regionSelect.addOption(v1, k1);
 				});
 				regionSelect.setValue(b.getRegion());
 
 				// Block Weight
 				StringRenderedElement weightField = new StringRenderedElement("blockWeight", String.valueOf(b.getWeight()));
+				weightField.setDelta(d);
 				weightField.setSize(5);
 
 				// Columns
@@ -134,6 +143,7 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 				TableElement.Column ops = new TableElement.Column("Operations");
 
 				tableElement.addRow(blockName, category, region, weight, ops);
+
 			});
 		});
 

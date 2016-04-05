@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.form.element;
 
+import com.pungwe.cms.config.TestConfig;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import com.pungwe.cms.test.AbstractWebTest;
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  * Created by ian on 25/02/2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(BaseApplicationConfig.class)
+@SpringApplicationConfiguration({TestConfig.class, BaseApplicationConfig.class})
 @WebAppConfiguration("src/main/resources")
 public class MultiSelectListElementTest extends AbstractWebTest {
 

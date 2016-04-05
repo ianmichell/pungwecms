@@ -106,6 +106,8 @@ public class ThemeManagementServiceTest {
 	@Test
 	public void testEnableTheme() {
 
+		((AnnotationConfigWebApplicationContext)moduleManagementService.getModuleContext()).refresh();
+
 		// Scan for themes
 		themeConfigService.registerTheme(TestTheme.class, TestTheme.class.getResource("/"));
 
@@ -122,6 +124,9 @@ public class ThemeManagementServiceTest {
 
 	@Test
 	public void testEnableThemeWithParent() {
+
+		((AnnotationConfigWebApplicationContext)moduleManagementService.getModuleContext()).refresh();
+
 		// Register the appropriate themes
 		themeConfigService.registerTheme(TestTheme.class, TestTheme.class.getResource("/"));
 		themeConfigService.registerTheme(ThemeWithParent.class, ThemeWithParent.class.getResource("/"));

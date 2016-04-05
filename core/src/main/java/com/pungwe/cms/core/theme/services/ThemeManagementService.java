@@ -38,9 +38,6 @@ public class ThemeManagementService {
     private ThemeConfigService<? extends ThemeConfig> themeConfigService;
 
     @Autowired
-    private ApplicationContext applicationContext;
-
-    @Autowired
     private HookService hookService;
 
     @Autowired
@@ -149,7 +146,7 @@ public class ThemeManagementService {
 
                 // Find the parent application context for the theme and set it
                 ApplicationContext parent = getThemeContext(themeInfo.parent());
-                ctx.setParent(parent == null ? applicationContext : parent);
+                ctx.setParent(parent == null ? moduleManagementService.getModuleContext() : parent);
 
                 // Register the theme entry point class
                 ctx.register(c);
@@ -182,8 +179,8 @@ public class ThemeManagementService {
         // Remove the themes missing from the classpath
         removeMissingThemes();
 
-        String defaultTheme = applicationContext.getEnvironment().getProperty("themes.default", "");
-        String defaultAdminTheme = applicationContext.getEnvironment().getProperty("themes.defaultAdmin", defaultTheme);
+        String defaultTheme = moduleManagementService.getModuleContext().getEnvironment().getProperty("themes.default", "");
+        String defaultAdminTheme = moduleManagementService.getModuleContext().getEnvironment().getProperty("themes.defaultAdmin", defaultTheme);
 
         ThemeConfig defaultThemeConfig = themeConfigService.getDefaultTheme();
         ThemeConfig defaultAdminThemeConfig = themeConfigService.getDefaultAdminTheme();

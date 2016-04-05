@@ -1,6 +1,7 @@
 package com.pungwe.cms.jpa.module.services;
 
 import com.pungwe.cms.core.annotations.stereotypes.Module;
+import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
 import com.pungwe.cms.jpa.module.ModuleConfigImpl;
 import com.pungwe.cms.jpa.module.repository.ModuleConfigRepository;
@@ -86,13 +87,13 @@ public class JPAModuleConfigService implements ModuleConfigService<ModuleConfigI
 
 	@Override
 	@Transactional
-	public Set<ModuleConfigImpl> listAllModules() {
+	public Set<ModuleConfig> listAllModules() {
 		return moduleConfigRepository.findAll().stream().collect(Collectors.toSet());
 	}
 
 	@Override
 	@Transactional
-	public Set<ModuleConfigImpl> listEnabledModules() {
+	public Set<ModuleConfig> listEnabledModules() {
 		return moduleConfigRepository.findAllByEnabled(true).stream().collect(Collectors.toSet());
 	}
 

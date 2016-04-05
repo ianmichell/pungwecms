@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.system.install;
 
+import com.pungwe.cms.config.TestConfig;
 import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.block.impl.BlockConfigImpl;
 import com.pungwe.cms.core.block.services.BlockConfigServiceImpl;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by ian on 27/02/2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(BaseApplicationConfig.class)
+@SpringApplicationConfiguration({TestConfig.class, BaseApplicationConfig.class})
 @WebAppConfiguration("src/main/resources")
 public class InstallControllerTest extends AbstractWebTest {
 

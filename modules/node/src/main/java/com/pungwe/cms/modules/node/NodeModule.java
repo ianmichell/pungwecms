@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @Module(
 		name = "node",
+		label = "Content Types",
 		description = "A module for content editing",
 		dependencies = { @ModuleDependency("text") }
 )

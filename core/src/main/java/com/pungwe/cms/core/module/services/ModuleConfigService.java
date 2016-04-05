@@ -30,9 +30,9 @@ public interface ModuleConfigService<M extends ModuleConfig> {
 
 	boolean isEnabled(String module);
 
-	Set<M> listAllModules();
+	Set<ModuleConfig> listAllModules();
 
-	Set<M> listEnabledModules();
+	Set<ModuleConfig> listEnabledModules();
 
 	M getModuleConfig(String module);
 
