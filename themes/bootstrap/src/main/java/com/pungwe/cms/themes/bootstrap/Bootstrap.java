@@ -11,10 +11,11 @@ import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
 import com.pungwe.cms.core.form.element.ButtonElement;
 import com.pungwe.cms.core.form.element.FormElement;
-import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
+import com.pungwe.cms.core.form.element.InputButtonElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,11 +89,11 @@ public class Bootstrap {
             element.addClass("form");
         }
 
-        if (element instanceof FormRenderedElement && !(element instanceof InputButtonRenderedElement || element instanceof ButtonElement)) {
+        if (element instanceof FormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
             element.addClass("form-control");
         }
 
-        if (element instanceof InputButtonRenderedElement || element instanceof ButtonElement) {
+        if (element instanceof InputButtonElement || element instanceof ButtonElement) {
             if (!element.getClasses().contains("close")) {
                 element.addClass("btn", "btn-default");
             }
@@ -101,6 +102,29 @@ public class Bootstrap {
         if (element instanceof TableElement) {
             ((TableElement) element).addClass("table", "table-striped");
         }
+    }
+
+    @Hook("preprocess_template")
+    public void preprocessLoginForm(String template, Map<String, Object> model) {
+        if (!(template.equals("security/login"))) {
+            return;
+        }
+
+        FormElement formElement = (FormElement)model.get("form");
+        List<RenderedElement> content = formElement.getContent();
+        // Wrap the form in the most appropriate containers
+        DivElement row = new DivElement();
+        row.addClass("row");
+        DivElement col = new DivElement();
+        col.addClass("col-sm-offset-3 col-sm-6");
+        row.addContent(col);
+
+        DivElement well = new DivElement();
+        well.addClass("well");
+        well.addContent(content);
+        col.addContent(well);
+        formElement.setContent(Arrays.asList(row));
+
     }
 
     @Hook("preprocess_template")
@@ -203,7 +227,7 @@ public class Bootstrap {
             return wrapper;
         }
 
-        if (element instanceof AbstractFormRenderedElement && !(element instanceof InputButtonRenderedElement || element instanceof ButtonElement)) {
+        if (element instanceof AbstractFormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
             DivElement wrapper = new DivElement();
             wrapper.addClass("form-group");
             wrapper.addContent(element);

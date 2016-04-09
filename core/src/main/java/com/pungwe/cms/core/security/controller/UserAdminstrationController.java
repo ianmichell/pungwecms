@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -55,7 +57,7 @@ public class UserAdminstrationController {
 
     @ModelAttribute("title")
     public String title() {
-        return "People";
+        return translate("People");
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -69,25 +71,25 @@ public class UserAdminstrationController {
 
             TableElement tableElement = new TableElement();
             tableElement.addHeaderRow(
-                    new TableElement.Header("Username"),
-                    new TableElement.Header("Status"),
-                    new TableElement.Header("Roles"),
-                    new TableElement.Header("Operartions")
+                    new TableElement.Header(translate("Username")),
+                    new TableElement.Header(translate("Status")),
+                    new TableElement.Header(translate("Roles")),
+                    new TableElement.Header(translate("Operations"))
             );
 
             users.getContent().forEach(userProfile -> {
 
                 List<UserRole> roles = userManagementService.listRolesByName(userProfile.getRoles());
 
-                String status = "Active";
+                String status = translate("Active");
                 if (!userProfile.isEnabled()) {
-                    status = "Disabled";
+                    status = translate("Disabled");
                 } else if (!userProfile.isAccountNonLocked()) {
-                    status = "Locked";
+                    status = translate("Locked");
                 } else if (!userProfile.isAccountNonExpired()) {
-                    status = "Account Expired";
+                    status = translate("Account Expired");
                 } else if (!userProfile.isCredentialsNonExpired()) {
-                    status = "Credentials Expired";
+                    status = translate("Credentials Expired");
                 }
 
                 tableElement.addRow(

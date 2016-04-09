@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 14/03/2016.
  */
@@ -18,7 +20,7 @@ public class SystemMetricsController {
 	@RequestMapping(method=RequestMethod.GET)
 	public Callable<String> metrics(Model model) {
 		return () -> {
-			model.addAttribute("title", "Metrics");
+			model.addAttribute("title", translate("Metrics"));
 			model.addAttribute("content", new PlainTextElement("TODO"));
 			return "actuator/metrics";
 		};

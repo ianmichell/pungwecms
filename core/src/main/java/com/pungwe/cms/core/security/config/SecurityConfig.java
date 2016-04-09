@@ -21,22 +21,33 @@
  */
 package com.pungwe.cms.core.security.config;
 
-import com.pungwe.cms.core.security.entity.UserProfile;
+import com.pungwe.cms.core.annotations.security.PermissionCategories;
+import com.pungwe.cms.core.annotations.security.Permissions;
+import com.pungwe.cms.core.annotations.security.RoleDefinition;
+import com.pungwe.cms.core.annotations.security.Roles;
+import com.pungwe.cms.core.security.service.PermissionService;
 import com.pungwe.cms.core.security.service.UserManagementService;
+import com.pungwe.cms.core.utils.services.HookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cache.CacheManager;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Configuration
 @Import(SecurityAutoConfiguration.class)
@@ -46,32 +57,106 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserManagementService userManagementService;
 
+    @Autowired
+    PermissionService permissionService;
+
+    @Autowired
+    HookService hookService;
+
+    @Autowired
+    CacheManager cacheManager;
+
     @EventListener
-    public void contextRefreshedEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void configurePermissionAndRoleDefinitions(final ContextRefreshedEvent event) {
         // Only run when the context is the module application context
-        if (!contextRefreshedEvent.getApplicationContext().getId().equals("module-application-context")) {
+        if (!event.getApplicationContext().getId().equals("module-application-context")) {
             return;
         }
+
+        // Get the application context
+        ApplicationContext context = event.getApplicationContext();
+
+        // Don't store permission categories or the permissions themselves. We just need to cache these...
+        final Map<String, Object> permissionCategories = context.getBeansWithAnnotation(PermissionCategories.class);
+        final Map<String, Object> permissionDefinitions = context.getBeansWithAnnotation(Permissions.class);
+
+        // Add all the permissions to a central list of permissions across the website, no need to store these...
+        permissionDefinitions.forEach((k, v) -> {
+            Permissions p = AnnotationUtils.findAnnotation(v.getClass(), Permissions.class);
+            if (p != null) {
+                permissionService.addPermission(p.value());
+            }
+        });
+
+        // Add permission categories
+        permissionDefinitions.forEach((k, v) -> {
+            PermissionCategories p = AnnotationUtils.findAnnotation(v.getClass(), PermissionCategories.class);
+            if (p != null) {
+                permissionService.addCategory(p.value());
+            }
+        });
+
+
+        Map<String, Object> defaultRoles = context.getBeansWithAnnotation(Roles.class);
+
+        defaultRoles.forEach((s, o) -> {
+            Roles roles = AnnotationUtils.findAnnotation(o.getClass(), Roles.class);
+            if (roles == null) {
+                return;
+            }
+
+            for (RoleDefinition role : roles.value()) {
+                if (userManagementService.roleExists(role.name()) && !role.name().equals("administrators")) {
+                    continue;
+                }
+
+                // Create administrator role
+                if (role.name().equals("administrators")) {
+                    List<GrantedAuthority> authorities = permissionService.getPermissions().stream()
+                            .map(p -> new SimpleGrantedAuthority(p.name())).collect(Collectors.toList());
+                    // Overwrite the administrator role...
+                    userManagementService.createRole(role.name(), role.label(), role.description(), authorities);
+                    return;
+                }
+
+                // Generate granted authorities from the names of each permission collected.
+                List<GrantedAuthority> authorities = permissionService.findDefaultPermissionsForRole(role.name())
+                        .stream().map(p -> new SimpleGrantedAuthority(p.name())).collect(Collectors.toList());
+                userManagementService.createRole(role.name(), role.label(), role.description(), authorities);
+            }
+
+        });
 
         // Create the default user and role
         if (userManagementService.userExistsByUsername("admin")) {
             return;
         }
 
-        if (!userManagementService.roleExists("administrators")) {
-            userManagementService.createRole("administrators", Arrays.asList());
-        }
-
         userManagementService.createUser("admin", "admin", Arrays.asList("administrators"));
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userManagementService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userManagementService)
+                .passwordEncoder(userManagementService.getPasswordEncoder());
     }
+
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/admin/**")
+                .hasAuthority("administration_pages")
+                .antMatchers("/admin/reporting/**")
+                .hasAuthority("site_reports")
+                .anyRequest()
+                .permitAll()
+                .and()
+                .formLogin().permitAll().loginPage("/login")
+                .usernameParameter("username[0].value")
+                .passwordParameter("password[0].value")
+                .defaultSuccessUrl("/")
+                .and()
+                .httpBasic();
+    }
+
 }

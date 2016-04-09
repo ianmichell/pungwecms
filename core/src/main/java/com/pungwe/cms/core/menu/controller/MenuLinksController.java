@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by 917903 on 22/03/2016.
  */
@@ -44,7 +46,7 @@ public class MenuLinksController {
     @RequestMapping(method = RequestMethod.GET)
     public Callable<String> index(@ModelAttribute("menu") MenuInfo menu, Model model) {
         return () -> {
-            model.addAttribute("title", "Manage Links");
+            model.addAttribute("title", translate("Manage Links"));
             model.addAttribute("content", new PlainTextElement(""));
             return "menu/links";
         };

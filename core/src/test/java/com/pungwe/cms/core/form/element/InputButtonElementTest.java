@@ -40,20 +40,20 @@ public class InputButtonElementTest extends AbstractWebTest {
 	/** Code Coverage */
 	@Test
 	public void testEnum() throws Exception {
-		InputButtonRenderedElement.InputButtonType[] values = InputButtonRenderedElement.InputButtonType.values();
-		assertArrayEquals(new InputButtonRenderedElement.InputButtonType[] {InputButtonRenderedElement.InputButtonType.SUBMIT, InputButtonRenderedElement.InputButtonType.RESET, InputButtonRenderedElement.InputButtonType.BUTTON}, values);
+		InputButtonElement.InputButtonType[] values = InputButtonElement.InputButtonType.values();
+		assertArrayEquals(new InputButtonElement.InputButtonType[] {InputButtonElement.InputButtonType.SUBMIT, InputButtonElement.InputButtonType.RESET, InputButtonElement.InputButtonType.BUTTON}, values);
 
 		// Value of (why it comes up in coverage report, I don't know...
-		assertEquals(InputButtonRenderedElement.InputButtonType.BUTTON, InputButtonRenderedElement.InputButtonType.valueOf("BUTTON"));
-		assertEquals(InputButtonRenderedElement.InputButtonType.RESET, InputButtonRenderedElement.InputButtonType.valueOf("RESET"));
-		assertEquals(InputButtonRenderedElement.InputButtonType.SUBMIT, InputButtonRenderedElement.InputButtonType.valueOf("SUBMIT"));
+		assertEquals(InputButtonElement.InputButtonType.BUTTON, InputButtonElement.InputButtonType.valueOf("BUTTON"));
+		assertEquals(InputButtonElement.InputButtonType.RESET, InputButtonElement.InputButtonType.valueOf("RESET"));
+		assertEquals(InputButtonElement.InputButtonType.SUBMIT, InputButtonElement.InputButtonType.valueOf("SUBMIT"));
 	}
 
 	@Test
 	public void testRenderInputButtonWithTypeConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		InputButtonRenderedElement element = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT);
+		InputButtonElement element = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT);
 		element.setName("button");
 		element.setValue("My Button");
 
@@ -67,7 +67,7 @@ public class InputButtonElementTest extends AbstractWebTest {
 	public void testRenderInputButtonWithTypeValueConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		InputButtonRenderedElement element = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "My Button");
+		InputButtonElement element = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "My Button");
 		element.setName("button");
 
 		String output = functions.render(new MockHttpServletRequest(), element);
@@ -80,7 +80,7 @@ public class InputButtonElementTest extends AbstractWebTest {
 	public void testRenderInputButtonWithTypeNameValueConstructor() throws Exception {
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		InputButtonRenderedElement element = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "button", "My Button");
+		InputButtonElement element = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "button", "My Button");
 
 		String output = functions.render(new MockHttpServletRequest(), element);
 		Document doc = Jsoup.parse(output);

@@ -9,7 +9,7 @@ import java.util.*;
  * Created by ian on 09/01/2016.
  */
 @ThemeInfo("form/select")
-public class SingleSelectListRenderedElement extends AbstractFormRenderedElement<String> {
+public class SingleSelectListElement extends AbstractFormRenderedElement<String> {
 
 	protected Map<String, String> options;
 

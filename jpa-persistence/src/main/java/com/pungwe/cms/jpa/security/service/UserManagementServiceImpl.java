@@ -69,7 +69,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         UserProfileImpl userProfile = new UserProfileImpl();
         userProfile.setId(UUID.randomUUID().toString());
         userProfile.setUsername(username);
-        userProfile.setPassword(new BCryptPasswordEncoder().encode(password));
+        userProfile.setPassword(getPasswordEncoder().encode(password));
         userProfile.setRoles(administrators.stream().collect(Collectors.toSet()));
         userProfile.setAccountNonExpired(true);
         userProfile.setAccountNonLocked(true);
@@ -79,9 +79,11 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     @Override
-    public void createRole(String roleName, List<GrantedAuthority> authorities) {
+    public void createRole(String roleName, String label, String description, List<GrantedAuthority> authorities) {
         UserRoleImpl role = new UserRoleImpl();
         role.setRole(roleName);
+        role.setLabel(label);
+        role.setDescription(description);
         role.setAuthorities(authorities.stream().map(a -> new SimpleGrantedAuthority(a.getAuthority())).collect(Collectors.toSet()));
         userRoleRepository.save(role);
     }

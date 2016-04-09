@@ -1,5 +1,9 @@
 package com.pungwe.cms.core.module.config;
 
+import com.pungwe.cms.core.annotations.security.PermissionDefinition;
+import com.pungwe.cms.core.annotations.security.Permissions;
+import com.pungwe.cms.core.annotations.security.RoleDefinition;
+import com.pungwe.cms.core.annotations.security.Roles;
 import com.pungwe.cms.core.block.builder.BlockPageBuilder;
 import com.pungwe.cms.core.block.controller.BlockLayoutController;
 import com.pungwe.cms.core.block.controller.BlockSettingsController;
@@ -17,8 +21,10 @@ import com.pungwe.cms.core.menu.controller.MenuListController;
 import com.pungwe.cms.core.menu.services.MenuManagementService;
 import com.pungwe.cms.core.module.controller.ModuleManagementController;
 import com.pungwe.cms.core.security.config.SecurityConfig;
+import com.pungwe.cms.core.security.controller.LoginController;
 import com.pungwe.cms.core.security.controller.UserAdminstrationController;
 import com.pungwe.cms.core.security.field.widget.UserDetailsWidget;
+import com.pungwe.cms.core.security.service.PermissionService;
 import com.pungwe.cms.core.system.admin.AdminController;
 import com.pungwe.cms.core.system.install.InstallController;
 import com.pungwe.cms.core.system.interceptors.HtmlPageBuilderInterceptor;
@@ -76,10 +82,6 @@ import java.util.Arrays;
         // Caching
         CacheAutoConfiguration.class,
 })
-//@ComponentScan(
-//		basePackages = {"com.pungwe.cms.core"},
-//		excludeFilters = @ComponentScan.Filter(value={Configuration.class, Service.class})
-//)
 @EnableWebMvc
 @EnableCaching
 public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
@@ -95,9 +97,6 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
 
     @Autowired(required = false)
     private MultipartConfigElement multipartConfig;
-
-//    @Autowired
-//    protected HtmlPageBuilderInterceptor htmlTemplateRenderingInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -172,6 +171,11 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
         return new BlockManagementService();
     }
 
+    @Bean
+    public PermissionService permissionService() {
+        return new PermissionService();
+    }
+
     //================================================
     // Components
     //================================================
@@ -243,6 +247,11 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     @Bean
     public InstallController installController() {
         return new InstallController();
+    }
+
+    @Bean
+    public LoginController loginController() {
+        return new LoginController();
     }
 
     //================================================

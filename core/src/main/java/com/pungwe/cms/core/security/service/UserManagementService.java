@@ -20,11 +20,14 @@
  */
 package com.pungwe.cms.core.security.service;
 
+import com.pungwe.cms.core.annotations.security.*;
 import com.pungwe.cms.core.security.entity.UserProfile;
 import com.pungwe.cms.core.security.entity.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,7 +36,7 @@ import java.util.Set;
 public interface UserManagementService extends UserDetailsService {
 
     void createUser(String username, String password, List<String> administrators);
-    void createRole(String roleName, List<GrantedAuthority> authorities);
+    void createRole(String roleName, String label, String description, List<GrantedAuthority> authorities);
 
     boolean userExistsByUsername(String username);
     boolean roleExists(String role);
@@ -41,4 +44,8 @@ public interface UserManagementService extends UserDetailsService {
     Page<UserProfile> listUsers(int page, int maxRows);
 
     List<UserRole> listRolesByName(Collection<String> roles);
+
+    default PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

@@ -126,5 +126,13 @@ public class TemplateFunctions {
 		return value != null ? " " + name + "=\"" + value + "\"" : "";
 	}
 
+	@JtwigFunction(name = "translate")
+	public String translate(@Parameter String value) {
+		return value;
+	}
 
+	@JtwigFunction(name = "translate")
+	public String translate(@Parameter String value, @Parameter Map<String, Object> parameters) {
+		return value; // Return value on it's own for now... We need to expose this in the i810n
+	}
 }

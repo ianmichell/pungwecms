@@ -54,7 +54,7 @@ public class FormElementTest extends AbstractWebTest {
 		fieldsetElement1.setLegend("My Form");
 		fieldsetElement1.addClass("myclass");
 
-		StringRenderedElement child1 = new StringRenderedElement();
+		StringElement child1 = new StringElement();
 		child1.setHtmlId("string");
 		child1.setLabel("Child 1");
 		child1.setName("child");
@@ -64,7 +64,7 @@ public class FormElementTest extends AbstractWebTest {
 		FieldsetElement fieldsetElement2 = new FieldsetElement();
 		fieldsetElement2.addClass("form-actions");
 
-		InputButtonRenderedElement child2 = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Submit");
+		InputButtonElement child2 = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "Submit");
 		child2.setName("submit");
 
 		fieldsetElement2.addContent(child2);
@@ -116,7 +116,7 @@ public class FormElementTest extends AbstractWebTest {
 		fieldsetElement1.setLegend("My Form");
 		fieldsetElement1.addClass("myclass");
 
-		StringRenderedElement child1 = new StringRenderedElement();
+		StringElement child1 = new StringElement();
 		child1.setHtmlId("string");
 		child1.setLabel("Child 1");
 		child1.setName("child");
@@ -126,7 +126,7 @@ public class FormElementTest extends AbstractWebTest {
 		FieldsetElement fieldsetElement2 = new FieldsetElement();
 		fieldsetElement2.addClass("form-actions");
 
-		InputButtonRenderedElement child2 = new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Submit");
+		InputButtonElement child2 = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "Submit");
 		child2.setName("submit");
 
 		fieldsetElement2.addContent(child2);

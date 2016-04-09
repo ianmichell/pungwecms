@@ -9,32 +9,35 @@ import java.util.LinkedList;
 /**
  * Created by ian on 09/01/2016.
  */
-@ThemeInfo("form/string")
-public class StringRenderedElement extends AbstractFormRenderedElement<String> {
+@ThemeInfo("form/textarea")
+public class TextareaElement extends StringElement {
 
-	protected int size = 60;
+	private int rows;
+	private int columns;
 
-	public StringRenderedElement() {
+	@ModelAttribute("rows")
+	public int getRows() {
+		return rows;
 	}
 
-	public StringRenderedElement(String name, String value) {
-		setName(name);
-		setValue(value);
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 
-	@ModelAttribute("size")
-	public int getSize() {
-		return size;
+	@ModelAttribute("columns")
+	public int getColumns() {
+		return columns;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
+	public void setColumns(int columns) {
+		this.columns = columns;
 	}
 
 	@Override
 	protected Collection<String> excludedAttributes() {
 		Collection<String> excluded = new LinkedList<>(super.excludedAttributes());
-		excluded.add("size");
+		excluded.add("cols");
+		excluded.add("rows");
 		return excluded;
 	}
 }

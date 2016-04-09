@@ -11,9 +11,8 @@ import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
 import com.pungwe.cms.core.form.element.ButtonElement;
 import com.pungwe.cms.core.form.element.FormElement;
-import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
+import com.pungwe.cms.core.form.element.InputButtonElement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -113,11 +112,11 @@ public class AdminLTE {
             element.addClass("form");
         }
 
-        if (element instanceof FormRenderedElement && !(element instanceof InputButtonRenderedElement || element instanceof ButtonElement)) {
+        if (element instanceof FormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
             element.addClass("form-control");
         }
 
-        if (element instanceof InputButtonRenderedElement || element instanceof ButtonElement) {
+        if (element instanceof InputButtonElement || element instanceof ButtonElement) {
             if (!element.getClasses().contains("close")) {
                 element.addClass("btn", "btn-default");
             }
@@ -292,7 +291,7 @@ public class AdminLTE {
             return wrapper;
         }
 
-        if (element instanceof AbstractFormRenderedElement && !(element instanceof InputButtonRenderedElement || element instanceof ButtonElement)) {
+        if (element instanceof AbstractFormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
             DivElement wrapper = new DivElement();
             wrapper.addClass("form-group");
             wrapper.addContent(element);

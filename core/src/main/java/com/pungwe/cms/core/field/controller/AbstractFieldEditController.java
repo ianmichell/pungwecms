@@ -4,8 +4,8 @@ import com.pungwe.cms.core.annotations.stereotypes.FieldType;
 import com.pungwe.cms.core.field.services.FieldTypeManagementService;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
-import com.pungwe.cms.core.form.element.SingleSelectListRenderedElement;
-import com.pungwe.cms.core.form.element.StringRenderedElement;
+import com.pungwe.cms.core.form.element.SingleSelectListElement;
+import com.pungwe.cms.core.form.element.StringElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
@@ -21,12 +21,12 @@ public abstract class AbstractFieldEditController<T> extends AbstractFormControl
 
 	@Override
 	public void build(FormElement<T> element) {
-		StringRenderedElement label = new StringRenderedElement();
+		StringElement label = new StringElement();
 		label.setLabel("Label");
 		label.setName("label");
 		element.addContent(label);
 
-		final SingleSelectListRenderedElement fieldType = new SingleSelectListRenderedElement();
+		final SingleSelectListElement fieldType = new SingleSelectListElement();
 		fieldType.setName("fieldType");
 		fieldType.setLabel("Field Type");
 		List<FieldType> fieldTypes = fieldTypeManagementService.getAllFieldTypes();
@@ -40,6 +40,8 @@ public abstract class AbstractFieldEditController<T> extends AbstractFormControl
 
 		buildInternal(element);
 	}
+
+	protected abstract void buildInternal(FormElement<T> element);
 
 	@Override
 	public void validate(FormElement<T> form, Errors errors) {

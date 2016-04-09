@@ -71,7 +71,7 @@ public class LabelElementTest extends AbstractWebTest {
 	@Test
 	public void testLabelElementRemoveForAttribute() throws Exception {
 
-		StringRenderedElement stringElement = new StringRenderedElement();
+		StringElement stringElement = new StringElement();
 		stringElement.setHtmlId("string");
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);

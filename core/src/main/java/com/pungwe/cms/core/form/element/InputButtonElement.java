@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * Created by ian on 27/02/2016.
  */
 @ThemeInfo("form/input_button")
-public class InputButtonRenderedElement extends AbstractFormRenderedElement<String> {
+public class InputButtonElement extends AbstractFormRenderedElement<String> {
 
 	public enum InputButtonType {
 		SUBMIT, RESET, BUTTON;
@@ -28,17 +28,17 @@ public class InputButtonRenderedElement extends AbstractFormRenderedElement<Stri
 		return getName();
 	}
 
-	public InputButtonRenderedElement(InputButtonType type, String value) {
+	public InputButtonElement(InputButtonType type, String value) {
 		addAttribute("type", type.name().toLowerCase());
 		setValue(value);
 	}
 
-	public InputButtonRenderedElement(InputButtonType type) {
+	public InputButtonElement(InputButtonType type) {
 		addAttribute("type", type.name().toLowerCase());
 		setDefaultValue(StringUtils.capitalize(type.name().toLowerCase()));
 	}
 
-	public InputButtonRenderedElement(InputButtonType type, String name, String value) {
+	public InputButtonElement(InputButtonType type, String name, String value) {
 		addAttribute("type", type.name().toLowerCase());
 		setValue(value);
 		setName(name);

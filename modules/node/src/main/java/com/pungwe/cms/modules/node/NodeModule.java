@@ -1,5 +1,7 @@
 package com.pungwe.cms.modules.node;
 
+import com.pungwe.cms.core.annotations.security.RoleDefinition;
+import com.pungwe.cms.core.annotations.security.Roles;
 import com.pungwe.cms.core.annotations.util.Hook;
 import com.pungwe.cms.core.annotations.stereotypes.Module;
 import com.pungwe.cms.core.annotations.system.ModuleDependency;

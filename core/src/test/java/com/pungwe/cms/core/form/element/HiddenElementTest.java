@@ -43,7 +43,7 @@ public class HiddenElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		HiddenRenderedElement element = new HiddenRenderedElement();
+		HiddenElement element = new HiddenElement();
 		element.setHtmlId("hidden");
 		element.setDefaultValue("Default Value");
 		element.setName("hidden");

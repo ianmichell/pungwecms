@@ -50,13 +50,14 @@ public class ThemeResourceResolver implements JtwigResourceResolver {
 		return resource.orElse(new WebJtwigResource(servletContext, viewUrl));
 	}
 
+	// FIXME: Wrap this so we get the file name
 	private JtwigResource getResource(String url) {
 		if (url.startsWith("classpath:")) {
 			return new ClasspathJtwigResource(url);
 		} else if (url.startsWith("file:")) {
 			return new ThemeViewResource(url);
 		}
+
 		return new WebJtwigResource(servletContext, url);
-//		return new ThemeViewResource(url);
 	}
 }

@@ -44,7 +44,7 @@ public class MultiSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		MultiSelectListRenderedElement element = new MultiSelectListRenderedElement();
+		MultiSelectListElement element = new MultiSelectListElement();
 		element.setHtmlId("string");
 		element.setDefaultValue(Arrays.asList("default value", "some value"));
 		element.setName("string");
@@ -74,7 +74,7 @@ public class MultiSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		MultiSelectListRenderedElement element = new MultiSelectListRenderedElement();
+		MultiSelectListElement element = new MultiSelectListElement();
 		element.setHtmlId("string");
 		element.setDefaultValue(Arrays.asList("default value", "some value"));
 		element.setName("string");

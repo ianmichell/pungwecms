@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="_csrf" content="{{ csrf.token }}"/>
+        <!-- default header name is X-CSRF-TOKEN -->
+        <meta name="_csrf_header" content="{{ csrf.headerName }}"/>
         {{ render(head) }}
         <title>{{ title|join(" | ") }}</title>
         {{ render(css) }}
@@ -11,7 +14,7 @@
     </head>
     <body{{ body_attributes }}>
     <a href="#main-content" class="sr-only sr-only-focusable">
-        Skip to main content
+        {{ translate('Skip to main content') }}
     </a>
     {{ render(page_top) }}
     {{ render(page_content) }}

@@ -23,12 +23,11 @@ import com.pungwe.cms.core.annotations.stereotypes.Module;
 import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.element.basic.DetailListElement;
 import com.pungwe.cms.core.element.basic.DivElement;
-import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.TableElement;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.CheckboxElement;
 import com.pungwe.cms.core.form.element.FormElement;
-import com.pungwe.cms.core.form.element.InputButtonRenderedElement;
+import com.pungwe.cms.core.form.element.InputButtonElement;
 import com.pungwe.cms.core.form.element.LabelElement;
 import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
@@ -160,12 +159,9 @@ public class ModuleManagementController extends AbstractFormController {
             );
         });
 
-        element.addContent(tableElement, new InputButtonRenderedElement(InputButtonRenderedElement.InputButtonType.SUBMIT, "Save"));
+        element.addContent(tableElement, new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "Save"));
     }
 
-    @Override
-    protected void buildInternal(FormElement element) {
-    }
 
     @Override
     public void validate(FormElement form, Errors errors) {

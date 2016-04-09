@@ -39,8 +39,6 @@ public abstract class AbstractFormController<T> implements Form<T> {
 		return element;
 	}
 
-	protected abstract void buildInternal(FormElement<T> element);
-
 	@InitBinder("form")
 	public void initBinder(final WebDataBinder webDataBinder) {
 		webDataBinder.setValidator(new Validator() {

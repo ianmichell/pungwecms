@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 08/03/2016.
  */
@@ -43,16 +45,16 @@ public class MenuListController {
 
 			TableElement tableElement = new TableElement();
 			tableElement.addHeaderRow(
-					new TableElement.Header("Title"),
-					new TableElement.Header("Description"),
-					new TableElement.Header("Operations")
+					new TableElement.Header(translate("Title")),
+					new TableElement.Header(translate("Description")),
+					new TableElement.Header(translate("Operations"))
 			);
 
 			menus.forEach(menuInfo -> {
 				tableElement.addRow(
-						new TableElement.Column(menuInfo.getTitle()),
-						new TableElement.Column(menuInfo.getDescription()),
-						new TableElement.Column(new AnchorElement("Edit menu", request.getContextPath() + "/admin/structure/menu/edit/" + menuInfo.getId(), "Edit"))
+						new TableElement.Column(translate(menuInfo.getTitle())),
+						new TableElement.Column(translate(menuInfo.getDescription())),
+						new TableElement.Column(new AnchorElement(translate("Edit menu"), request.getContextPath() + "/admin/structure/menu/edit/" + menuInfo.getId(), "Edit"))
 				);
 			});
 
@@ -65,7 +67,7 @@ public class MenuListController {
 	@ModelAttribute("actions")
 	public List<RenderedElement> actions(HttpServletRequest request) {
 		List<RenderedElement> elements = new ArrayList<>();
-		elements.add(new AnchorElement("Add a new menu", request.getContextPath() + "/admin/structure/menu/add", "Add menu"));
+		elements.add(new AnchorElement(translate("Add a new menu"), request.getContextPath() + "/admin/structure/menu/add", translate("Add menu")));
 		return elements;
 	}
 }

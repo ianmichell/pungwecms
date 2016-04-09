@@ -60,11 +60,11 @@ public class FieldsetElementTest extends AbstractWebTest {
 		fieldsetElement.setLegend("Fieldset");
 		fieldsetElement.addClass("myclass");
 
-		StringRenderedElement child1 = new StringRenderedElement();
+		StringElement child1 = new StringElement();
 		child1.setLabel("Child 1");
 		child1.setName("child");
 
-		StringRenderedElement child2 = new StringRenderedElement();
+		StringElement child2 = new StringElement();
 		child2.setName("child");
 		child2.setLabel("Child 2");
 		child2.setDelta(1);
@@ -87,11 +87,11 @@ public class FieldsetElementTest extends AbstractWebTest {
 		fieldsetElement.setLegend("Fieldset");
 		fieldsetElement.addClass("myclass");
 
-		StringRenderedElement child1 = new StringRenderedElement();
+		StringElement child1 = new StringElement();
 		child1.setLabel("Child 1");
 		child1.setName("child");
 
-		StringRenderedElement child2 = new StringRenderedElement();
+		StringElement child2 = new StringElement();
 		child2.setName("child");
 		child2.setLabel("Child 2");
 		child2.setDelta(1);

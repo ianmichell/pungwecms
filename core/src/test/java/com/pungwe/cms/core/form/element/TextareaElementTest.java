@@ -41,7 +41,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		TextareaRenderedElement element = new TextareaRenderedElement();
+		TextareaElement element = new TextareaElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -65,7 +65,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		TextareaRenderedElement element = new TextareaRenderedElement();
+		TextareaElement element = new TextareaElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -85,7 +85,7 @@ public class TextareaElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		TextareaRenderedElement element = new TextareaRenderedElement();
+		TextareaElement element = new TextareaElement();
 		element.setValue("Test");
 		element.setName("string");
 		element.setLabel("String");

@@ -9,8 +9,11 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.resource.JtwigResource;
+import com.lyncode.jtwig.resource.WebJtwigResource;
 import com.lyncode.jtwig.types.Undefined;
 import com.pungwe.cms.core.application.PungweCMSApplication;
+import com.pungwe.cms.core.theme.services.ThemeManagementService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -27,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.web.servlet.support.RequestContextUtils.getTheme;
+import static org.springframework.web.servlet.support.RequestContextUtils.getThemeResolver;
 
 /**
  * Created by ian on 03/03/2016.
@@ -35,9 +39,7 @@ public class PungweJtwigView extends AbstractTemplateView {
 
 	private static Logger log = LoggerFactory.getLogger(PungweCMSApplication.class);
 
-	private Map<String, Renderable> compiledTemplates = new HashMap<>();
-
-	protected String getEncoding() {
+    protected String getEncoding() {
 		return getViewResolver().getEncoding();
 	}
 
@@ -93,15 +95,17 @@ public class PungweJtwigView extends AbstractTemplateView {
 	}
 
 	private String getThemeName(HttpServletRequest request) {
-		Theme theme = getTheme(request);
-		if (theme == null)
-			return null;
-		return theme.getName();
+		return getApplicationContext().getBean(ThemeManagementService.class).getCurrentThemeNameForRequest();
 	}
 
 	public Renderable getContent() throws CompileException, ParseException {
 		if (getViewResolver().isCached()) {
-			return getViewResolver().cache().get(getUrl(), () -> getCompiledJtwigTemplate());
+            // Get the name of the current theme
+            String themeName = getThemeName(null);
+            // Create a key with the name of the theme and the template...
+            String key = StringUtils.isNotBlank(themeName) ? themeName + "_" + getUrl() : getUrl();
+            // Cache the compiled template
+            return getViewResolver().cache().get(key, () -> getCompiledJtwigTemplate());
 		}
 		return getCompiledJtwigTemplate();
 	}

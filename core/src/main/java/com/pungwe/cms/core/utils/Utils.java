@@ -3,6 +3,7 @@ package com.pungwe.cms.core.utils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UriTemplate;
 
@@ -52,4 +53,12 @@ public class Utils {
         String bestMatchPattern = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
         return bestMatchPattern;
     }
+
+	public static String getRequestContextPath() {
+		return ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest().getContextPath();
+	}
+
+	public static String translate(String value) {
+		return value;
+	}
 }

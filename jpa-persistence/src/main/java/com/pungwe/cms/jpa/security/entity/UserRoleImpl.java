@@ -18,6 +18,7 @@ public class UserRoleImpl implements UserRole {
 
     private String role;
     private String label;
+    private String description;
     private Set<SimpleGrantedAuthority> authorities;
 
     @Override
@@ -39,6 +40,14 @@ public class UserRoleImpl implements UserRole {
     @Override
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

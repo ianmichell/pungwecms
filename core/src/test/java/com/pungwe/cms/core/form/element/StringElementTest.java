@@ -41,7 +41,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringRenderedElement element = new StringRenderedElement();
+		StringElement element = new StringElement();
 		element.setValue("Test");
 		element.setName("string");
 		element.setLabel("Label");
@@ -59,7 +59,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringRenderedElement element = new StringRenderedElement();
+		StringElement element = new StringElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -80,7 +80,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringRenderedElement element = new StringRenderedElement();
+		StringElement element = new StringElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -102,7 +102,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringRenderedElement element = new StringRenderedElement();
+		StringElement element = new StringElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -123,7 +123,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringRenderedElement element = new StringRenderedElement();
+		StringElement element = new StringElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");

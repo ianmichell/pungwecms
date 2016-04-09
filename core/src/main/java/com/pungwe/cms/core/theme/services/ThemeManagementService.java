@@ -294,9 +294,9 @@ public class ThemeManagementService {
         URL url = null;
         try {
             if (ResourceUtils.isJarFileURL(new URL(config.getThemeLocation()))) {
-                url = new URL(config.getThemeLocation() + ResourceUtils.JAR_URL_SEPARATOR + prefix + viewName + suffix);
+                url = new URL(config.getThemeLocation() + ResourceUtils.JAR_URL_SEPARATOR + prefix.replaceAll("^/", "").replaceAll("/$", "") + "/" + config.getName() + "/" + viewName + suffix);
             } else {
-                url = new URL(config.getThemeLocation() + "/" + prefix + "/" + viewName + suffix);
+                url = new URL(config.getThemeLocation() + "/" + prefix.replaceAll("^/", "").replaceAll("/$", "") + "/" + config.getName() + "/" + viewName + suffix);
             }
         } catch (MalformedURLException ex) {
             // do nothing
