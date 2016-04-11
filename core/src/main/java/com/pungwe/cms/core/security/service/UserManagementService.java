@@ -35,7 +35,7 @@ import java.util.Set;
 
 public interface UserManagementService extends UserDetailsService {
 
-    void createUser(String username, String password, List<String> administrators);
+    void createUser(String username, String password, List<String> roles);
     void createRole(String roleName, String label, String description, List<GrantedAuthority> authorities);
 
     boolean userExistsByUsername(String username);

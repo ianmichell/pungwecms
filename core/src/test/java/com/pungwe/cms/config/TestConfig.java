@@ -5,6 +5,8 @@ import com.pungwe.cms.core.menu.impl.MenuConfigServiceImpl;
 import com.pungwe.cms.core.menu.impl.MenuInfoServiceImpl;
 import com.pungwe.cms.core.module.config.ModuleContextConfig;
 import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
+import com.pungwe.cms.core.security.service.UserManagementService;
+import com.pungwe.cms.core.security.service.UserManagementServiceImpl;
 import com.pungwe.cms.core.theme.services.impl.ThemeConfigServiceImpl;
 import com.pungwe.cms.core.utils.services.HookService;
 import org.springframework.context.annotation.Bean;
@@ -57,5 +59,10 @@ public class TestConfig {
     @Bean
     public BlockConfigServiceImpl blockConfigService() {
         return new BlockConfigServiceImpl();
+    }
+
+    @Bean
+    public UserManagementServiceImpl userManagementService() {
+        return new UserManagementServiceImpl();
     }
 }
