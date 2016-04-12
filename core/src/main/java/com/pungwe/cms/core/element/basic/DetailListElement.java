@@ -53,7 +53,7 @@ public class DetailListElement extends AbstractRenderedElement {
     }
 
     public void addItem(final DetailListItem... item) {
-        getItems().addAll(Arrays.asList(item));
+        addItems(Arrays.asList(item));
     }
 
     public void addItems(final List<DetailListItem> items) {

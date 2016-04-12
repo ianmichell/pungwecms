@@ -21,11 +21,11 @@ public class DivElement extends AbstractContentElement {
     }
 
     public DivElement(String... content) {
-        setContent(Arrays.asList(content).stream().map(s -> new PlainTextElement(s)).collect(Collectors.toList()));
+        this(Arrays.asList(content).stream().map(s -> new PlainTextElement(s)).collect(Collectors.toList()));
     }
 
     public DivElement(RenderedElement... content) {
-        setContent(Arrays.asList(content));
+        this(Arrays.asList(content));
     }
 
     public DivElement(List<RenderedElement> content) {

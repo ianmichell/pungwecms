@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class TextFormatElement extends AbstractContentElement {
 
 	public enum Type {
-		I, STRONG, MARK, CITE;
+		I, STRONG, MARK, CITE, P;
 
 		public String getTagName() {
 			return this.name().toLowerCase();
@@ -49,7 +49,11 @@ public class TextFormatElement extends AbstractContentElement {
 
 	@ModelAttribute("tag")
 	public String getTag() {
-		return type.getTagName();
+		return getType().getTagName();
+	}
+
+	public Type getType() {
+		return type;
 	}
 
 	@Override

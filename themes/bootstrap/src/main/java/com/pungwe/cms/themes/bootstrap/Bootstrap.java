@@ -140,8 +140,8 @@ public class Bootstrap {
             anchorElement.getContent().forEach(child -> {
                 if (child instanceof HeaderElement) {
                     ((HeaderElement) child).addClass("list-group-item-heading");
-                } else if (child instanceof ParagraphElement) {
-                    ((ParagraphElement) child).addClass("list-group-item-text");
+                } else if (child instanceof TextFormatElement && ((TextFormatElement)child).getType() == TextFormatElement.Type.P) {
+                    ((TextFormatElement) child).addClass("list-group-item-text");
                 }
             });
         });
@@ -221,7 +221,7 @@ public class Bootstrap {
             dismissButton.addClass("close");
             wrapper.addContent(
                     dismissButton,
-                    new ParagraphElement(new TextFormatElement(TextFormatElement.Type.STRONG, "Sorry, but there was a problem!")),
+                    new TextFormatElement(TextFormatElement.Type.P, new TextFormatElement(TextFormatElement.Type.STRONG, "Sorry, but there was a problem!")),
                     element
             );
             return wrapper;

@@ -60,7 +60,7 @@ public class AdminController {
             List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
                 HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
                 label.addClass("item-label");
-                ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
+                TextFormatElement description = new TextFormatElement(TextFormatElement.Type.P, new PlainTextElement(menuConfig.getDescription()));
                 description.addClass("item-description");
 
                 AnchorElement anchor = new AnchorElement();
@@ -98,7 +98,7 @@ public class AdminController {
             List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
                 HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
                 label.addClass("item-label");
-                ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
+                TextFormatElement description = new TextFormatElement(TextFormatElement.Type.P, new PlainTextElement(menuConfig.getDescription()));
                 description.addClass("item-description");
 
                 AnchorElement anchor = new AnchorElement();
@@ -136,7 +136,7 @@ public class AdminController {
             List<RenderedElement> menuItemElements = menuItems.stream().sorted().map(menuConfig -> {
                 HeaderElement label = new HeaderElement(4, menuConfig.getTitle());
                 label.addClass("item-label");
-                ParagraphElement description = new ParagraphElement(new PlainTextElement(menuConfig.getDescription()));
+                TextFormatElement description = new TextFormatElement(TextFormatElement.Type.P, new PlainTextElement(menuConfig.getDescription()));
                 description.addClass("item-description");
 
                 AnchorElement anchor = new AnchorElement();

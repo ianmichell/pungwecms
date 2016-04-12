@@ -5,7 +5,7 @@ import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.ListElement;
-import com.pungwe.cms.core.element.basic.ParagraphElement;
+import com.pungwe.cms.core.element.basic.TextFormatElement;
 import com.pungwe.cms.core.element.basic.UnorderedListElement;
 import com.pungwe.cms.core.element.model.ModelAndViewElement;
 import com.pungwe.cms.core.form.Form;
@@ -70,28 +70,28 @@ public class StatusMessageBlock implements BlockDefinition {
 
 		// Check for generic errors
 		if (variables.containsKey("status.message.error")) {
-			ParagraphElement element = new ParagraphElement();
+			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
 			element.addClass("status-message", "error-message");
 			element.setContent(variables.get("status.message.success").toString());
 			elements.add(element);
 		}
 
 		if (variables.containsKey("status.message.warning")) {
-			ParagraphElement element = new ParagraphElement();
+			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
 			element.addClass("status-message", "warning-message");
 			element.setContent(variables.get("status.message.success").toString());
 			elements.add(element);
 		}
 
 		if (variables.containsKey("status.message.info")) {
-			ParagraphElement element = new ParagraphElement();
+			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
 			element.addClass("status-message", "info-message");
 			element.setContent(variables.get("status.message.success").toString());
 			elements.add(element);
 		}
 
 		if (variables.containsKey("status.message.success")) {
-			ParagraphElement element = new ParagraphElement();
+			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
 			element.addClass("status-message", "success-message");
 			element.setContent(variables.get("status.message.success").toString());
 			elements.add(element);
