@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImpl> {
 
-	public static List<BlockConfigImpl> blocks = new LinkedList<>();
+	public static Set<BlockConfigImpl> blocks = new LinkedHashSet<>();
 
 	@Override
 	public List<BlockConfigImpl> listAllBlocks(final String theme) {
@@ -35,6 +35,7 @@ public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImp
 		blockConfig.setTheme(theme);
 		blockConfig.setWeight(weight);
 		// Save the block
+		blocks.remove(blockConfig);
 		blocks.add(blockConfig);
 	}
 
