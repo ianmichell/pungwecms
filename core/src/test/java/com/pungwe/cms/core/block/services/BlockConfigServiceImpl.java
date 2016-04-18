@@ -2,6 +2,7 @@ package com.pungwe.cms.core.block.services;
 
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.impl.BlockConfigImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,7 +18,7 @@ public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImp
 
 	@Override
 	public List<BlockConfigImpl> listAllBlocks(final String theme) {
-		return blocks.stream().filter(blockConfig -> blockConfig.getTheme() == theme).collect(Collectors.toList());
+		return blocks.stream().filter(blockConfig -> StringUtils.isNotBlank(blockConfig.getTheme()) && blockConfig.getTheme().equals(theme)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -26,9 +27,9 @@ public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImp
 	}
 
 	@Override
-	public void createNewInstance(String theme, String region, String block, int weight, Map<String, Object> defaultSettings) {
+	public void createNewInstance(String id, String theme, String region, String block, int weight, Map<String, Object> defaultSettings) {
 		BlockConfigImpl blockConfig = new BlockConfigImpl();
-		blockConfig.setId(UUID.randomUUID().toString());
+		blockConfig.setId(id);
 		blockConfig.setName(block);
 		blockConfig.setRegion(region);
 		blockConfig.setTheme(theme);

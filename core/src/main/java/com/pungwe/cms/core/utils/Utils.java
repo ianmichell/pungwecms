@@ -5,13 +5,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.FlashMapManager;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UriTemplate;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.text.Collator;
 import java.util.*;
@@ -111,12 +109,24 @@ public class Utils {
     }
 
     public static Object getFlashAttribute(String key) {
-        return RequestContextUtils.getInputFlashMap(getRequest()).get(key);
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(getRequest());
+        return flashMap != null ? flashMap.get(key) : null;
+    }
+
+
+    public static Object getOutputFlashAttribute(String key) {
+        Map<String, ?> flashMap = RequestContextUtils.getOutputFlashMap(getRequest());
+        return flashMap != null ? flashMap.get(key) : null;
     }
 
     public static boolean containsFlashAttribute(String key) {
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(getRequest());
         return flashMap == null ? false : flashMap.containsKey(key);
+    }
+
+    public static boolean containsOutputFlashAttribute(String key) {
+        FlashMap map = RequestContextUtils.getOutputFlashMap(getRequest());
+        return map == null ? false : map.containsKey(key);
     }
 
     public static String getRequestPath() {

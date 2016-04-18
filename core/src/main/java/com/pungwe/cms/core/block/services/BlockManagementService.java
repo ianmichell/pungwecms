@@ -181,7 +181,7 @@ public class BlockManagementService {
         }
     }
 
-    public void addBlockToTheme(String theme, String region, String block, int weight, Map<String, Object> themeSettings) {
+    public void addBlockToTheme(String id, String theme, String region, String block, int weight, Map<String, Object> themeSettings) {
         Optional<BlockDefinition> blockDefinition = getBlockDefinitionByName(block);
         if (!blockDefinition.isPresent()) {
             return;
@@ -191,7 +191,7 @@ public class BlockManagementService {
         settings.putAll(blockDefinition.get().getDefaultSettings());
         settings.putAll(themeSettings);
 
-        blockConfigService.createNewInstance(theme, region, block, weight, settings);
+        blockConfigService.createNewInstance(id, theme, region, block, weight, settings);
     }
 
     public Block getBlockInfoForBlock(BlockDefinition block) {
@@ -286,12 +286,12 @@ public class BlockManagementService {
             adminMenuSettings.put("menu", "system");
 
             // Create a list of the default blocks that will be used...
-            addBlockToTheme("system.admin", "header", "page_title_block", -100, new HashMap<>());
-            addBlockToTheme("system.admin", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings);
-            addBlockToTheme("system.admin", "highlighted", "status_message_block", -100, new HashMap<>());
-            addBlockToTheme("system.admin", "sidebar_first", "menu_block", -100, adminMenuSettings);
-            addBlockToTheme("system.admin", "content", "system_tasks_block", -101, taskBlockSettings);
-            addBlockToTheme("system.admin", "content", "main_content_block", -100, new HashMap<>());
+            addBlockToTheme("system_admin_page_title_block", "system.admin", "header", "page_title_block", -100, new HashMap<>());
+            addBlockToTheme("system_admin_breadcrumb_block", "system.admin", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings);
+            addBlockToTheme("system_admin_status_message_block", "system.admin", "highlighted", "status_message_block", -100, new HashMap<>());
+            addBlockToTheme("system_admin_menu_block", "system.admin", "sidebar_first", "menu_block", -100, adminMenuSettings);
+            addBlockToTheme("system_admin_system_tasks_block", "system.admin", "content", "system_tasks_block", -101, taskBlockSettings);
+            addBlockToTheme("system_admin_main_content_block", "system.admin", "content", "main_content_block", -100, new HashMap<>());
         }
     }
 }

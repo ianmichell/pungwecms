@@ -14,7 +14,7 @@ public interface BlockConfigService<T extends BlockConfig> {
 	List<T> listAllBlocks(String theme);
 	List<T> listAllBlocks(String theme, String... name);
 
-	void createNewInstance(String theme, String region, String block, int weight, Map<String, Object> defaultSettings);
+	void createNewInstance(String id, String theme, String region, String block, int weight, Map<String, Object> defaultSettings);
 
 	void removeBlock(String theme, String blockName);
 }

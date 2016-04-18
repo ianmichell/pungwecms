@@ -45,12 +45,12 @@ public class Bootstrap {
     @Hook("install")
     public void install() {
         // Create a list of the default blocks that will be used...
-        blockManagementService.addBlockToTheme("bootstrap", "header", "page_title_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("bootstrap", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings());
-        blockManagementService.addBlockToTheme("bootstrap", "highlighted", "status_message_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("bootstrap", "navigation", "menu_block", -100, primaryMenuSettings());
-        blockManagementService.addBlockToTheme("bootstrap", "content", "system_tasks_block", -101, taskBlockSettings());
-        blockManagementService.addBlockToTheme("bootstrap", "content", "main_content_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("bootstrap_page_title_block", "bootstrap", "header", "page_title_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("bootstrap_breadcrumb_block", "bootstrap", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings());
+        blockManagementService.addBlockToTheme("bootstrap_status_message_block", "bootstrap", "highlighted", "status_message_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("bootstrap_menu_block", "bootstrap", "navigation", "menu_block", -100, primaryMenuSettings());
+        blockManagementService.addBlockToTheme("bootstrap_system_tasks_block", "bootstrap", "content", "system_tasks_block", -101, taskBlockSettings());
+        blockManagementService.addBlockToTheme("bootstrap_main_content_block", "bootstrap", "content", "main_content_block", -100, new HashMap<>());
     }
 
     private Map<String, Object> primaryMenuSettings() {

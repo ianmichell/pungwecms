@@ -26,12 +26,12 @@ public class StatusMessageService {
     public void addSuccessStatusMessage(String message, Object... args) {
         Set<String> messages = new LinkedHashSet<>();
         String messageToAdd = translate(message, args);
-        if (!containsFlashAttribute(SUCCESS_MESSAGE_KEY)) {
+        if (!containsOutputFlashAttribute(SUCCESS_MESSAGE_KEY)) {
             messages.add(messageToAdd);
             setFlashAttribute(SUCCESS_MESSAGE_KEY, messages);
             return;
         }
-        Object messagesFromMap = getFlashAttribute(SUCCESS_MESSAGE_KEY);
+        Object messagesFromMap = getOutputFlashAttribute(SUCCESS_MESSAGE_KEY);
         if (messagesFromMap instanceof Collection) {
             messages.addAll((Collection) messagesFromMap);
         } else if (messagesFromMap != null) {
@@ -45,12 +45,12 @@ public class StatusMessageService {
     public void addErrorStatusMessage(String message, Object... args) {
         Set<String> messages = new LinkedHashSet<>();
         String messageToAdd = translate(message, args);
-        if (!containsFlashAttribute(ERROR_MESSAGE_KEY)) {
+        if (!containsOutputFlashAttribute(ERROR_MESSAGE_KEY)) {
             messages.add(messageToAdd);
             setFlashAttribute(ERROR_MESSAGE_KEY, messages);
             return;
         }
-        Object messagesFromMap = getFlashAttribute(ERROR_MESSAGE_KEY);
+        Object messagesFromMap = getOutputFlashAttribute(ERROR_MESSAGE_KEY);
         if (messagesFromMap instanceof Collection) {
             messages.addAll((Collection) messagesFromMap);
         } else if (messagesFromMap != null) {
@@ -64,12 +64,12 @@ public class StatusMessageService {
     public void addWarningStatusMessage(String message, Object... args) {
         Set<String> messages = new LinkedHashSet<>();
         String messageToAdd = translate(message, args);
-        if (!containsFlashAttribute(WARNING_MESSAGE_KEY)) {
+        if (!containsOutputFlashAttribute(WARNING_MESSAGE_KEY)) {
             messages.add(messageToAdd);
             setFlashAttribute(WARNING_MESSAGE_KEY, messages);
             return;
         }
-        Object messagesFromMap = getFlashAttribute(WARNING_MESSAGE_KEY);
+        Object messagesFromMap = getOutputFlashAttribute(WARNING_MESSAGE_KEY);
         if (messagesFromMap instanceof Collection) {
             messages.addAll((Collection) messagesFromMap);
         } else if (messagesFromMap != null) {

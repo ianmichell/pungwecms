@@ -29,6 +29,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 06/03/2016.
  */
@@ -74,11 +76,11 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
 
         final TableElement tableElement = new TableElement();
         tableElement.addHeaderRow(
-                new TableElement.Header("Block"),
-                new TableElement.Header("Category"),
-                new TableElement.Header("Region"),
-                new TableElement.Header("Weight"),
-                new TableElement.Header("Operations")
+                new TableElement.Header(translate("Block")),
+                new TableElement.Header(translate("Category")),
+                new TableElement.Header(translate("Region")),
+                new TableElement.Header(translate("Weight")),
+                new TableElement.Header(translate("Operations"))
         );
 
         final AtomicInteger delta = new AtomicInteger(0);
@@ -100,7 +102,7 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
             if (blocksForRegion.isEmpty()) {
                 TableElement.Column empty = new TableElement.Column();
                 empty.addAttribute("colspan", "5");
-                empty.addContent(new TextFormatElement(TextFormatElement.Type.I, "No blocks in this region"));
+                empty.addContent(new TextFormatElement(TextFormatElement.Type.I, translate("No blocks in this region")));
                 tableElement.addRow(empty);
             }
             blocksForRegion.forEach(b -> {

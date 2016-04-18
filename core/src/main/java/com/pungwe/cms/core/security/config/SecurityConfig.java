@@ -45,6 +45,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -76,9 +77,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Get the application context
         ApplicationContext context = event.getApplicationContext();
 
+        final Map<String, Object> permissionDefinitions = new LinkedHashMap<>();
+        final Map<String, Object> permissionCategories = new LinkedHashMap<>();
+        final Map<String, Object> defaultRoles = new LinkedHashMap<>();
+
+                // Get parent context permissions too
+        ApplicationContext parentContext = context;
+        while ((parentContext = parentContext.getParent()) != null) {
+            Map<String, Object> permissions = parentContext.getBeansWithAnnotation(Permissions.class);
+            permissionDefinitions.putAll(permissions);
+            Map<String, Object> categories = parentContext.getBeansWithAnnotation(PermissionCategories.class);
+            permissionCategories.putAll(categories);
+            Map<String, Object> roles = parentContext.getBeansWithAnnotation(Roles.class);
+            defaultRoles.putAll(roles);
+        }
         // Don't store permission categories or the permissions themselves. We just need to cache these...
-//        final Map<String, Object> permissionCategories = context.getBeansWithAnnotation(PermissionCategories.class);
-        final Map<String, Object> permissionDefinitions = context.getBeansWithAnnotation(Permissions.class);
+        Map<String, Object> permissions = context.getBeansWithAnnotation(Permissions.class);
+        permissionDefinitions.putAll(permissions);
 
         // Add all the permissions to a central list of permissions across the website, no need to store these...
         permissionDefinitions.forEach((k, v) -> {
@@ -88,8 +103,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
         });
 
+        // Don't store permission categories or the permissions themselves. We just need to cache these...
+        Map<String, Object> categories = context.getBeansWithAnnotation(PermissionCategories.class);
+        permissionCategories.putAll(categories);
+
         // Add permission categories
-        permissionDefinitions.forEach((k, v) -> {
+        permissionCategories.forEach((k, v) -> {
             PermissionCategories p = AnnotationUtils.findAnnotation(v.getClass(), PermissionCategories.class);
             if (p != null) {
                 permissionService.addCategory(p.value());
@@ -97,7 +116,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         });
 
 
-        Map<String, Object> defaultRoles = context.getBeansWithAnnotation(Roles.class);
+        Map<String, Object> roleBeans = context.getBeansWithAnnotation(Roles.class);
+        defaultRoles.putAll(roleBeans);
 
         defaultRoles.forEach((s, o) -> {
             Roles roles = AnnotationUtils.findAnnotation(o.getClass(), Roles.class);

@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,10 @@ public class UserManagementServiceImpl implements UserManagementService {
         user.setId(UUID.randomUUID().toString());
         user.setUsername(username);
         user.setRoles(roles.stream().collect(Collectors.toSet()));
+        user.setEnabled(true);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
         users.add(user);
     }
 
@@ -60,7 +65,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     public Page<UserProfile> listUsers(int page, int maxRows) {
         PageRequest pageRequest =  new PageRequest(page, maxRows);
         PageImpl<UserProfile> results = new PageImpl<UserProfile>(users.subList(pageRequest.getOffset(),
-                pageRequest.getPageSize()), pageRequest, users.size());
+                pageRequest.getPageSize() > users.size() ? users.size() : pageRequest.getPageSize()), pageRequest, users.size());
         return results;
     }
 

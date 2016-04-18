@@ -90,6 +90,8 @@ public class ThemeManagementService {
 
     public void startEnabledThemes() {
 
+        removeMissingThemes();
+
         // Get a list of enabled themes
         Set<ThemeConfig> enabled = (Set<ThemeConfig>) themeConfigService.listEnabledThemes();
 

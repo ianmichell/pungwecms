@@ -21,6 +21,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FlashMap;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,8 +43,12 @@ public class StatusMessageServiceTest extends AbstractWebTest {
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         statusMessageService.addSuccessStatusMessage("Success!");
+        statusMessageService.addSuccessStatusMessage("Success2");
 
-        assertEquals("Success!", ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator().next());
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator();
+
+        assertEquals("Success!", it.next());
+        assertEquals("Success2", it.next());
     }
 
     @Test
@@ -54,8 +59,12 @@ public class StatusMessageServiceTest extends AbstractWebTest {
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         statusMessageService.addWarningStatusMessage("Warning!");
+        statusMessageService.addWarningStatusMessage("Warning2");
 
-        assertEquals("Warning!", ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator().next());
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator();
+
+        assertEquals("Warning!", it.next());
+        assertEquals("Warning2", it.next());
     }
 
     @Test
@@ -66,7 +75,280 @@ public class StatusMessageServiceTest extends AbstractWebTest {
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         statusMessageService.addErrorStatusMessage("Error!");
+        statusMessageService.addErrorStatusMessage("Error2");
 
-        assertEquals("Error!", ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator().next());
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator();
+
+        assertEquals("Error!", it.next());
+        assertEquals("Error2", it.next());
+    }
+
+    @Test
+    public void testAddSuccessMessageWithExistingString() {
+        FlashMap flashMap = new FlashMap();
+        flashMap.put(StatusMessageService.SUCCESS_MESSAGE_KEY, "Success!");
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addSuccessStatusMessage("Success2");
+
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator();
+
+        assertEquals("Success!", it.next());
+        assertEquals("Success2", it.next());
+    }
+
+    @Test
+    public void testAddWarningMessageWithExistingString() {
+        FlashMap flashMap = new FlashMap();
+        flashMap.put(StatusMessageService.WARNING_MESSAGE_KEY, "Warning!");
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addWarningStatusMessage("Warning2");
+
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator();
+
+        assertEquals("Warning!", it.next());
+        assertEquals("Warning2", it.next());
+    }
+
+    @Test
+    public void testAddErrorMessageWithExistingString() {
+        FlashMap flashMap = new FlashMap();
+        flashMap.put(StatusMessageService.ERROR_MESSAGE_KEY, "Error!");
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addErrorStatusMessage("Error2");
+
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator();
+
+        assertEquals("Error!", it.next());
+        assertEquals("Error2", it.next());
+    }
+
+    @Test
+    public void testAddSuccessMessageWithExistingNull() {
+        FlashMap flashMap = new FlashMap();
+        flashMap.put(StatusMessageService.SUCCESS_MESSAGE_KEY, null);
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addSuccessStatusMessage("Success!");
+        statusMessageService.addSuccessStatusMessage("Success2");
+
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator();
+
+        assertEquals("Success!", it.next());
+        assertEquals("Success2", it.next());
+    }
+
+    @Test
+    public void testAddWarningMessageWithExistingNull() {
+        FlashMap flashMap = new FlashMap();
+        flashMap.put(StatusMessageService.WARNING_MESSAGE_KEY, null);
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addWarningStatusMessage("Warning!");
+        statusMessageService.addWarningStatusMessage("Warning2");
+
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator();
+
+        assertEquals("Warning!", it.next());
+        assertEquals("Warning2", it.next());
+    }
+
+    @Test
+    public void testAddErrorMessageWithExistingNull() {
+        FlashMap flashMap = new FlashMap();
+        flashMap.put(StatusMessageService.ERROR_MESSAGE_KEY, null);
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addErrorStatusMessage("Error!");
+        statusMessageService.addErrorStatusMessage("Error2");
+
+        Iterator<String> it = ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator();
+
+        assertEquals("Error!", it.next());
+        assertEquals("Error2", it.next());
+    }
+
+    @Test
+    public void testGetSuccessMessagesEmpty() {
+        Map<String, ?> flashMap = new HashMap<>();
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(0, statusMessageService.getSuccessStatusMessages().size());
+    }
+
+    @Test
+    public void testGetErrorMessagesEmpty() {
+        Map<String, ?> flashMap = new HashMap<>();
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(0, statusMessageService.getErrorStatusMessages().size());
+    }
+
+    @Test
+    public void testGetWarningMessagesEmpty() {
+        Map<String, ?> flashMap = new HashMap<>();
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(0, statusMessageService.getWarningStatusMessages().size());
+    }
+
+    @Test
+    public void testGetSuccessMessagesWithString() {
+        Map<String, Object> flashMap = new HashMap<>();
+        flashMap.put(StatusMessageService.SUCCESS_MESSAGE_KEY, "success!");
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(1, statusMessageService.getSuccessStatusMessages().size());
+        assertEquals("success!", statusMessageService.getSuccessStatusMessages().iterator().next());
+    }
+
+    @Test
+    public void testGetErrorMessagesWithString() {
+        Map<String, Object> flashMap = new HashMap<>();
+        flashMap.put(StatusMessageService.ERROR_MESSAGE_KEY, "error!");
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(1, statusMessageService.getErrorStatusMessages().size());
+        assertEquals("error!", statusMessageService.getErrorStatusMessages().iterator().next());
+    }
+
+    @Test
+    public void testGetWarningMessagesWithString() {
+        Map<String, Object> flashMap = new HashMap<>();
+        flashMap.put(StatusMessageService.WARNING_MESSAGE_KEY, "warning!");
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(1, statusMessageService.getWarningStatusMessages().size());
+        assertEquals("warning!", statusMessageService.getWarningStatusMessages().iterator().next());
+    }
+
+    @Test
+    public void testGetSuccessMessagesWithNull() {
+        Map<String, Object> flashMap = new HashMap<>();
+        flashMap.put(StatusMessageService.SUCCESS_MESSAGE_KEY, null);
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(0, statusMessageService.getSuccessStatusMessages().size());
+    }
+
+    @Test
+    public void testGetErrorMessagesWithNull() {
+        Map<String, Object> flashMap = new HashMap<>();
+        flashMap.put(StatusMessageService.ERROR_MESSAGE_KEY, null);
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(0, statusMessageService.getErrorStatusMessages().size());
+    }
+
+    @Test
+    public void testGetWarningMessagesWithNull() {
+        Map<String, Object> flashMap = new HashMap<>();
+        flashMap.put(StatusMessageService.WARNING_MESSAGE_KEY, null);
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        assertEquals(0, statusMessageService.getWarningStatusMessages().size());
+    }
+    @Test
+    public void testGetSuccessMessagesSet() {
+        FlashMap flashMap = new FlashMap();
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addSuccessStatusMessage("Success!");
+        statusMessageService.addSuccessStatusMessage("Success2");
+
+        request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Iterator<String> it = statusMessageService.getSuccessStatusMessages().iterator();
+
+        assertEquals("Success!", it.next());
+        assertEquals("Success2", it.next());
+    }
+
+    @Test
+    public void testGetWarningMessagesSet() {
+        FlashMap flashMap = new FlashMap();
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addWarningStatusMessage("Warning!");
+        statusMessageService.addWarningStatusMessage("Warning2");
+
+        request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Iterator<String> it = statusMessageService.getWarningStatusMessages().iterator();
+
+        assertEquals("Warning!", it.next());
+        assertEquals("Warning2", it.next());
+    }
+
+    @Test
+    public void testGetErrorMessagesSet() {
+        FlashMap flashMap = new FlashMap();
+        MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        statusMessageService.addErrorStatusMessage("Error!");
+        statusMessageService.addErrorStatusMessage("Error2");
+
+        request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
+        request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+        request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Iterator<String> it = statusMessageService.getErrorStatusMessages().iterator();
+
+        assertEquals("Error!", it.next());
+        assertEquals("Error2", it.next());
     }
 }

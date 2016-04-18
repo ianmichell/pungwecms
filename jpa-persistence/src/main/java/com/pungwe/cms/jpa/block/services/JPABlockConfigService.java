@@ -30,9 +30,9 @@ public class JPABlockConfigService implements BlockConfigService<BlockConfigImpl
 	}
 
 	@Override
-	public void createNewInstance(String theme, String region, String block, int weight, Map<String, Object> defaultSettings) {
+	public void createNewInstance(String id, String theme, String region, String block, int weight, Map<String, Object> defaultSettings) {
 		BlockConfigImpl blockConfig = new BlockConfigImpl();
-		blockConfig.setId(theme + "." + block);
+		blockConfig.setId(id);
 		blockConfig.setName(block);
 		blockConfig.setRegion(region);
 		blockConfig.setTheme(theme);

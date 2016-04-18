@@ -62,12 +62,12 @@ public class AdminLTE {
     @Hook("install")
     public void install() {
         // Create a list of the default blocks that will be used...
-        blockManagementService.addBlockToTheme("admin_lte", "header", "page_title_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("admin_lte", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings());
-        blockManagementService.addBlockToTheme("admin_lte", "highlighted", "status_message_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("admin_lte", "sidebar", "menu_block", -100, primaryMenuSettings());
-        blockManagementService.addBlockToTheme("admin_lte", "content", "system_tasks_block", -101, taskBlockSettings());
-        blockManagementService.addBlockToTheme("admin_lte", "content", "main_content_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("admin_lte_page_title_block", "admin_lte", "header", "page_title_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("admin_lte_breadcrumb_block", "admin_lte", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings());
+        blockManagementService.addBlockToTheme("admin_lte_status_message_block", "admin_lte", "highlighted", "status_message_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("admin_lte_menu_block", "admin_lte", "sidebar", "menu_block", -100, primaryMenuSettings());
+        blockManagementService.addBlockToTheme("admin_lte_system_tasks_block", "admin_lte", "content", "system_tasks_block", -101, taskBlockSettings());
+        blockManagementService.addBlockToTheme("admin_lte_main_content_block", "admin_lte", "content", "main_content_block", -100, new HashMap<>());
     }
 
     private Map<String, Object> primaryMenuSettings() {
