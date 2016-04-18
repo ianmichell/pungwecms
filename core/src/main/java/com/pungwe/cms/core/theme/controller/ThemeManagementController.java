@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,7 +37,7 @@ public class ThemeManagementController {
 
     @ModelAttribute("title")
     public String title() {
-        return "Appearance";
+        return translate("Appearance");
     }
 
     @RequestMapping(method = RequestMethod.GET)

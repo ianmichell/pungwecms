@@ -46,7 +46,19 @@ public class LoginControllerTest extends AbstractControllerTest {
         MvcResult result = mockMvc.perform(get("/login")).andExpect(request().asyncStarted()).andReturn();
         result.getAsyncResult();
 
-        MvcResult finalResult = mockMvc.perform(asyncDispatch(result)).andExpect(status().isOk()).andExpect(content().contentType("text/html;charset=UTF-8")).andExpect(view().name("system/html")).andReturn();
+        MvcResult finalResult = mockMvc
+                .perform(
+                        asyncDispatch(
+                        result
+                        )
+                )
+                .andExpect(
+                        status().isOk()
+                ).andExpect(
+                        content().contentType("text/html;charset=UTF-8"))
+                .andExpect(
+                        view().name("system/html")
+                ).andReturn();
         String content = finalResult.getResponse().getContentAsString();
         Document doc = Jsoup.parse(content);
         assertEquals("Login", doc.select("html head title").text());

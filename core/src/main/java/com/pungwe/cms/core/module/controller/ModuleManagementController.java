@@ -52,6 +52,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 @MenuItem(menu = "system", parent = "admin", name = "modules", title = "Modules",
         description = "Manage your modules", weight = -150)
 @Controller
@@ -73,7 +75,7 @@ public class ModuleManagementController extends AbstractFormController {
      */
     @ModelAttribute("title")
     public String title() {
-        return "Modules";
+        return translate("Modules");
     }
 
     /**
@@ -98,9 +100,9 @@ public class ModuleManagementController extends AbstractFormController {
     public void build(final FormElement element) {
         final TableElement tableElement = new TableElement();
         tableElement.addHeaderRow(
-                new TableElement.Header("Enabled"),
-                new TableElement.Header("Name"),
-                new TableElement.Header("Description")
+                new TableElement.Header(translate("Enabled")),
+                new TableElement.Header(translate("Name")),
+                new TableElement.Header(translate("Description"))
         );
 
         // Illustrates if a module is enabled or not.
@@ -141,14 +143,14 @@ public class ModuleManagementController extends AbstractFormController {
             final DivElement description = new DivElement(annotation.description());
             DetailListElement details = new DetailListElement();
             details.addItem(
-                    new DetailListElement.DTItem("Module Name:"),
-                    new DetailListElement.DDItem(annotation.name()),
-                    new DetailListElement.DTItem("Dependencies:"),
+                    new DetailListElement.DTItem(translate("Module Name:")),
+                    new DetailListElement.DDItem(translate(annotation.name())),
+                    new DetailListElement.DTItem(translate("Dependencies:")),
                     new DetailListElement.DDItem(annotations.values().stream()
                             .filter(module -> Arrays.asList(annotation.dependencies())
                                     .stream().map(dep -> dep.value()).collect(Collectors.toList())
                                     .contains(module.name()))
-                            .map(a -> StringUtils.isBlank(a.label()) ? a.name() : a.label())
+                            .map(a -> StringUtils.isBlank(a.label()) ? translate(a.name()) : translate(a.label()))
                             .collect(Collectors.joining(", ")))
             );
 
@@ -159,7 +161,7 @@ public class ModuleManagementController extends AbstractFormController {
             );
         });
 
-        element.addContent(tableElement, new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, "Save"));
+        element.addContent(tableElement, new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, translate("Save")));
     }
 
 
