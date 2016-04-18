@@ -2,7 +2,6 @@ package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.form.FormRenderedElement;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Arrays;
@@ -22,7 +21,6 @@ public abstract class AbstractFormRenderedElement<T> extends AbstractRenderedEle
 	protected boolean required;
 	protected boolean error;
 
-	// FIXME: We should change this slightly, so that it builds up based on delta
 	public String getName() {
 		return name;
 	}

@@ -4,8 +4,6 @@ import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidgetDefinition;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.form.element.StringElement;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
@@ -25,7 +23,7 @@ public class TextareaWidget implements FieldWidgetDefinition {
 	}
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
 
 		// Text Field is a type of String element
 		TextareaElement element = new TextareaElement();
@@ -40,7 +38,7 @@ public class TextareaWidget implements FieldWidgetDefinition {
 	}
 
 	@Override
-	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
 
 		StringElement rows = new StringElement();
 		rows.setName("rows");

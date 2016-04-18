@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ApplicationContext context = event.getApplicationContext();
 
         // Don't store permission categories or the permissions themselves. We just need to cache these...
-        final Map<String, Object> permissionCategories = context.getBeansWithAnnotation(PermissionCategories.class);
+//        final Map<String, Object> permissionCategories = context.getBeansWithAnnotation(PermissionCategories.class);
         final Map<String, Object> permissionDefinitions = context.getBeansWithAnnotation(Permissions.class);
 
         // Add all the permissions to a central list of permissions across the website, no need to store these...

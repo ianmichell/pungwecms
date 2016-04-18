@@ -2,8 +2,6 @@ package com.pungwe.cms.core.form.processors;
 
 import com.google.common.collect.Maps;
 import com.pungwe.cms.core.form.FormRenderedElement;
-import com.pungwe.cms.core.form.element.FormElement;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -94,8 +92,8 @@ public class FormModelAttributeMethodProcessor extends ServletModelAttributeMeth
 		Class<?> targetClass = binder.getTarget().getClass();
 		final Map<String, String> map = Maps.newTreeMap();
 		// If the target is a form element, then we need to convert to field[idx] :)
-		if (FormElement.class.isAssignableFrom(targetClass)) {
-			FormElement formElement = (FormElement)binder.getTarget();
+		if (com.pungwe.cms.core.form.element.FormElement.class.isAssignableFrom(targetClass)) {
+			com.pungwe.cms.core.form.element.FormElement formElement = (com.pungwe.cms.core.form.element.FormElement)binder.getTarget();
 			final List<FormRenderedElement<?>> fields = formElement.getFields();
 			Enumeration<String> paramNames = request.getParameterNames();
 			while (paramNames != null && paramNames.hasMoreElements()) {

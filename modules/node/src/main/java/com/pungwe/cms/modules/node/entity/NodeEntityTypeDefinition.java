@@ -4,12 +4,10 @@ import com.pungwe.cms.core.annotations.stereotypes.EntityType;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.EntityTypeDefinition;
 import com.pungwe.cms.core.entity.FieldConfig;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ian on 09/01/2016.
@@ -50,6 +48,6 @@ public class NodeEntityTypeDefinition implements EntityTypeDefinition {
 	}
 
 	@Override
-	public void buildSettingsForm(List<RenderedElement> elements) {
+	public void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
 	}
 }

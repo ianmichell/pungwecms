@@ -12,8 +12,11 @@ public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 
 	String id;
 	String name;
+    String adminTitle;
+    String description;
 	String theme;
 	String region;
+	String context;
 	int weight;
 	Map<String, Object> settings = new LinkedHashMap<>();
 
@@ -37,7 +40,27 @@ public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 		this.name = name;
 	}
 
-	@Override
+    @Override
+    public String getAdminTitle() {
+        return adminTitle;
+    }
+
+    @Override
+    public void setAdminTitle(String adminTitle) {
+        this.adminTitle = adminTitle;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
 	public String getTheme() {
 		return theme;
 	}
@@ -55,6 +78,16 @@ public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 	@Override
 	public void setRegion(String region) {
 		this.region = region;
+	}
+
+	@Override
+	public String getContext() {
+		return context;
+	}
+
+	@Override
+	public void setContext(String context) {
+		this.context = context;
 	}
 
 	@Override

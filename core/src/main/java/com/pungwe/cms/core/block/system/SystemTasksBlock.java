@@ -2,7 +2,6 @@ package com.pungwe.cms.core.block.system;
 
 import com.google.common.collect.Iterables;
 import com.pungwe.cms.core.annotations.stereotypes.Block;
-import com.pungwe.cms.core.annotations.ui.MenuItems;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.AnchorElement;
@@ -10,25 +9,20 @@ import com.pungwe.cms.core.element.basic.ListElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.UnorderedListElement;
 import com.pungwe.cms.core.element.model.ModelAndViewElement;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.menu.MenuConfig;
 import com.pungwe.cms.core.menu.services.MenuManagementService;
 import com.pungwe.cms.core.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -53,8 +47,7 @@ public class SystemTasksBlock implements BlockDefinition {
 
 		final UnorderedListElement element = new UnorderedListElement();
 
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		String currentPath = request.getRequestURI().substring(request.getContextPath().length());
+		String currentPath = Utils.getRequestPath();
 
         Map uriVariables = new HashMap<>();
         if (variables.containsKey("content")) {
@@ -71,9 +64,6 @@ public class SystemTasksBlock implements BlockDefinition {
 		String menu = null;
 		if (settings.containsKey("menu")) {
 			menu = settings.get("menu").toString();
-		} else if (currentPath.startsWith("/admin")) {
-			// Admin always starts with
-			menu = "system";
 		} else {
 			return; // do nothing
 		}
@@ -109,7 +99,7 @@ public class SystemTasksBlock implements BlockDefinition {
                 if (p.matcher(menuConfig.getUrl()).matches()) {
                     anchor.setHref(menuConfig.getUrl());
                 } else {
-                    anchor.setHref(Utils.processUrlVariables(request.getContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""), uriVariables));
+                    anchor.setHref(Utils.processUrlVariables(Utils.getRequestContextPath() + "/" + menuConfig.getUrl().replaceAll("^/", ""), uriVariables));
                 }
                 ListElement.ListItem listItem = new ListElement.ListItem(anchor);
                 if (activeIds.contains(menuConfig.getId())) {
@@ -123,15 +113,13 @@ public class SystemTasksBlock implements BlockDefinition {
             }
         } catch (IllegalArgumentException ex) {
             // do nothing... If all the arguments are not there, then don't display it
-            if (log.isDebugEnabled()) {
-                log.debug("Ensure that all the relevant variables for your tasks are set.");
-            }
+            log.warn("Tasks for menu item: " + bottom.getName() + " are missing their uriVariables", ex);
         }
 
 	}
 
 	@Override
-	public void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	public void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
 
 	}
 }

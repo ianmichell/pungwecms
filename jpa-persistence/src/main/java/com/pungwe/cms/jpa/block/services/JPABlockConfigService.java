@@ -32,7 +32,7 @@ public class JPABlockConfigService implements BlockConfigService<BlockConfigImpl
 	@Override
 	public void createNewInstance(String theme, String region, String block, int weight, Map<String, Object> defaultSettings) {
 		BlockConfigImpl blockConfig = new BlockConfigImpl();
-		blockConfig.setId(theme + "." + region + "." + block);
+		blockConfig.setId(theme + "." + block);
 		blockConfig.setName(block);
 		blockConfig.setRegion(region);
 		blockConfig.setTheme(theme);
@@ -40,5 +40,13 @@ public class JPABlockConfigService implements BlockConfigService<BlockConfigImpl
 		blockConfig.setSettings(defaultSettings);
 		// Save the block!
 		blockConfigRepository.save(blockConfig);
+	}
+
+	@Override
+	public void removeBlock(String theme, String blockName) {
+		BlockConfigImpl config = blockConfigRepository.findOneByThemeAndName(theme, blockName);
+		config.setRegion(null);
+		// Save the block, don't delete it
+		blockConfigRepository.save(config);
 	}
 }

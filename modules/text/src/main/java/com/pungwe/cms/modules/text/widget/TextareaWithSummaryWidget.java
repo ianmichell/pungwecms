@@ -4,8 +4,6 @@ import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.widgets.TextareaWidget;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.Map;
 public class TextareaWithSummaryWidget extends TextareaWidget {
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
 
 		TextareaElement element = new TextareaElement();
 		element.setLabel(field.getLabel());
@@ -44,7 +42,7 @@ public class TextareaWithSummaryWidget extends TextareaWidget {
 	}
 
 	@Override
-	public void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings) {
-		super.buildWidgetSettingsForm(elements, form, state, settings);
+	public void buildWidgetSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
+		super.buildWidgetSettingsForm(elements, settings);
 	}
 }

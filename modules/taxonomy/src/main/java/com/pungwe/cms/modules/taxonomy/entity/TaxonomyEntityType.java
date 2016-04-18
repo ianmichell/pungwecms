@@ -26,6 +26,7 @@ import com.pungwe.cms.core.entity.FieldConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @EntityType(value = "taxonomy_entity_type", label = "Taxonomy", description = "Create and manage taxonomy definitions")
 public class TaxonomyEntityType implements EntityTypeDefinition {
@@ -64,7 +65,7 @@ public class TaxonomyEntityType implements EntityTypeDefinition {
     }
 
     @Override
-    public void buildSettingsForm(List<RenderedElement> elements) {
+    public void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
 
     }
 }

@@ -21,8 +21,9 @@ public class HeaderElement extends AbstractContentElement {
 		this.level = level;
 	}
 
-	public HeaderElement(int level, String content) {
-		this(level, new PlainTextElement(content));
+	public HeaderElement(int level, String... content) {
+		this(level);
+		setContent(content);
 	}
 
 	public HeaderElement(int level, RenderedElement... content) {

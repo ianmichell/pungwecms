@@ -7,6 +7,7 @@ import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.block.services.BlockManagementService;
 import com.pungwe.cms.core.block.system.MainContentBlock;
 import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.model.ModelAndViewElement;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.system.builder.PageBuilder;
@@ -51,7 +52,7 @@ public class BlockPageBuilder implements PageBuilder {
 		blocksByRegion.entrySet().forEach(entry -> {
 			List<RenderedElement> elements = new LinkedList<RenderedElement>();
 			entry.getValue().stream().forEach(blockConfig -> {
-				Optional<BlockDefinition> block = blockManagementService.getBlockByName(blockConfig.getName());
+				Optional<BlockDefinition> block = blockManagementService.getBlockDefinitionByName(blockConfig.getName());
 				if (!block.isPresent()) {
 					return;
 				}
@@ -72,12 +73,14 @@ public class BlockPageBuilder implements PageBuilder {
 			}
 		});
 
-		if (!hasContentBlock.get() && blocksByRegion.containsKey("content") && model.containsKey("content")) {
+		if (!hasContentBlock.get() && page.getRegions().containsKey("content") && model.containsKey("content")) {
 			Object content = model.get("content");
 			if (content != null && content instanceof RenderedElement) {
 				page.addRegion("content", (RenderedElement) content);
-			} else if (content instanceof ModelAndView) {
+			} else if (content != null && content instanceof ModelAndView) {
 				page.addRegion("content", new ModelAndViewElement((ModelAndView) content));
+			} else if (content != null) {
+				page.addRegion("content", new PlainTextElement(content.toString()));
 			}
 		}
 	}

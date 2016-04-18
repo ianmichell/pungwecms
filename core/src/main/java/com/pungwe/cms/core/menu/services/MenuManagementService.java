@@ -173,6 +173,19 @@ public class MenuManagementService {
 		return config;
 	}
 
+	public MenuConfig createMenuItem(String menu, String parent, String name, String title, String description, boolean external, String target, String path, int weight, boolean pattern) {
+		return createMenuItem(menu, parent, name, title, description, external, target, path, weight, pattern, false);
+	}
+
+	public MenuConfig createMenuItem(String menu, String parent, String name, String title, String description, boolean external, String target,  String path, int weight, boolean pattern, boolean task) {
+		if (StringUtils.isEmpty(menu) || menu.equals("system")) {
+			throw new IllegalArgumentException("Cannot create menu item in system menu");
+		}
+		MenuConfig config = menuConfigService.newInstance(menu, parent, name, title, description, external, target, path, weight, pattern, task);
+		menuConfigService.saveMenuItem(config);
+		return config;
+	}
+
 	public List<MenuInfo> listMenusByLanguage(String language) {
 		return menuInfoService.findAllByLanguage(language);
 	}
@@ -224,4 +237,5 @@ public class MenuManagementService {
 	public List<MenuConfig> getTasksByPath(String menu, String path) {
 		return menuConfigService.getMenuItemsByParent(menu, path, true);
 	}
+
 }

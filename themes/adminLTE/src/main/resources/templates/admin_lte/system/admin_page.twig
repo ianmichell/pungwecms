@@ -1,0 +1,94 @@
+<!-- Create the main container -->
+<div class="wrapper" role="main">
+
+    <header class="main-header">
+        <!-- Logo Here -->
+        <a href="index2.html" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>A</b>LT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Admin</b>LTE</span>
+        </a>
+        <!-- navigation -->
+        {% block navbar %}
+            <nav role="navigation" class="navbar navbar-static-top">
+                <!-- sidebar -->
+                {% if regions['sidebar_first'] %}
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">{{ translate('Toggle Navigation') }}</span>
+                    </a>
+                {% endif %}
+
+                {% if regions['navbar'] %}
+                    <div class="navbar-custom-menu">
+                        {{ render(regions['navbar']) }}
+                    </div>
+                {% endif %}
+            </nav>
+        {% endblock %}
+    </header>
+
+    {% if regions['sidebar_first'] %}
+        {% block sidebar_first %}
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    {{ render(regions['sidebar_first']) }}
+                </section>
+            </aside>
+        {% endblock %}
+    {% endif %}
+
+    {% block main %}
+        <div class="content-wrapper">
+            {% if regions['header'] or regions['breadcrumb'] %}
+                {% block header %}
+                    <section class="content-header">
+                        {% if regions['header'] %}
+                            {{ render(regions['header']) }}
+                        {% endif %}
+                        {% if (regions['breadcrumb']) %}
+                            {{ render(regions['breadcrumb']) }}
+                        {% endif %}
+                    </section>
+                {% endblock %}
+            {% endif %}
+
+            {% if regions['highlighted'] or regions['content'] %}
+                <section class="content">
+                    <div class="box">
+                        <div class="box-body">
+                            {% if regions['highlighted'] %}
+                                {% block highlighted %}
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div role="banner">
+                                                {{ render(regions['highlighted']) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endblock %}
+                            {% endif %}
+                            {% if regions['content'] %}
+                                <div class="row">
+                                    {% block content %}
+                                        <div role="document" class="region-content col-sm-12">
+                                            {{ render(regions['content']) }}
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    {% endblock %}
+
+    {% if regions['footer'] %}
+        {% block footer %}
+            <footer class="main-footer">
+                {{ render(regions['footer']) }}
+            </footer>
+        {% endblock %}
+    {% endif %}
+</div>

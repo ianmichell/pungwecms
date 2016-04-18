@@ -2,8 +2,6 @@ package com.pungwe.cms.core.field;
 
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +13,8 @@ public interface FieldWidgetDefinition {
 
 	Map<String, Object> getDefaultSettings();
 
-	void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta, Form form, FormState sate);
+	void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta);
 
-	void buildWidgetSettingsForm(List<RenderedElement> elements, Form form, FormState state, Map<String, Object> settings);
+	void buildWidgetSettingsForm(List<RenderedElement> elements, Map<String, Object> settings);
 
 }

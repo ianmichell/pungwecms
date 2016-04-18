@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.block.services;
 
+import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.impl.BlockConfigImpl;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,14 @@ public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImp
 		blockConfig.setWeight(weight);
 		// Save the block
 		blocks.add(blockConfig);
+	}
+
+	@Override
+	public void removeBlock(String theme, String blockName) {
+		Optional<BlockConfigImpl> block = blocks.stream().filter(b -> b.getName().equals(blockName)).findFirst();
+		if (!block.isPresent()) {
+			return;
+		}
+		block.get().setRegion(null);
 	}
 }

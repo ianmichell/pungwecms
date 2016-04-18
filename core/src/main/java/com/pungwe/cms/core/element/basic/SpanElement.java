@@ -15,8 +15,6 @@ import java.util.LinkedList;
 @ThemeInfo("basic/span")
 public class SpanElement extends AbstractContentElement {
 
-	protected RenderedElement content;
-
 	public SpanElement() {
 
 	}

@@ -27,11 +27,6 @@ public class FormHandlerMappingPostProcessor implements BeanPostProcessor {
 			RequestMappingHandlerAdapter adapter = (RequestMappingHandlerAdapter) bean;
 			List<HandlerMethodArgumentResolver> resolvers = new LinkedList<>();
 			resolvers.addAll(adapter.getArgumentResolvers());
-			if (resolvers == null) {
-				resolvers = Lists.newArrayList();
-			}
-//			resolvers.add(new FormModelAttributeMethodProcessor(false));
-//			resolvers.add(new FormModelAttributeMethodProcessor(true));
 			resolvers.replaceAll(handlerMethodArgumentResolver -> {
 				if (handlerMethodArgumentResolver instanceof ServletModelAttributeMethodProcessor) {
 					return new FormModelAttributeMethodProcessor(false);

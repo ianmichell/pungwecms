@@ -5,8 +5,6 @@ package com.pungwe.cms.core.module;
  */
 
 import com.pungwe.cms.core.element.RenderedElement;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
 
 import java.util.List;
 import java.util.Map;
@@ -27,9 +25,8 @@ public interface ModuleDefinition {
 	 * Builds a settings form for the admin ui.
 	 *
 	 * @param elements the form elements
-	 * @param form     the settings form
-	 * @param state    the form state
+	 * @param settings the module settings
 	 */
-	void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state);
+	void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings);
 
 }

@@ -1,9 +1,6 @@
 package com.pungwe.cms.core.module.config;
 
-import com.pungwe.cms.core.annotations.security.PermissionDefinition;
-import com.pungwe.cms.core.annotations.security.Permissions;
-import com.pungwe.cms.core.annotations.security.RoleDefinition;
-import com.pungwe.cms.core.annotations.security.Roles;
+import com.pungwe.cms.core.block.builder.AdminPageBuilder;
 import com.pungwe.cms.core.block.builder.BlockPageBuilder;
 import com.pungwe.cms.core.block.controller.BlockLayoutController;
 import com.pungwe.cms.core.block.controller.BlockSettingsController;
@@ -33,6 +30,7 @@ import com.pungwe.cms.core.system.services.PageBuilderService;
 import com.pungwe.cms.core.theme.PungweJtwigViewResolver;
 import com.pungwe.cms.core.theme.controller.ThemeManagementController;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
+import com.pungwe.cms.core.utils.services.StatusMessageService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration;
@@ -176,6 +174,11 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
         return new PermissionService();
     }
 
+    @Bean
+    public StatusMessageService statusMessageService() {
+        return new StatusMessageService();
+    }
+
     //================================================
     // Components
     //================================================
@@ -183,6 +186,11 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     @Bean
     public BlockPageBuilder blockPageBuilder() {
         return new BlockPageBuilder();
+    }
+
+    @Bean
+    public AdminPageBuilder adminPageBuilder() {
+        return new AdminPageBuilder();
     }
 
     @Bean
@@ -272,16 +280,6 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
         return new PageTitleBlock();
     }
 
-    @Bean(name = "primary_menu_block")
-    public PrimaryMenuBlock primaryMenuBlock() {
-        return new PrimaryMenuBlock();
-    }
-
-    @Bean(name = "secondary_menu_block")
-    public SecondaryMenuBlock secondaryMenuBlock() {
-        return new SecondaryMenuBlock();
-    }
-
     @Bean(name = "status_message_block")
     public StatusMessageBlock statusMessageBlock() {
         return new StatusMessageBlock();
@@ -290,6 +288,11 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     @Bean(name = "system_tasks_block")
     public SystemTasksBlock systemTasksBlock() {
         return new SystemTasksBlock();
+    }
+
+    @Bean(name = "menu_block")
+    public MenuBlock menuBlock() {
+        return new MenuBlock();
     }
 
     //================================================

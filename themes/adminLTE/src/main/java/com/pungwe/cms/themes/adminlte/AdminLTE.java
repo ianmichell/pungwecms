@@ -1,26 +1,4 @@
-package com.pungwe.cms.themes.adminlte;
-
-import com.pungwe.cms.core.annotations.stereotypes.Theme;
-import com.pungwe.cms.core.annotations.stereotypes.ThemeRegion;
-import com.pungwe.cms.core.annotations.util.Hook;
-import com.pungwe.cms.core.block.services.BlockManagementService;
-import com.pungwe.cms.core.element.HeaderRenderedElement;
-import com.pungwe.cms.core.element.RenderedElement;
-import com.pungwe.cms.core.element.basic.*;
-import com.pungwe.cms.core.form.FormRenderedElement;
-import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
-import com.pungwe.cms.core.form.element.ButtonElement;
-import com.pungwe.cms.core.form.element.FormElement;
-import com.pungwe.cms.core.form.element.InputButtonElement;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -41,6 +19,27 @@ import java.util.Map;
  *
  * Created by Ian Michell on 27/03/2016.
  */
+package com.pungwe.cms.themes.adminlte;
+
+import com.pungwe.cms.core.annotations.stereotypes.Theme;
+import com.pungwe.cms.core.annotations.stereotypes.ThemeRegion;
+import com.pungwe.cms.core.annotations.util.Hook;
+import com.pungwe.cms.core.block.services.BlockManagementService;
+import com.pungwe.cms.core.element.HeaderRenderedElement;
+import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.element.basic.*;
+import com.pungwe.cms.core.form.FormRenderedElement;
+import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
+import com.pungwe.cms.core.form.element.ButtonElement;
+import com.pungwe.cms.core.form.element.InputButtonElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Theme(
         name = "admin_lte",
         description = "Admin LTE Theme",
@@ -64,10 +63,10 @@ public class AdminLTE {
     public void install() {
         // Create a list of the default blocks that will be used...
         blockManagementService.addBlockToTheme("admin_lte", "header", "page_title_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("admin_lte", "breadcrumb", "breadcrumb_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("admin_lte", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings());
         blockManagementService.addBlockToTheme("admin_lte", "highlighted", "status_message_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("admin_lte", "sidebar", "primary_menu_block", -100, primaryMenuSettings());
-        blockManagementService.addBlockToTheme("admin_lte", "content", "system_tasks_block", -101, new HashMap<>());
+        blockManagementService.addBlockToTheme("admin_lte", "sidebar", "menu_block", -100, primaryMenuSettings());
+        blockManagementService.addBlockToTheme("admin_lte", "content", "system_tasks_block", -101, taskBlockSettings());
         blockManagementService.addBlockToTheme("admin_lte", "content", "main_content_block", -100, new HashMap<>());
     }
 
@@ -75,7 +74,20 @@ public class AdminLTE {
         Map<String, Object> settings = new HashMap<String, Object>();
         settings.put("menu_class", "nav navbar-nav");
         settings.put("active_item_class", "active");
+        settings.put("menu", "main_navigation");
         return settings;
+    }
+
+    private Map<String, Object> taskBlockSettings() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("menu", "main_navigation");
+        return map;
+    }
+
+    private Map<String, Object> breadcrumbBlockSettings() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("menu", "main_navigation");
+        return map;
     }
 
     // Execute CSS AND JS Hooks
@@ -108,7 +120,7 @@ public class AdminLTE {
             return;
         }
 
-        if (element instanceof FormElement) {
+        if (element instanceof com.pungwe.cms.core.form.element.FormElement) {
             element.addClass("form");
         }
 
@@ -219,7 +231,7 @@ public class AdminLTE {
 
     @Hook("block_alter")
     public void hookAlterPrimaryMenuBlock(ModelAndView blockModel) {
-        if (!blockModel.getModel().getOrDefault("blockName", "").equals("primary_menu_block")) {
+        if (!blockModel.getModel().getOrDefault("blockName", "").equals("menu_block")) {
             return;
         }
 

@@ -1,14 +1,10 @@
 package com.pungwe.cms.core.menu.impl;
 
-import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.menu.MenuConfig;
 import com.pungwe.cms.core.menu.services.MenuConfigService;
-import org.springframework.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Documented;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +50,7 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 	}
 
 	@Override
-	public void saveMenuItem(MenuConfigImpl... menuItems) {
+	public void saveMenuItem(MenuConfig... menuItems) {
 		assert menuItems != null && menuItems.length > 0;
 		saveMenuItem(Arrays.asList(menuItems));
 	}
@@ -63,11 +59,10 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 	public void saveMenuItem(Collection<MenuConfig> menuItems) {
 		assert menuItems != null && menuItems.iterator().hasNext();
 		// Stream and cast, exception will be thrown if there is anything dodgy!
-		menuItems.addAll(menuItems);
+		this.menuItems.addAll(menuItems.stream().map(m -> (MenuConfigImpl)m).collect(Collectors.toList()));
 	}
 
 	@Override
-	@Cacheable("menu.menuTreeForUrl")
 	public List<MenuConfigImpl> menuTreeForUrl(String menu, String url) {
 
 		List<MenuConfigImpl> tree = new LinkedList<>();
@@ -79,7 +74,7 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 			return tree;
 		}
 
-		Optional<MenuConfigImpl> parent = menuItems.stream().filter(menuConfig -> menuConfig.getMenu().equals(menu) && menuConfig.getMenu().equals(leaf.get().getParent())).findFirst();
+		Optional<MenuConfigImpl> parent = menuItems.stream().filter(menuConfig -> menuConfig.getMenu().equals(menu) && menuConfig.getName().equals(leaf.get().getParent())).findFirst();
 
 		while (parent.isPresent()) {
 			tree.add(parent.get());
@@ -90,13 +85,11 @@ public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> 
 		return tree;
 	}
 
-	@Cacheable("menu.getTopLevelMenuItems")
 	@Override
 	public List<MenuConfigImpl> getTopLevelMenuItems(String menu) {
-		return menuItems.stream().filter(menuConfig -> StringUtils.isEmpty(menuConfig.getParent())).collect(Collectors.toList());
+		return menuItems.stream().filter(menuConfig -> StringUtils.isEmpty(menuConfig.getParent()) && menuConfig.getMenu().equals(menu)).collect(Collectors.toList());
 	}
 
-	@Cacheable("menu.getMenuItems")
 	@Override
 	public List<MenuConfigImpl> getMenuItems(String menu, String parent) {
 		return menuItems.stream().filter(menuConfig -> menuConfig.getMenu().equals(menu) && menuConfig.getParent().equals(parent)).collect(Collectors.toList());

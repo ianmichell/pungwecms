@@ -18,4 +18,6 @@ public interface BlockConfigRepository extends JpaRepository<BlockConfigImpl, St
 	List<BlockConfigImpl> findAllByTheme(String theme);
 	@Cacheable("blocks.findAllByThemeAndNameIn")
 	List<BlockConfigImpl> findAllByThemeAndNameIn(String theme, Collection<String> name);
+
+	BlockConfigImpl findOneByThemeAndName(String theme, String blockName);
 }

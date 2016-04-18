@@ -105,4 +105,13 @@ public class TextFormatElementTest extends AbstractWebTest {
         assertEquals("Test", doc.select("mark").first().text());
 
     }
+
+    // Line coverage...
+    @Test
+    public void testEnum() throws Exception {
+
+        for (TextFormatElement.Type type : TextFormatElement.Type.values()) {
+            assertEquals(type.name().toLowerCase(), type.getTagName());
+        }
+    }
 }

@@ -1,18 +1,20 @@
 package com.pungwe.cms.core.utils;
 
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UriTemplate;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.text.Collator;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +27,37 @@ public class Utils {
 		List<Locale> locales = Arrays.asList(Collator.getAvailableLocales());
 		return locales.stream().sorted((o1, o2) -> collator.compare(o1.getDisplayName(currentLocale), o2.getDisplayName(currentLocale))).collect(Collectors.toList());
 	}
+
+    public static Comparator<String> pathPatternComparator() {
+        String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        if (StringUtils.isEmpty(path)) {
+            throw new IllegalArgumentException("Path must not be empty");
+        }
+        AntPathMatcher matcher = new AntPathMatcher();
+        return matcher.getPatternComparator(path);
+    }
+
+    public static boolean matchesPathPattern(String pattern) {
+        String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        // If They are both blank, then there is a default pattern
+        if (StringUtils.isEmpty(path) && StringUtils.isEmpty(pattern)) {
+            return true;
+        }
+        AntPathMatcher apm = new AntPathMatcher();
+        return apm.match(pattern, path);
+    }
+
+    public static boolean matchesPathPatterns(String... patterns) {
+        if (patterns == null || patterns.length == 0) {
+            return true; // return true by default, as it's visible anywhere
+        }
+        for (String pattern : patterns) {
+            if (matchesPathPattern(pattern)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public static String getRequestPathVariable(String variableName) {
 		String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
@@ -43,6 +76,9 @@ public class Utils {
     public static boolean hasRequestPathVariable() {
         String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
         String bestMatchPattern = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+		if (path == null || bestMatchPattern == null) {
+			return false;
+		}
         return !path.equals(bestMatchPattern);
     }
 
@@ -58,7 +94,34 @@ public class Utils {
 		return ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest().getContextPath();
 	}
 
-	public static String translate(String value) {
-		return value;
-	}
+    public static String translate(String value, Object... args) {
+        return String.format(value, args);
+    }
+
+    public static HttpServletRequest getRequest() {
+        return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+    }
+
+    public static <T> void setFlashAttribute(String key, T value) {
+        RequestContextUtils.getOutputFlashMap(getRequest()).put(key, value);
+    }
+
+    public static Map<String, ?> getFlashMap() {
+        return RequestContextUtils.getInputFlashMap(getRequest());
+    }
+
+    public static Object getFlashAttribute(String key) {
+        return RequestContextUtils.getInputFlashMap(getRequest()).get(key);
+    }
+
+    public static boolean containsFlashAttribute(String key) {
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(getRequest());
+        return flashMap == null ? false : flashMap.containsKey(key);
+    }
+
+    public static String getRequestPath() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String currentPath = request.getRequestURI().substring(request.getContextPath().length());
+        return currentPath;
+    }
 }

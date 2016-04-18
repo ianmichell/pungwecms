@@ -10,7 +10,6 @@ import com.pungwe.cms.core.element.basic.*;
 import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
 import com.pungwe.cms.core.form.element.ButtonElement;
-import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.InputButtonElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,14 +27,14 @@ import java.util.Map;
         label = "Bootstrap Theme",
         description = "The official bootstrap theme!",
         regions = {
-        @ThemeRegion(name = "navigation", label = "Navigation"),
-        @ThemeRegion(name = "header", label = "Header"),
-        @ThemeRegion(name = "highlighted", label = "Highlighted"),
-        @ThemeRegion(name = "breadcrumb", label = "Breadcrumb"),
-        @ThemeRegion(name = "sidebar_first", label = "First sidebar"),
-        @ThemeRegion(name = "content", label = "Content"),
-        @ThemeRegion(name = "sidebar_second", label = "Second sidebar"),
-        @ThemeRegion(name = "footer", label = "Footer")
+                @ThemeRegion(name = "navigation", label = "Navigation"),
+                @ThemeRegion(name = "header", label = "Header"),
+                @ThemeRegion(name = "highlighted", label = "Highlighted"),
+                @ThemeRegion(name = "breadcrumb", label = "Breadcrumb"),
+                @ThemeRegion(name = "sidebar_first", label = "First sidebar"),
+                @ThemeRegion(name = "content", label = "Content"),
+                @ThemeRegion(name = "sidebar_second", label = "Second sidebar"),
+                @ThemeRegion(name = "footer", label = "Footer")
         }
 )
 public class Bootstrap {
@@ -47,19 +46,31 @@ public class Bootstrap {
     public void install() {
         // Create a list of the default blocks that will be used...
         blockManagementService.addBlockToTheme("bootstrap", "header", "page_title_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("bootstrap", "breadcrumb", "breadcrumb_block", -100, new HashMap<>());
+        blockManagementService.addBlockToTheme("bootstrap", "breadcrumb", "breadcrumb_block", -100, breadcrumbBlockSettings());
         blockManagementService.addBlockToTheme("bootstrap", "highlighted", "status_message_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("bootstrap", "navigation", "primary_menu_block", -100, primaryMenuSettings());
-        blockManagementService.addBlockToTheme("bootstrap", "content", "system_tasks_block", -101, new HashMap<>());
+        blockManagementService.addBlockToTheme("bootstrap", "navigation", "menu_block", -100, primaryMenuSettings());
+        blockManagementService.addBlockToTheme("bootstrap", "content", "system_tasks_block", -101, taskBlockSettings());
         blockManagementService.addBlockToTheme("bootstrap", "content", "main_content_block", -100, new HashMap<>());
-        blockManagementService.addBlockToTheme("bootstrap", "sidebar_second", "secondary_menu_block", -100, new HashMap<>());
     }
 
     private Map<String, Object> primaryMenuSettings() {
         Map<String, Object> settings = new HashMap<String, Object>();
         settings.put("menu_class", "nav navbar-nav");
         settings.put("active_item_class", "active");
+        settings.put("menu", "main_navigation");
         return settings;
+    }
+
+    private Map<String, Object> taskBlockSettings() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("menu", "main_navigation");
+        return map;
+    }
+
+    private Map<String, Object> breadcrumbBlockSettings() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("menu", "main_navigation");
+        return map;
     }
 
     // Execute CSS AND JS Hooks
@@ -85,7 +96,7 @@ public class Bootstrap {
             return;
         }
 
-        if (element instanceof FormElement) {
+        if (element instanceof com.pungwe.cms.core.form.element.FormElement) {
             element.addClass("form");
         }
 
@@ -110,7 +121,7 @@ public class Bootstrap {
             return;
         }
 
-        FormElement formElement = (FormElement)model.get("form");
+        com.pungwe.cms.core.form.element.FormElement formElement = (com.pungwe.cms.core.form.element.FormElement) model.get("form");
         List<RenderedElement> content = formElement.getContent();
         // Wrap the form in the most appropriate containers
         DivElement row = new DivElement();
@@ -140,7 +151,7 @@ public class Bootstrap {
             anchorElement.getContent().forEach(child -> {
                 if (child instanceof HeaderElement) {
                     ((HeaderElement) child).addClass("list-group-item-heading");
-                } else if (child instanceof TextFormatElement && ((TextFormatElement)child).getType() == TextFormatElement.Type.P) {
+                } else if (child instanceof TextFormatElement && ((TextFormatElement) child).getType() == TextFormatElement.Type.P) {
                     ((TextFormatElement) child).addClass("list-group-item-text");
                 }
             });
@@ -173,6 +184,21 @@ public class Bootstrap {
         List<RenderedElement> elements = (List<RenderedElement>) blockModel.getModel().get("content");
         if (elements.size() > 0) {
             elements.get(0).addClass("nav", "nav-tabs");
+            ((ListElement) elements.get(0)).getItems().forEach(item -> {
+                item.addAttribute("role", "presentation");
+            });
+        }
+    }
+
+    @Hook("block_alter")
+    public void hookAlterMenuBlock(ModelAndView blockModel) {
+        if (!blockModel.getModel().getOrDefault("blockName", "").equals("menu_block")) {
+            return;
+        }
+
+        List<RenderedElement> elements = (List<RenderedElement>) blockModel.getModel().get("content");
+        if (elements.size() > 0) {
+            elements.get(0).addClass("navbar", "nav");
             ((ListElement) elements.get(0)).getItems().forEach(item -> {
                 item.addAttribute("role", "presentation");
             });

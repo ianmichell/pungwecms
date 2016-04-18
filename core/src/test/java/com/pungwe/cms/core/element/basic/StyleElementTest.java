@@ -49,4 +49,43 @@ public class StyleElementTest extends AbstractWebTest {
 		assertEquals("Media is wrong", "print", doc.select("style").first().attr("media"));
 		assertEquals("Content is wrong", element.getContent(), doc.select("style").first().html());
 	}
+
+	@Test
+	public void testConstructorWithAll() throws Exception {
+		StyleElement element = new StyleElement("print", "text/css", "h1 { color: red; }");
+		element.setHtmlId("styles");
+		TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		String output = templateFunctions.render(new MockHttpServletRequest(), element);
+		Document doc = Jsoup.parse(output);
+		assertEquals("Element id is incorrect", "styles", doc.select("style").first().id());
+		assertEquals("Type is wrong", "text/css", doc.select("style").first().attr("type"));
+		assertEquals("Media is wrong", "print", doc.select("style").first().attr("media"));
+		assertEquals("Content is wrong", element.getContent(), doc.select("style").first().html());
+	}
+
+	@Test
+	public void testConstructorWithTypeAndContent() throws Exception {
+		StyleElement element = new StyleElement("text/css", "h1 { color: red; }");
+		element.setHtmlId("styles");
+		TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		String output = templateFunctions.render(new MockHttpServletRequest(), element);
+		Document doc = Jsoup.parse(output);
+		assertEquals("Element id is incorrect", "styles", doc.select("style").first().id());
+		assertEquals("Type is wrong", "text/css", doc.select("style").first().attr("type"));
+		assertEquals("Media is wrong", "", doc.select("style").first().attr("media"));
+		assertEquals("Content is wrong", element.getContent(), doc.select("style").first().html());
+	}
+
+    @Test
+    public void testConstructorWithContent() throws Exception {
+        StyleElement element = new StyleElement("h1 { color: red; }");
+        element.setHtmlId("styles");
+        TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+        String output = templateFunctions.render(new MockHttpServletRequest(), element);
+        Document doc = Jsoup.parse(output);
+        assertEquals("Element id is incorrect", "styles", doc.select("style").first().id());
+        assertEquals("Type is wrong", "", doc.select("style").first().attr("type"));
+        assertEquals("Media is wrong", "", doc.select("style").first().attr("media"));
+        assertEquals("Content is wrong", element.getContent(), doc.select("style").first().html());
+    }
 }

@@ -59,8 +59,7 @@ public class JPAMenuConfigService implements MenuConfigService<MenuConfigImpl> {
 	}
 
 	@Override
-	public void saveMenuItem(MenuConfigImpl... menuItems) {
-		assert menuItems != null && menuItems.length > 0;
+	public void saveMenuItem(MenuConfig... menuItems) {
 		saveMenuItem(Arrays.asList(menuItems));
 	}
 

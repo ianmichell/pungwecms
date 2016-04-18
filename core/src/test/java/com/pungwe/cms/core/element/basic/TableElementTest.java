@@ -47,12 +47,12 @@ public class TableElementTest extends AbstractWebTest {
 		table.addHeaderRow(
 				new TableElement.Header(new PlainTextElement("Column 1")),
 				new TableElement.Header(new PlainTextElement("Column 2")),
-				new TableElement.Header(new PlainTextElement("Column 3"))
+				new TableElement.Header("Column 3") // test string constructor for line coverage
 		);
 		table.addRow(
 				new TableElement.Column(new AnchorElement("Link title", "http://www.example.com", new PlainTextElement("Link"))),
 				new TableElement.Column(new PlainTextElement("Column 2 text")),
-				new TableElement.Column(new PlainTextElement("Column 3 text"))
+				new TableElement.Column("Column 3 text") // test string constructor for line coverage
 		);
 		/// Add the footer
 		TableElement.Column footer = new TableElement.Column(new PlainTextElement("Footer"));

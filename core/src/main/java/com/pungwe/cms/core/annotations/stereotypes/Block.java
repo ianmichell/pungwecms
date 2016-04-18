@@ -17,11 +17,11 @@ import java.lang.annotation.Target;
 public @interface Block {
 
     /**
-     * Name of the block.
+     * Name of the block. This will default to spring's default bean name.
      *
      * @return the name of the block
      */
-    @AliasFor(annotation = Component.class, attribute = "value") String value();
+    @AliasFor(annotation = Component.class, attribute = "value") String value() default "";
 
     /**
      * Block Label.
@@ -37,4 +37,12 @@ public @interface Block {
      * if not specified
      */
     String category() default "";
+
+    /**
+     * Dynamic block. This means that the bean can be retrieved, but it won't show
+     * as an independent block, rather the Theme or Module needs to define it dynamically
+     *
+     * @return true if the block is dynamic
+     */
+    boolean dynamic() default false;
 }

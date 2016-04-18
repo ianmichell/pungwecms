@@ -57,4 +57,15 @@ public class SpanElementTest extends AbstractWebTest {
 		assertEquals("Element class is incorrect", "myclass", doc.body().select("span").first().className());
 		assertEquals("Element content is wrong", "Test", doc.body().select("span").first().text());
 	}
+
+	@Test
+	public void testWithRenderedElementConstructor() throws Exception {
+		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+		SpanElement element = new SpanElement(new PlainTextElement("Test"));
+		element.addClass("myclass");
+		String output = functions.render(new MockHttpServletRequest(), element);
+		Document doc = Jsoup.parse(output);
+		assertEquals("Element class is incorrect", "myclass", doc.body().select("span").first().className());
+		assertEquals("Element content is wrong", "Test", doc.body().select("span").first().text());
+	}
 }

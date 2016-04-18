@@ -1,0 +1,95 @@
+<!-- Create the main container -->
+{% set container = (theme.settings.fluid_container) ? 'container-fluid' : 'container' %}
+{% if regions['navigation'] %}
+    {% block navbar %}
+        {% set navbar_classes = ['navbar', (theme.settings.navbar_inverse) ? 'navbar-inverse' : 'navbar-default', (theme.settings.navbar_position) ? concat('navbar-', theme.settings.navbar_position) : 'navbar-static-top'] %}
+        <nav role="navigation" class="{{ navbar_classes|join(' ') }}">
+            <div class="{{ container }}">
+                {{ render(regions['navigation']) }}
+            </div>
+        </nav>
+    {% endblock %}
+{% endif %}
+
+{% block main %}
+
+    {# Content #}
+    {% if regions['sidebar_first'] and regions['sidebar_second'] %}
+        {% set content_classes = "col-sm-6" %}
+    {% elseif regions['sidebar_first'] is not empty or regions['sidebar_second'] is not empty %}
+        {% set content_classes = "col-sm-9" %}
+    {% else %}
+        {% set content_classes = "col-sm-12" %}
+    {% endif %}
+
+    <div class="main-content {{ container }}" role="main">
+
+        {% if regions['breadcrumb'] %}
+            {% block breadcrumb %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <nav role="navigation">
+                            {{ render(regions['breadcrumb']) }}
+                        </nav>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['header'] %}
+            {% block header %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ render(regions['header']) }}
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['highlighted'] %}
+            {% block highlighted %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div role="banner">
+                            {{ render(regions['highlighted']) }}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        <div class="row">
+        {% if regions['sidebar_first'] %}
+            {% block sidebar_first %}
+                <aside role="complementary" class="sidebar_first col-sm-3">
+                    {{ render(regions['sidebar_first']) }}
+                </aside>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['content'] %}
+            {% block content %}
+                <div role="document" class="region-content {{ content_classes }}">
+                    {{ render(regions['content']) }}
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if regions['sidebar_second'] %}
+            {% block sidebar_second %}
+                <div role="complementary" class="sidebar_second col-sm-3">
+                    {{ render(regions['sidebar_second']) }}
+                </div>
+            {% endblock %}
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% if regions['footer'] %}
+    {% block footer %}
+        <footer class="footer">
+            {{ render(regions['footer']) }}
+        </footer>
+    {% endblock %}
+{% endif %}

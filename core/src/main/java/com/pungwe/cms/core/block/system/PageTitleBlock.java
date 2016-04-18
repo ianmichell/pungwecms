@@ -4,8 +4,6 @@ import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.HeaderElement;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -29,7 +27,7 @@ public class PageTitleBlock implements BlockDefinition {
 		if (!variables.containsKey("title") || StringUtils.isEmpty(variables.get("title"))) {
 			return;
 		}
-		// FIXME: This should automatically be H1 by default, or the tag defined by the settings...
+
 		// Add a page title...
 		int level = 1;
 		if (settings.containsKey("header_level") && settings.get("header_level") instanceof Integer) {
@@ -39,7 +37,7 @@ public class PageTitleBlock implements BlockDefinition {
 	}
 
 	@Override
-	public void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
+	public void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
 		// No need for a configuration form here
 	}
 }

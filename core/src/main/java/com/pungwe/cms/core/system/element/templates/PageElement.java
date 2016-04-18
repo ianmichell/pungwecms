@@ -1,6 +1,5 @@
 package com.pungwe.cms.core.system.element.templates;
 
-import com.pungwe.cms.core.annotations.stereotypes.ThemeRegion;
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
@@ -14,43 +13,43 @@ import java.util.*;
 @ThemeInfo("system/page")
 public class PageElement extends AbstractRenderedElement {
 
-	public static final Map<String, String> DEFAULT_REGIONS = new LinkedHashMap<>();
+	public static final Map<String, String> DEFAULT_REGIONS;
 
 	static {
-		DEFAULT_REGIONS.put("header", "Header");
-		DEFAULT_REGIONS.put("help", "Help");
-		DEFAULT_REGIONS.put("primary_menu", "Primary Menu");
-		DEFAULT_REGIONS.put("secondary_menu", "Secondary Menu");
-		DEFAULT_REGIONS.put("breadcrumb", "Breadcrumb");
-		DEFAULT_REGIONS.put("highlighted", "Highlighted");
-		DEFAULT_REGIONS.put("sidebar_first", "First Sidebar");
-		DEFAULT_REGIONS.put("content", "Content");
-		DEFAULT_REGIONS.put("sidebar_second", "Second Sidebar");
-		DEFAULT_REGIONS.put("footer", "Footer");
+        Map<String, String> map = new LinkedHashMap<>();
+		map.put("header", "Header");
+		map.put("help", "Help");
+		map.put("primary_menu", "Primary Menu");
+        map.put("secondary_menu", "Secondary Menu");
+        map.put("breadcrumb", "Breadcrumb");
+        map.put("highlighted", "Highlighted");
+        map.put("sidebar_first", "First Sidebar");
+        map.put("content", "Content");
+        map.put("sidebar_second", "Second Sidebar");
+        map.put("footer", "Footer");
+        DEFAULT_REGIONS = Collections.unmodifiableMap(map);
 	}
 
 	protected Map<String, List<RenderedElement>> regions = new LinkedHashMap<>();
 
 	@ModelAttribute("regions")
 	public Map<String, List<RenderedElement>> getRegions() {
-		return regions;
+		return Collections.unmodifiableMap(regions);
 	}
 
 	public void addRegion(String region, List<RenderedElement> content) {
-		regions.put(region, content);
+		List<RenderedElement> elements = new ArrayList<>(content.size());
+		elements.addAll(content);
+		regions.put(region, elements);
 	}
 
-	public void addRegion(String region, RenderedElement content) {
+	public void addRegion(String region, RenderedElement... content) {
 		if (!regions.containsKey(region)) {
 			addRegion(region, Arrays.asList(content));
 			return;
 		}
 		List<RenderedElement> renderedElements = regions.get(region);
-		if (renderedElements == null) {
-			addRegion(region, Arrays.asList(content));
-			return;
-		}
-		renderedElements.add(content);
+		renderedElements.addAll(Arrays.asList(content));
 	}
 
 	@Override

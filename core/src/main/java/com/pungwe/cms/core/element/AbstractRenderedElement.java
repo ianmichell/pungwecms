@@ -90,7 +90,7 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	@ModelAttribute("classes")
 	public List<String> getClasses() {
 		if (classes == null) {
-			classes = new LinkedList<>();
+			classes = new ArrayList<>();
 		}
 		return classes;
 	}
@@ -99,8 +99,9 @@ public abstract class AbstractRenderedElement implements RenderedElement {
 	public void setClasses(List<String> classes) {
 		if (classes == null) {
 			this.classes = null;
+			return;
 		}
-		List<String> copyOfClasses = new ArrayList<>(classes.size());
+		List<String> copyOfClasses = new ArrayList<>();
 		copyOfClasses.addAll(classes);
 		this.classes = copyOfClasses;
 	}

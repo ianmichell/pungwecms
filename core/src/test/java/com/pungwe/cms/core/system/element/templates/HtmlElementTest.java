@@ -2,10 +2,7 @@ package com.pungwe.cms.core.system.element.templates;
 
 import com.pungwe.cms.config.TestConfig;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
-import com.pungwe.cms.core.element.basic.LinkElement;
-import com.pungwe.cms.core.element.basic.MetaElement;
-import com.pungwe.cms.core.element.basic.ScriptElement;
-import com.pungwe.cms.core.element.basic.SpanElement;
+import com.pungwe.cms.core.element.basic.*;
 import com.pungwe.cms.core.theme.functions.TemplateFunctions;
 import com.pungwe.cms.test.AbstractWebTest;
 import org.jsoup.Jsoup;
@@ -26,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by ian on 27/02/2016.
@@ -50,7 +48,12 @@ public class HtmlElementTest extends AbstractWebTest {
         TemplateFunctions templateFunctions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
         HtmlElement element = new HtmlElement();
-        element.setTitle(Arrays.asList("Title"));
+
+        // Null check
+        assertTrue(element.getTitle().isEmpty());
+
+        element.setTitle(Arrays.asList("My"));
+        element.addTitle("Title");
         element.addClass("page");
         element.addBodyAttribute("class", "body");
         element.addToCss(new LinkElement("stylesheet", "styles.css"));
@@ -74,7 +77,7 @@ public class HtmlElementTest extends AbstractWebTest {
 
         String output = templateFunctions.render(new MockHttpServletRequest(), element);
         Document doc = Jsoup.parse(output);
-        assertEquals("title missing", "Title", doc.select("head title").first().text());
+        assertEquals("title missing", "My | Title", doc.select("head title").first().text());
         assertEquals("top js tag missing", "top.js", doc.select("head script").first().attr("src"));
         assertEquals("css tag missing", "styles.css", doc.select("head link").first().attr("href"));
         assertEquals("bottom js tag missing", "bottom.js", doc.select("body script").first().attr("src"));
@@ -109,6 +112,7 @@ public class HtmlElementTest extends AbstractWebTest {
         element.addClass("page");
         element.addBodyAttribute("class", "body");
         element.addToCss(new LinkElement("stylesheet", "styles.css"));
+        element.addToCss(new StyleElement("h1 { color: red; }"));
         element.addToHead(new MetaElement("description", "HTML Element Test"));
         element.addToJsTop(new ScriptElement("top.js", "text/javascript"));
         element.addToJsBottom(new ScriptElement("bottom.js", "text/javascript"));
@@ -132,6 +136,7 @@ public class HtmlElementTest extends AbstractWebTest {
         assertEquals("title missing", "Title", doc.select("head title").first().text());
         assertEquals("top js tag missing", "top.js", doc.select("head script").first().attr("src"));
         assertEquals("css tag missing", "styles.css", doc.select("head link").first().attr("href"));
+        assertEquals("style tag content is missing", "h1 { color: red; }", doc.select("style").first().html());
         assertEquals("bottom js tag missing", "bottom.js", doc.select("body script").first().attr("src"));
         assertEquals("html class missing", "page", doc.select("html").first().attr("class"));
         assertEquals("body class missing", "body", doc.select("body").first().attr("class"));

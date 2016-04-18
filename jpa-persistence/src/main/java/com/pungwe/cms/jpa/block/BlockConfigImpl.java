@@ -12,13 +12,16 @@ import java.util.Map;
  * Created by ian on 05/03/2016.
  */
 @Entity
-@Table(name="blocks", uniqueConstraints = {@UniqueConstraint(name = "name_theme_unique", columnNames = {"name", "theme"})})
+@Table(name="blocks")
 public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 
 	protected String id;
 	protected String name;
+    protected String adminTitle;
+    protected String description;
 	protected String theme;
 	protected String region;
+	protected String context;
 	protected int weight;
 	protected Map<String, Object> settings;
 
@@ -43,7 +46,29 @@ public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 		this.name = name;
 	}
 
-	@Override
+    @Column(name = "admin_title")
+    @Override
+    public String getAdminTitle() {
+        return adminTitle;
+    }
+
+    @Override
+    public void setAdminTitle(String adminTitle) {
+        this.adminTitle = adminTitle;
+    }
+
+    @Column(name = "description")
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
 	@NotBlank
 	public String getTheme() {
 		return theme;
@@ -62,6 +87,16 @@ public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 	@Override
 	public void setRegion(String region) {
 		this.region = region;
+	}
+
+	@Override
+	public String getContext() {
+		return context;
+	}
+
+	@Override
+	public void setContext(String context) {
+		this.context = context;
 	}
 
 	@Override
@@ -97,13 +132,13 @@ public class BlockConfigImpl implements BlockConfig<String, BlockConfigImpl> {
 
 		BlockConfigImpl that = (BlockConfigImpl) o;
 
-		return name.equals(that.name);
+		return id.equals(that.id);
 
 	}
 
 	@Override
 	public int hashCode() {
-		return name.hashCode();
+		return id.hashCode();
 	}
 
 }

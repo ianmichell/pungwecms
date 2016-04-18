@@ -31,9 +31,6 @@ import java.util.concurrent.Callable;
 public class AddNodeTypeController extends AbstractEntityTypeEditController {
 
 	@Autowired
-	protected EntityDefinitionService entityDefinitionService;
-
-	@Autowired
 	protected NodeEntityTypeDefinition nodeEntityTypeDefinition;
 
 	@RequestMapping(method = RequestMethod.GET)

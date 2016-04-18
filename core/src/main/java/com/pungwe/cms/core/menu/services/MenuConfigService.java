@@ -15,7 +15,7 @@ public interface MenuConfigService<T extends MenuConfig> {
 
 	T newInstance(String menu, String parent, String name, String title, String description, boolean external, String target, String url, int weight, boolean pattern, boolean task);
 
-	void saveMenuItem(T... menuItems);
+	void saveMenuItem(MenuConfig... menuItems);
 
 	void saveMenuItem(Collection<MenuConfig> menuItems);
 

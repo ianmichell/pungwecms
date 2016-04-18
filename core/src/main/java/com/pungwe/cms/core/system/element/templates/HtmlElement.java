@@ -75,7 +75,9 @@ public class HtmlElement extends AbstractRenderedElement {
 	}
 
 	public void setTitle(List<String> title) {
-		this.title = title;
+		List<String> titleList = new ArrayList<>(title.size());
+		titleList.addAll(title);
+		this.title = titleList;
 	}
 
 	public void addTitle(String title) {

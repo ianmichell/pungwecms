@@ -27,8 +27,9 @@ public abstract class AbstractContentElement extends AbstractRenderedElement imp
 	public void setContent(List<RenderedElement> content) {
 		if (content == null) {
 			this.content = null;
+			return;
 		}
-		List<RenderedElement> copyOfContent = new ArrayList<>(content.size());
+		List<RenderedElement> copyOfContent = new ArrayList<>();
 		copyOfContent.addAll(content);
 		this.content = copyOfContent;
 	}

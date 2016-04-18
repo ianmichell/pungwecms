@@ -18,6 +18,24 @@ public class StyleElement extends AbstractRenderedElement implements HeaderRende
 	protected String type;
 	protected String content;
 
+	public StyleElement() {
+	}
+
+	public StyleElement(String content) {
+		this.content = content;
+	}
+
+	public StyleElement(String media, String type, String content) {
+		this.media = media;
+		this.type = type;
+		this.content = content;
+	}
+
+	public StyleElement(String type, String content) {
+		this.type = type;
+		this.content = content;
+	}
+
 	@ModelAttribute("media")
 	public String getMedia() {
 		return media;

@@ -4,12 +4,13 @@ import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.block.BlockDefinition;
 import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.element.basic.DivElement;
 import com.pungwe.cms.core.element.basic.ListElement;
 import com.pungwe.cms.core.element.basic.TextFormatElement;
 import com.pungwe.cms.core.element.basic.UnorderedListElement;
 import com.pungwe.cms.core.element.model.ModelAndViewElement;
-import com.pungwe.cms.core.form.Form;
-import com.pungwe.cms.core.form.FormState;
+import com.pungwe.cms.core.utils.services.StatusMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,83 +25,92 @@ import java.util.stream.Collectors;
 @ThemeInfo("blocks/status_message")
 public class StatusMessageBlock implements BlockDefinition {
 
-	@Override
-	public Map<String, Object> getDefaultSettings() {
-		return new HashMap<>();
-	}
+    @Autowired
+    StatusMessageService statusMessageService;
 
-	@Override
-	public void build(List<RenderedElement> elements, Map<String, Object> settings, Map<String, Object> variables) {
-		if (variables == null || !variables.containsKey("content")) {
-			return;
-		}
+    @Override
+    public Map<String, Object> getDefaultSettings() {
+        return new HashMap<>();
+    }
 
-		// Check for bind errors!
-		AtomicBoolean hasErrors = new AtomicBoolean(false);
-		UnorderedListElement listElement = new UnorderedListElement();
-		listElement.addClass("status-message");
-		// Get the content element...
-		Object content = variables.get("content");
-		for (Object item : (content instanceof Collection ? (Collection) content : Arrays.asList(content))) {
-			if (item instanceof ModelAndViewElement) {
-				item = ((ModelAndViewElement) item).getContent();
-			}
-			if (item instanceof ModelAndView) {
-				// Check for bind results
-				List<BindingResult> bindingResults = ((ModelAndView) item).getModel().entrySet().stream()
-						.filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult)
-						.map(entry -> (BindingResult) entry.getValue()).collect(Collectors.toList());
-				bindingResults.forEach(bindingResult -> {
-					if (!hasErrors.get()) {
-						hasErrors.set(bindingResult.hasErrors());
-					}
-					listElement.addItem(bindingResult.getAllErrors().stream().map(objectError -> new ListElement.ListItem(objectError.getDefaultMessage()))
-							.collect(Collectors.toList()).toArray(new ListElement.ListItem[0]));
-				});
+    @Override
+    public void build(List<RenderedElement> elements, Map<String, Object> settings, Map<String, Object> variables) {
+        if (variables == null) {
+            return;
+        }
 
-			}
-		}
-		if (hasErrors.get()) {
-			listElement.addClass("error-message");
-		}
-		if (listElement.getItems().size() > 0) {
-			elements.add(listElement);
-			return; // don't bother checking for other messages...
-		}
+        // Check for bind errors!
+        AtomicBoolean hasErrors = new AtomicBoolean(false);
+        UnorderedListElement listElement = new UnorderedListElement();
+        listElement.addClass("status-message");
+        // Get the content element...
+        Object content = variables.getOrDefault("content", new LinkedHashSet<>());
+        for (Object item : (content instanceof Collection ? (Collection) content : Arrays.asList(content))) {
+            if (item instanceof ModelAndViewElement) {
+                item = ((ModelAndViewElement) item).getContent();
+            }
+            if (item instanceof ModelAndView) {
+                // Check for bind results
+                List<BindingResult> bindingResults = ((ModelAndView) item).getModel().entrySet().stream()
+                        .filter(entry -> entry.getKey().startsWith(BindingResult.MODEL_KEY_PREFIX) && entry.getValue() instanceof BindingResult)
+                        .map(entry -> (BindingResult) entry.getValue()).collect(Collectors.toList());
+                bindingResults.forEach(bindingResult -> {
+                    if (!hasErrors.get()) {
+                        hasErrors.set(bindingResult.hasErrors());
+                    }
+                    listElement.addItem(bindingResult.getAllErrors().stream().map(objectError -> new ListElement.ListItem(objectError.getDefaultMessage()))
+                            .collect(Collectors.toList()).toArray(new ListElement.ListItem[0]));
+                });
 
-		// Check for generic errors
-		if (variables.containsKey("status.message.error")) {
-			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
-			element.addClass("status-message", "error-message");
-			element.setContent(variables.get("status.message.success").toString());
-			elements.add(element);
-		}
+            }
+        }
+        if (listElement.getItems().size() > 0) {
+            listElement.addClass("error-message");
+            elements.add(listElement);
+            return; // don't bother checking for other messages...
+        }
 
-		if (variables.containsKey("status.message.warning")) {
-			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
-			element.addClass("status-message", "warning-message");
-			element.setContent(variables.get("status.message.success").toString());
-			elements.add(element);
-		}
+        // Check for generic errors
+        if (statusMessageService.getErrorStatusMessages().size() > 0) {
+            final DivElement message = new DivElement();
+            message.addClass("status-message", "error-message");
+            statusMessageService.getErrorStatusMessages().forEach(statusMessage -> {
+                TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
+                element.setContent(statusMessage);
+                message.addContent(element);
+            });
+            elements.add(message);
+            return;
+        }
 
-		if (variables.containsKey("status.message.info")) {
-			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
-			element.addClass("status-message", "info-message");
-			element.setContent(variables.get("status.message.success").toString());
-			elements.add(element);
-		}
+        if (statusMessageService.getWarningStatusMessages().size() > 0) {
+            final DivElement message = new DivElement();
+            message.addClass("status-message", "warning-message");
+            statusMessageService.getWarningStatusMessages().forEach(statusMessage -> {
+                TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
+                element.setContent(statusMessage);
+                message.addContent(element);
+            });
+            elements.add(message);
+            return;
+        }
 
-		if (variables.containsKey("status.message.success")) {
-			TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
-			element.addClass("status-message", "success-message");
-			element.setContent(variables.get("status.message.success").toString());
-			elements.add(element);
-		}
-	}
+        if (statusMessageService.getSuccessStatusMessages().size() > 0) {
+            final DivElement message = new DivElement();
+            message.addClass("status-message", "success-message");
+            statusMessageService.getSuccessStatusMessages().forEach(statusMessage -> {
+                TextFormatElement element = new TextFormatElement(TextFormatElement.Type.P);
+                element.setContent(statusMessage);
+                message.addContent(element);
+            });
+            elements.add(message);
+            return;
+        }
+    }
 
-	@Override
-	public void buildSettingsForm(List<RenderedElement> elements, Form form, FormState state) {
-		// No need for a configuration form here
-	}
+    @Override
+    public void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
+        // No need for a configuration form here
+    }
 
 }
