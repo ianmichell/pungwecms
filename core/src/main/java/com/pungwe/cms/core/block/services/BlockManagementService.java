@@ -87,6 +87,9 @@ public class BlockManagementService {
                         ((String) blockConfig.getSettings().get("pages")).split("\\r?\\n"))) {
                     return !hiddenFrom;
                 }
+                if (blockConfig == null) {
+                    return false;
+                }
                 boolean match = blockConfig.getRegion().equals(region);
                 return match;
             }).sorted((o1, o2) -> Integer.compare(o1.getWeight(), o2.getWeight())).collect(Collectors.toList()));
