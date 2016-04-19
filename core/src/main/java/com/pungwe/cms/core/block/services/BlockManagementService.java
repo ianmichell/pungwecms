@@ -89,6 +89,8 @@ public class BlockManagementService {
                 }
                 if (StringUtils.isEmpty(region) && StringUtils.isEmpty(blockConfig.getRegion())) {
                     return true;
+                } else if (StringUtils.isEmpty(blockConfig.getRegion())) {
+                    return false;
                 }
                 boolean match = blockConfig.getRegion().equals(region);
                 return match;
