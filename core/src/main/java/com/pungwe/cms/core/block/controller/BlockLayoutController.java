@@ -91,7 +91,8 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
             regionHeader.addAttribute("colspan", "5");
             regionHeader.addAttribute("data-region", k);
             tableElement.addRow(regionHeader);
-            final List<BlockConfig> blocksForRegion = blocks.stream().filter(b -> b.getRegion().equals(k)).sorted((o1, o2) -> {
+            final List<BlockConfig> blocksForRegion = blocks.stream().filter(b -> k.equals(b.getRegion())).sorted(
+                    (o1, o2) -> {
                 if (o1 == null) {
                     return -1;
                 } else if (o2 == null) {
