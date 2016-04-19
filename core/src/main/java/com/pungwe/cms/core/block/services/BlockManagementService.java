@@ -87,8 +87,8 @@ public class BlockManagementService {
                         ((String) blockConfig.getSettings().get("pages")).split("\\r?\\n"))) {
                     return !hiddenFrom;
                 }
-                if (blockConfig == null) {
-                    return false;
+                if (StringUtils.isEmpty(region) && StringUtils.isEmpty(blockConfig.getRegion())) {
+                    return true;
                 }
                 boolean match = blockConfig.getRegion().equals(region);
                 return match;
