@@ -2,14 +2,13 @@ package com.pungwe.cms.core.module.config;
 
 import com.pungwe.cms.core.block.builder.AdminPageBuilder;
 import com.pungwe.cms.core.block.builder.BlockPageBuilder;
+import com.pungwe.cms.core.block.config.BlockSystemConfig;
 import com.pungwe.cms.core.block.controller.BlockLayoutController;
 import com.pungwe.cms.core.block.controller.BlockSettingsController;
 import com.pungwe.cms.core.block.services.BlockManagementService;
 import com.pungwe.cms.core.block.system.*;
 import com.pungwe.cms.core.element.services.RenderedElementService;
-import com.pungwe.cms.core.field.services.FieldTypeManagementService;
-import com.pungwe.cms.core.field.types.*;
-import com.pungwe.cms.core.field.widgets.*;
+import com.pungwe.cms.core.field.config.FieldAPIConfig;
 import com.pungwe.cms.core.form.processors.FormHandlerMappingPostProcessor;
 import com.pungwe.cms.core.menu.controller.MenuAddController;
 import com.pungwe.cms.core.menu.controller.MenuEditController;
@@ -20,7 +19,6 @@ import com.pungwe.cms.core.module.controller.ModuleManagementController;
 import com.pungwe.cms.core.security.config.SecurityConfig;
 import com.pungwe.cms.core.security.controller.LoginController;
 import com.pungwe.cms.core.security.controller.UserAdminstrationController;
-import com.pungwe.cms.core.security.field.widget.UserDetailsWidget;
 import com.pungwe.cms.core.security.service.PermissionService;
 import com.pungwe.cms.core.system.admin.AdminController;
 import com.pungwe.cms.core.system.install.InstallController;
@@ -79,6 +77,10 @@ import java.util.Arrays;
         AopAutoConfiguration.class,
         // Caching
         CacheAutoConfiguration.class,
+        // Fields
+        FieldAPIConfig.class,
+        // Blocks
+        BlockSystemConfig.class,
 })
 @EnableWebMvc
 @EnableCaching
@@ -150,11 +152,6 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     }
 
     @Bean
-    public FieldTypeManagementService fieldTypeManagementService() {
-        return new FieldTypeManagementService();
-    }
-
-    @Bean
     public MenuManagementService menuManagementService() {
         return new MenuManagementService();
     }
@@ -162,11 +159,6 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     @Bean
     public PageBuilderService pageBuilderService() {
         return new PageBuilderService();
-    }
-
-    @Bean
-    public BlockManagementService blockManagementService() {
-        return new BlockManagementService();
     }
 
     @Bean
@@ -180,18 +172,8 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     }
 
     //================================================
-    // Components
+    // Interceptors
     //================================================
-
-    @Bean
-    public BlockPageBuilder blockPageBuilder() {
-        return new BlockPageBuilder();
-    }
-
-    @Bean
-    public AdminPageBuilder adminPageBuilder() {
-        return new AdminPageBuilder();
-    }
 
     @Bean
     public HtmlPageBuilderInterceptor htmlPageBuilderInterceptor() {
@@ -201,16 +183,6 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     //================================================
     // Controllers
     //================================================
-
-    @Bean
-    public BlockLayoutController blockLayoutController() {
-        return new BlockLayoutController();
-    }
-
-    @Bean
-    public BlockSettingsController blockSettingsController() {
-        return new BlockSettingsController();
-    }
 
     @Bean
     public MenuAddController menuAddController() {
@@ -261,110 +233,5 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
     public LoginController loginController() {
         return new LoginController();
     }
-
-    //================================================
-    // Blocks
-    //================================================
-    @Bean(name = "breadcrumb_block")
-    public BreadcrumbBlock breadcrumbBlock() {
-        return new BreadcrumbBlock();
-    }
-
-    @Bean(name = "main_content_block")
-    public MainContentBlock mainContentBlock() {
-        return new MainContentBlock();
-    }
-
-    @Bean(name = "page_title_block")
-    public PageTitleBlock pageTitleBlock() {
-        return new PageTitleBlock();
-    }
-
-    @Bean(name = "status_message_block")
-    public StatusMessageBlock statusMessageBlock() {
-        return new StatusMessageBlock();
-    }
-
-    @Bean(name = "system_tasks_block")
-    public SystemTasksBlock systemTasksBlock() {
-        return new SystemTasksBlock();
-    }
-
-    @Bean(name = "menu_block")
-    public MenuBlock menuBlock() {
-        return new MenuBlock();
-    }
-
-    //================================================
-    // Field Types
-    //================================================
-
-    @Bean(name = "boolean_field")
-    public BooleanFieldType booleanFieldType() {
-        return new BooleanFieldType();
-    }
-
-    @Bean(name = "decimal_field")
-    public DecimalFieldType decimalFieldType() {
-        return new DecimalFieldType();
-    }
-
-    @Bean(name = "email_field")
-    public EmailFieldType emailFieldType() {
-        return new EmailFieldType();
-    }
-
-    @Bean(name = "numeric_field")
-    public NumericFieldType numericFieldType() {
-        return new NumericFieldType();
-    }
-
-    @Bean(name = "string_field")
-    public StringFieldType stringFieldType() {
-        return new StringFieldType();
-    }
-
-    //================================================
-    // Field Widgets
-    //================================================
-
-    @Bean(name = "boolean_widget")
-    public BooleanWidget booleanWidget() {
-        return new BooleanWidget();
-    }
-
-    @Bean(name = "decimal_widget")
-    public DecimalWidget decimalWidget() {
-        return new DecimalWidget();
-    }
-
-    @Bean(name = "email_widget")
-    public EmailWidget emailWidget() {
-        return new EmailWidget();
-    }
-
-    @Bean(name = "numeric_widget")
-    public NumericWidget numericWidget() {
-        return new NumericWidget();
-    }
-
-    @Bean(name = "textarea_widget")
-    public TextareaWidget textareaWidget() {
-        return new TextareaWidget();
-    }
-
-    @Bean(name = "textfield_widget")
-    public TextfieldWidget textfieldWidget() {
-        return new TextfieldWidget();
-    }
-
-    @Bean(name = "user_details_widget")
-    public UserDetailsWidget userDetailsWidget() {
-        return new UserDetailsWidget();
-    }
-
-    //================================================
-    // Field Formatters
-    //================================================
 
 }

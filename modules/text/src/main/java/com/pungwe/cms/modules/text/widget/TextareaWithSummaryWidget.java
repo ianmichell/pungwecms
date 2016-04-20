@@ -16,7 +16,7 @@ import java.util.Map;
 public class TextareaWithSummaryWidget extends TextareaWidget {
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, String value, int delta) {
 
 		TextareaElement element = new TextareaElement();
 		element.setLabel(field.getLabel());

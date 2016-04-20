@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.getRequest;
+import static com.pungwe.cms.core.utils.Utils.getRequestContextPath;
 import static com.pungwe.cms.core.utils.Utils.translate;
 
 /**
@@ -36,29 +38,45 @@ public class MenuListController {
 
 	@MenuItem(menu="system", parent="admin.structure", name="menus", title="Menus", description = "Manage menus and menu links")
 	@RequestMapping(method= RequestMethod.GET)
-	public Callable<String> index(HttpServletRequest request, Model model) {
+	public Callable<String> index() {
 		return () -> {
-			final List<MenuInfo> menus = menuManagementService.listMenusByLanguage(localeResolver.resolveLocale(request).getLanguage());
-
-			TableElement tableElement = new TableElement();
-			tableElement.addHeaderRow(
-					new TableElement.Header(translate("Title")),
-					new TableElement.Header(translate("Description")),
-					new TableElement.Header(translate("Operations"))
-			);
-
-			menus.forEach(menuInfo -> {
-				tableElement.addRow(
-						new TableElement.Column(translate(menuInfo.getTitle())),
-						new TableElement.Column(translate(menuInfo.getDescription())),
-						new TableElement.Column(new AnchorElement(translate("Edit menu"), request.getContextPath() + "/admin/structure/menu/edit/" + menuInfo.getId(), "Edit"))
-				);
-			});
-
-			model.addAttribute("title", "Menus");
-			model.addAttribute("table", tableElement);
 			return "menu/index";
 		};
+	}
+
+	@ModelAttribute("table")
+	public TableElement tableElement() {
+		final List<MenuInfo> menus = menuManagementService.listMenusByLanguage(localeResolver.resolveLocale(getRequest()).getLanguage());
+
+		TableElement tableElement = new TableElement();
+		tableElement.addHeaderRow(
+                new TableElement.Header(translate("Title")),
+                new TableElement.Header(translate("Description")),
+                new TableElement.Header(translate("Operations"))
+        );
+
+        if (menus.isEmpty()) {
+            TableElement.Column emptyColumn = new TableElement.Column();
+            emptyColumn.addContent(translate("There are no menus defined yet..."));
+            emptyColumn.addAttribute("colspan", "3");
+            tableElement.addRow(emptyColumn);
+        } else {
+            menus.forEach(menuInfo -> {
+                tableElement.addRow(
+                        new TableElement.Column(translate(menuInfo.getTitle())),
+                        new TableElement.Column(translate(menuInfo.getDescription())),
+                        new TableElement.Column(new AnchorElement(translate("Edit menu"),
+                                getRequestContextPath() + "/admin/structure/menu/edit/" + menuInfo.getId()
+                                        + "/" + menuInfo.getLanguage(), translate("Edit")))
+                );
+            });
+        }
+		return tableElement;
+	}
+
+	@ModelAttribute("title")
+	public String title() {
+		return translate("Menus");
 	}
 
 	@ModelAttribute("actions")

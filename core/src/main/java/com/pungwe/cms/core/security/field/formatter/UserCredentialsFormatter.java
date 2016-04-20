@@ -19,7 +19,35 @@
  */
 package com.pungwe.cms.core.security.field.formatter;
 
+import com.pungwe.cms.core.annotations.stereotypes.FieldFormatter;
+import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldFormatterDefinition;
+import org.springframework.security.core.userdetails.User;
 
-public class UserDetailsFormatter implements FieldFormatterDefinition {
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+@FieldFormatter(
+        value = "user_credentials_formatter",
+        label = "User Credentials Formatter",
+        supports = "user_credentials_field"
+)
+public class UserCredentialsFormatter implements FieldFormatterDefinition<User> {
+
+    @Override
+    public Map<String, Object> getDefaultSettings() {
+        return new LinkedHashMap<>();
+    }
+
+    @Override
+    public void format(List<RenderedElement> elements, List<User> value, FieldConfig config) {
+
+    }
+
+    @Override
+    public void buildWidgetSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
+
+    }
 }

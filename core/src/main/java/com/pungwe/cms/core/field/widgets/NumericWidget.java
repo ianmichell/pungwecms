@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by ian on 10/01/2016.
  */
 @FieldWidget(value = "numeric_widget", label = "Number", supports = "number_field")
-public class NumericWidget implements FieldWidgetDefinition {
+public class NumericWidget implements FieldWidgetDefinition<Number> {
 
 	@Override
 	public Map<String, Object> getDefaultSettings() {
@@ -21,7 +21,7 @@ public class NumericWidget implements FieldWidgetDefinition {
 	}
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, Number value, int delta) {
 
 	}
 

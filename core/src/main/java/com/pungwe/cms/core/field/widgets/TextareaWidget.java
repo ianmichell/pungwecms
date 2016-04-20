@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by ian on 08/01/2016.
  */
 @FieldWidget(value = "textarea_widget", label = "Text Area", supports = "string_field")
-public class TextareaWidget implements FieldWidgetDefinition {
+public class TextareaWidget implements FieldWidgetDefinition<String> {
 
 	@Override
 	public Map<String, Object> getDefaultSettings() {
@@ -23,7 +23,7 @@ public class TextareaWidget implements FieldWidgetDefinition {
 	}
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, String value, int delta) {
 
 		// Text Field is a type of String element
 		TextareaElement element = new TextareaElement();

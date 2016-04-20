@@ -19,15 +19,22 @@
  */
 package com.pungwe.cms.core.security.field.widget;
 
+import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidgetDefinition;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserDetailsWidget implements FieldWidgetDefinition {
+@FieldWidget(
+        value = "user_credentials_widget",
+        label = "User Credentials",
+        supports = "user_credentials_field"
+)
+public class UserCredentialsWidget implements FieldWidgetDefinition<User> {
 
     @Override
     public Map<String, Object> getDefaultSettings() {
@@ -35,7 +42,7 @@ public class UserDetailsWidget implements FieldWidgetDefinition {
     }
 
     @Override
-    public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
+    public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, User value, int delta) {
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by ian on 10/01/2016.
  */
 @FieldWidget(value = "boolean_widget", label = "Boolean", supports = "boolean_field")
-public class BooleanWidget implements FieldWidgetDefinition {
+public class BooleanWidget implements FieldWidgetDefinition<Boolean> {
 
 	@Override
 	public Map<String, Object> getDefaultSettings() {
@@ -21,7 +21,7 @@ public class BooleanWidget implements FieldWidgetDefinition {
 	}
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, Boolean value, int delta) {
 
 	}
 

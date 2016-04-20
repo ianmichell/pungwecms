@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 import java.util.Locale;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 19/03/2016.
  */
@@ -27,22 +29,26 @@ public abstract class AbstractMenuInfoController extends AbstractFormController<
     @Override
     public void build(FormElement<MenuInfo> element) {
         StringElement title = new StringElement();
-        title.setLabel("Title");
+        title.setHtmlId(getFormId() + "_title");
+        title.setLabel(translate("Title"));
         title.setName("title");
-        title.setPlaceholder("Menu Title");
+        title.setPlaceholder(translate("Menu Title"));
         title.setSize(20);
         title.setRequired(true);
 
         StringElement description = new StringElement();
+        description.setHtmlId(getFormId() + "_description");
         description.setName("description");
-        description.setPlaceholder("Administrative description");
+        description.setPlaceholder(translate("Administrative Description"));
         description.setSize(100);
-        description.setLabel("Description");
+        description.setLabel(translate("Description"));
 
         // Language is populated from LocaleResolver
         final SingleSelectListElement language = new SingleSelectListElement();
-        language.setLabel("Language");
+        language.setHtmlId(getFormId() + "_language");
+        language.setLabel(translate("Language"));
         language.setName("language");
+        language.setRequired(true);
         final Locale currentLocale = LocaleContextHolder.getLocale();
         List<Locale> locales = Utils.getSortedLocales(currentLocale);
         locales.stream().forEach(locale -> {
@@ -63,16 +69,13 @@ public abstract class AbstractMenuInfoController extends AbstractFormController<
 
     @Override
     public void validate(FormElement form, Errors errors) {
-        if (StringUtils.isEmpty(form.getValue("title", 0)) && form.isRequiredField("title", 0)) {
-            errors.rejectValue("fields[" + form.getFormFieldIndex("title", 0) + "].value", "empty_title", "Please provide a menu title");
+        // Validate title and language regardless if the required flag is set...
+        if (StringUtils.isEmpty(form.getValue("title", 0))) {
+            errors.rejectValue("fields[" + form.getFormFieldIndex("title", 0) + "].value", "empty_title", translate("Please provide a menu title"));
             form.getField("title", 0).setError(true);
         }
-        if (StringUtils.isEmpty(form.getValue("description", 0)) && form.isRequiredField("description", 0)) {
-            errors.rejectValue("fields[" + form.getFormFieldIndex("description", 0) + "].value", "empty_description", "Please provide a description of your menu");
-            form.getField("description", 0).setError(true);
-        }
-        if (StringUtils.isEmpty(form.getValue("language", 0)) && form.isRequiredField("language", 0)) {
-            errors.rejectValue("fields[" + form.getFormFieldIndex("language", 0) + "].value", "empty_language", "Please select a language");
+        if (StringUtils.isEmpty(form.getValue("language", 0))) {
+            errors.rejectValue("fields[" + form.getFormFieldIndex("language", 0) + "].value", "empty_language", translate("Please select a language"));
             form.getField("language", 0).setError(true);
         }
     }

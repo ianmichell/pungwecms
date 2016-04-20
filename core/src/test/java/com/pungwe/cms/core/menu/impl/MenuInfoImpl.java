@@ -51,4 +51,20 @@ public class MenuInfoImpl implements MenuInfo {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		MenuInfoImpl menuInfo = (MenuInfoImpl) o;
+
+		return id.equals(menuInfo.id);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 }

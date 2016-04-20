@@ -20,15 +20,15 @@
 package com.pungwe.cms.core.security.field;
 
 import com.pungwe.cms.core.annotations.stereotypes.FieldType;
-import com.pungwe.cms.core.security.field.formatter.UserDetailsFormatter;
-import com.pungwe.cms.core.security.field.widget.UserDetailsWidget;
+import com.pungwe.cms.core.security.field.formatter.UserCredentialsFormatter;
+import com.pungwe.cms.core.security.field.widget.UserCredentialsWidget;
 
 @FieldType(
-        value = "user_details_field",
-        label = "User Details",
+        value = "user_credentials_field",
+        label = "User Credentials",
         category = "Security",
-        defaultWidget = UserDetailsWidget.class,
-        defaultFormatter = UserDetailsFormatter.class
+        defaultWidget = UserCredentialsWidget.class,
+        defaultFormatter = UserCredentialsFormatter.class
 )
-public class UserDetailsField {
+public class UserCredentialsField {
 }

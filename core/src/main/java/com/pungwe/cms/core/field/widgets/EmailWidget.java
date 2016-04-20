@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by ian on 10/01/2016.
  */
 @FieldWidget(value = "email_widget", label = "Email Address", supports = "email_field")
-public class EmailWidget implements FieldWidgetDefinition {
+public class EmailWidget implements FieldWidgetDefinition<String> {
 
 	@Override
 	public Map<String, Object> getDefaultSettings() {
@@ -21,7 +21,7 @@ public class EmailWidget implements FieldWidgetDefinition {
 	}
 
 	@Override
-	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, int delta) {
+	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, String value, int delta) {
 
 	}
 

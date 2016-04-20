@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 18/03/2016.
  */
@@ -30,7 +32,7 @@ public class MenuAddController extends AbstractMenuInfoController {
 
 	@ModelAttribute("title")
 	public String getTitle() {
-		return "Add Menu";
+		return translate("Add Menu");
 	}
 
 
@@ -58,7 +60,7 @@ public class MenuAddController extends AbstractMenuInfoController {
 				// Form and any variables
 				f.submit(form, model.asMap());
 			});
-			redirectAttributes.addFlashAttribute("message.success", "Success! You've created a new menu: " + form.getValue("title", 0));
+			redirectAttributes.addFlashAttribute("message.success", translate("Success! You've created a new menu: %s", form.getValue("title", 0)));
 			return "redirect:/admin/structure/menu";
 		};
 	}

@@ -4,10 +4,7 @@ import com.pungwe.cms.core.menu.MenuInfo;
 import com.pungwe.cms.core.menu.services.MenuInfoService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class MenuInfoServiceImpl implements MenuInfoService {
 
-	private List<MenuInfo> menus = new LinkedList<>();
+	public static Set<MenuInfo> menus = new LinkedHashSet<>();
 
 	@Override
 	public MenuInfo newInstance(String id, String title, String description, String language) {
@@ -40,6 +37,7 @@ public class MenuInfoServiceImpl implements MenuInfoService {
 
 	@Override
 	public List<MenuInfo> save(MenuInfo... menuItem) {
+		menus.removeAll(Arrays.asList(menuItem));
 		menus.addAll(Arrays.asList(menuItem));
 		return Arrays.asList(menuItem);
 	}

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Service
 public class MenuConfigServiceImpl implements MenuConfigService<MenuConfigImpl> {
 
-	protected List<MenuConfigImpl> menuItems = new LinkedList<>();
+	public List<MenuConfigImpl> menuItems = new LinkedList<>();
 
 	@Override
 	public MenuConfigImpl newInstance() {

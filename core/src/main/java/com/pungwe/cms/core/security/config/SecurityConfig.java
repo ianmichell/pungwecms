@@ -25,6 +25,9 @@ import com.pungwe.cms.core.annotations.security.PermissionCategories;
 import com.pungwe.cms.core.annotations.security.Permissions;
 import com.pungwe.cms.core.annotations.security.RoleDefinition;
 import com.pungwe.cms.core.annotations.security.Roles;
+import com.pungwe.cms.core.security.field.UserCredentialsField;
+import com.pungwe.cms.core.security.field.formatter.UserCredentialsFormatter;
+import com.pungwe.cms.core.security.field.widget.UserCredentialsWidget;
 import com.pungwe.cms.core.security.service.PermissionService;
 import com.pungwe.cms.core.security.service.UserManagementService;
 import com.pungwe.cms.core.utils.services.HookService;
@@ -32,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -179,4 +183,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
+    @Bean(name = "user_credentials_formatter")
+    public UserCredentialsFormatter userCredentialsFormatter() {
+        return new UserCredentialsFormatter();
+    }
+
+    @Bean(name = "user_credentials_widget")
+    public UserCredentialsWidget userCredentialsWidget() {
+        return new UserCredentialsWidget();
+    }
+
+    @Bean(name = "user_credentials_field")
+    public UserCredentialsField userCredentialsField() {
+        return new UserCredentialsField();
+    }
 }
