@@ -1,0 +1,8 @@
+<div {{ printAttribute("class", join(classes, ' ')) }}{{ attributes }}>
+{%  for option in options %}
+    <label>
+        <input type="checkbox" {{ printAttribute("name", name) }} value="{{ option.key }}" {{ checked }} />
+        {{ option.value }}
+    </label>
+{% endfor %}
+</div>
