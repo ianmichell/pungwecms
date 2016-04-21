@@ -18,6 +18,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by ian on 25/02/2016.
@@ -42,7 +43,7 @@ public class SingleSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		SingleSelectListElement element = new SingleSelectListElement();
+		SingleSelectListElement<String> element = new SingleSelectListElement<>();
 		element.setHtmlId("string");
 		element.setDefaultValue("default value");
 		element.setName("string");
@@ -58,6 +59,7 @@ public class SingleSelectListElementTest extends AbstractWebTest {
 		assertEquals("Option 1 is not correct", "some value", doc.select("select option").get(0).val());
 		assertEquals("Option 2 is not correct", "default value", doc.select("select option").get(1).val());
 		assertEquals("Option 3 is not correct", "another value", doc.select("select option").get(2).val());
+		assertTrue(doc.select("select option[selected]").size() > 0);
 		assertEquals("Default Value does not match", "default value", doc.select("select option[selected]").first().val());
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
 		assertEquals("Label value does not match", "String", doc.select("label").first().text());
@@ -69,7 +71,7 @@ public class SingleSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		SingleSelectListElement element = new SingleSelectListElement();
+		SingleSelectListElement<String> element = new SingleSelectListElement<>();
 		element.setHtmlId("string");
 		element.setDefaultValue("default value");
 		element.setName("string");
@@ -86,6 +88,7 @@ public class SingleSelectListElementTest extends AbstractWebTest {
 		assertEquals("Option 1 is not correct", "some value", doc.select("select option").get(0).val());
 		assertEquals("Option 2 is not correct", "default value", doc.select("select option").get(1).val());
 		assertEquals("Option 3 is not correct", "another value", doc.select("select option").get(2).val());
+		assertTrue(doc.select("select option[selected]").size() > 0);
 		assertEquals("Default Value does not match", "another value", doc.select("select option[selected]").first().val());
 		assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
 		assertEquals("Label value does not match", "String", doc.select("label").first().text());

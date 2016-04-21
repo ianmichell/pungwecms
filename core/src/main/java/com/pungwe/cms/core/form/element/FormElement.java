@@ -4,11 +4,13 @@ import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractContentElement;
 import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.handler.FormSubmitHandler;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Created by ian on 24/02/2016.
@@ -106,6 +108,11 @@ public class FormElement<T> extends AbstractContentElement {
 		return getFields().get(index);
 	}
 
+	public List<FormRenderedElement<?>> getField(String name) {
+		return getFields().stream().filter(f -> !StringUtils.isEmpty(f.getName()) && f.getName().equals(name))
+				.sorted((f1, f2) -> Integer.compare(f1.getDelta(), f2.getDelta())).collect(Collectors.toList());
+	}
+
 	public int getFormFieldIndex(String name, int delta) {
 		AtomicInteger counter = new AtomicInteger(0);
 		Optional<FormRenderedElement<?>> field = getFields().stream().filter(e -> {
@@ -127,22 +134,48 @@ public class FormElement<T> extends AbstractContentElement {
 	}
 
 	/**
-	 * Provides values in a map.
-	 * @return
+	 * Provides values in a map by field name.
+     *
+	 * @return a map of values by field name, with a list of that field's values.
 	 */
-	public Map<String, Map<Integer, Object>> getValues() {
-		final Map<String, Map<Integer, Object>> values = new LinkedHashMap<>();
-		getFields().stream().forEach(formRenderedElement -> {
+	public Map<String, List<Object>> getValues() {
+		final Map<String, List<Object>> values = new LinkedHashMap<>();
+		getFields().stream().sorted((f1, f2) -> {
+            return Integer.compare(f1.getDelta(), f2.getDelta());
+        }).forEach(formRenderedElement -> {
 			if (!values.containsKey(formRenderedElement.getName())) {
-				values.put(formRenderedElement.getName(), new LinkedHashMap<>());
+				values.put(formRenderedElement.getName(), new ArrayList<>());
 			}
-			values.get(formRenderedElement.getName()).put(formRenderedElement.getDelta(), formRenderedElement.getValue());
+			values.get(formRenderedElement.getName()).add(formRenderedElement.getValue());
 		});
 		return values;
 	}
 
+	/**
+	 * Provides a list of values by delta for a field
+	 *
+	 * @param field the name of the field
+	 * @return a list of values from 0 to n
+	 *
+	 */
+	public List<Object> getValues(String field) {
+		List<FormRenderedElement<?>> fields = getField(field);
+		return fields.stream().map(f -> f.getValue()).collect(Collectors.toList());
+	}
+
+	public void setValues(String field, List<Object> values) {
+        int i = 0;
+        for (Object value : values) {
+            setValue(field, i++, value);
+        }
+	}
+
 	public Object getValue(String field, int delta) {
-		return getValues().getOrDefault(field, new HashMap<>()).get(delta);
+		List<Object> values = getValues(field);
+        if (delta >= values.size()) {
+            return null;
+        }
+        return values.get(delta);
 	}
 
 	public void setValue(String field, int delta, Object value) {

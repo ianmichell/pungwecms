@@ -1,2 +1,9 @@
 {{ render(label) }}
-<input type="checkbox" {{ printAttribute("name", name) }} value="{{ value }}"{{ attributes }} {{ checked }} />
+{% if content %}
+    <label>
+        <input type="checkbox" {{ printAttribute("name", name) }} value="{{ value }}"{{ attributes }} {{ checked }} />
+        {{ render(content) }}
+    </label>
+{% else %}
+    <input type="checkbox" {{ printAttribute("name", name) }} value="{{ value }}"{{ attributes }} {{ checked }} />
+{% endif %}
