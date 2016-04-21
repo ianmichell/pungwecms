@@ -4,7 +4,7 @@ import com.pungwe.cms.core.annotations.stereotypes.FieldWidget;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidgetDefinition;
-import com.pungwe.cms.core.form.element.StringElement;
+import com.pungwe.cms.core.form.element.TextElement;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
 	@Override
 	public void buildWidgetSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
 
-		StringElement rows = new StringElement();
+		TextElement rows = new TextElement();
 		rows.setName("rows");
 		rows.setLabel("Rows");
 		rows.setDefaultValue(5 + "");

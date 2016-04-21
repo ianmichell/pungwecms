@@ -54,7 +54,7 @@ public class FormElementTest extends AbstractWebTest {
 		fieldsetElement1.setLegend("My Form");
 		fieldsetElement1.addClass("myclass");
 
-		StringElement child1 = new StringElement();
+		TextElement child1 = new TextElement();
 		child1.setHtmlId("string");
 		child1.setLabel("Child 1");
 		child1.setName("child");
@@ -116,7 +116,7 @@ public class FormElementTest extends AbstractWebTest {
 		fieldsetElement1.setLegend("My Form");
 		fieldsetElement1.addClass("myclass");
 
-		StringElement child1 = new StringElement();
+		TextElement child1 = new TextElement();
 		child1.setHtmlId("string");
 		child1.setLabel("Child 1");
 		child1.setName("child");

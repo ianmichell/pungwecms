@@ -71,15 +71,15 @@ public class LabelElementTest extends AbstractWebTest {
 	@Test
 	public void testLabelElementRemoveForAttribute() throws Exception {
 
-		StringElement stringElement = new StringElement();
-		stringElement.setHtmlId("string");
+		TextElement textElement = new TextElement();
+		textElement.setHtmlId("string");
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
 		LabelElement element = new LabelElement();
 		element.setContent(new PlainTextElement("My Label"));
 		element.setHtmlId("label");
-		element.setForElement(stringElement);
+		element.setForElement(textElement);
 		element.addAttribute("for", "blah");
 
 		String output = functions.render(new MockHttpServletRequest(), element);

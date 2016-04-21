@@ -11,7 +11,7 @@ import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.HiddenElement;
 import com.pungwe.cms.core.form.element.SingleSelectListElement;
-import com.pungwe.cms.core.form.element.StringElement;
+import com.pungwe.cms.core.form.element.TextElement;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -129,7 +129,7 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
                 regionSelect.setValue(b.getRegion());
 
                 // Block Weight
-                StringElement weightField = new StringElement("blockWeight", String.valueOf(b.getWeight()));
+                TextElement<Integer> weightField = new TextElement<>("blockWeight", b.getWeight());
                 weightField.setDelta(d);
                 weightField.setSize(5);
 

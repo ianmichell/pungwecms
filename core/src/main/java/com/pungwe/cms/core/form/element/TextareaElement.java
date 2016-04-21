@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * Created by ian on 09/01/2016.
  */
 @ThemeInfo("form/textarea")
-public class TextareaElement extends StringElement {
+public class TextareaElement extends TextElement {
 
 	private int rows;
 	private int columns;

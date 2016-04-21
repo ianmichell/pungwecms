@@ -9,11 +9,9 @@ import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.InputButtonElement;
 import com.pungwe.cms.core.form.element.PasswordElement;
-import com.pungwe.cms.core.form.element.StringElement;
-import com.pungwe.cms.core.utils.Utils;
+import com.pungwe.cms.core.form.element.TextElement;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +37,7 @@ public class LoginController extends AbstractFormController {
         DivElement container = new DivElement();
         container.addClass("login-form");
 
-        StringElement username = new StringElement();
+        TextElement username = new TextElement();
         username.setName("username");
         username.setLabel(translate("Username"));
         PasswordElement password = new PasswordElement();

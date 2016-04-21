@@ -8,7 +8,7 @@ import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.element.CheckboxElement;
 import com.pungwe.cms.core.form.element.RadioElement;
 import com.pungwe.cms.core.form.element.SingleSelectListElement;
-import com.pungwe.cms.core.form.element.StringElement;
+import com.pungwe.cms.core.form.element.TextElement;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -81,22 +81,22 @@ public class BooleanWidget implements FieldWidgetDefinition<Boolean> {
 
         CheckboxElement<Boolean> checkboxElement = new CheckboxElement<>();
         checkboxElement.addContent(translate("True by default"));
-        checkboxElement.setDefaultValue(false);
+        checkboxElement.setDefaultValue(true);
         checkboxElement.setName("checked_by_default");
-        checkboxElement.setChecked((Boolean)settings.getOrDefault("checked_by_default", true));
+        checkboxElement.setChecked((Boolean)settings.getOrDefault("checked_by_default", false));
         elements.add(checkboxElement);
 
-        StringElement trueLabel = new StringElement();
+        TextElement<String> trueLabel = new TextElement<>();
         trueLabel.setLabel(translate("Label for \"True\""));
         trueLabel.setName("true_label");
         trueLabel.setDefaultValue((String)settings.getOrDefault("true_label", translate("True")));
         elements.add(trueLabel);
 
-        StringElement falseLabel = new StringElement();
+        TextElement<String> falseLabel = new TextElement<>();
         falseLabel.setLabel(translate("Label for \"False\""));
         falseLabel.setName("false_label");
         falseLabel.setDefaultValue((String)settings.getOrDefault("false_label", translate("False")));
-        elements.add(trueLabel);
+        elements.add(falseLabel);
 	}
 
 }

@@ -8,9 +8,7 @@ import com.pungwe.cms.config.TestConfig;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
-import com.pungwe.cms.core.form.element.CheckboxElement;
-import com.pungwe.cms.core.form.element.RadioElement;
-import com.pungwe.cms.core.form.element.SingleSelectListElement;
+import com.pungwe.cms.core.form.element.*;
 import com.pungwe.cms.test.AbstractWebTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,12 +122,35 @@ public class BooleanWidgetTest extends AbstractWebTest {
         assertFalse(element.getDefaultValue());
         assertEquals("yes_no", element.getName());
     }
+
     @Test
     public void testBooleanWidgetFormCheckboxDefaultValue() {
 
         Map<String, Object> settings = new LinkedHashMap<>();
         settings.putAll(booleanWidget.getDefaultSettings());
         settings.put("type", "checkbox");
+        settings.put("true_label", "Yes");
+        settings.put("false_label", "No");
+        settings.put("checked_by_default", true);
+
+        List<RenderedElement> elements = new ArrayList<>();
+        FieldConfig config = new FieldConfig();
+        config.setName("yes_no");
+        config.addSetting("widget_settings", settings);
+        booleanWidget.buildWidgetForm(elements, config, null, 0);
+        assertEquals(1, elements.size());
+        CheckboxElement<Boolean> element = (CheckboxElement<Boolean>)elements.get(0);
+        assertTrue(CheckboxElement.class.isAssignableFrom(element.getClass()));
+        assertTrue(element.isChecked());
+        assertEquals("yes_no", element.getName());
+    }
+
+    @Test
+    public void testBooleanWidgetFormCheckboxRandomType() {
+
+        Map<String, Object> settings = new LinkedHashMap<>();
+        settings.putAll(booleanWidget.getDefaultSettings());
+        settings.put("type", "random");
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
         settings.put("checked_by_default", true);
@@ -168,4 +189,16 @@ public class BooleanWidgetTest extends AbstractWebTest {
         assertEquals("yes_no", element.getName());
     }
 
+    @Test
+    public void testBuildWidgetSettingsForm() {
+
+        List<RenderedElement> elements = new ArrayList<>();
+        booleanWidget.buildWidgetSettingsForm(elements, booleanWidget.getDefaultSettings());
+        assertEquals(4, elements.size());
+        assertEquals("checkbox", ((SingleSelectListElement)elements.get(0)).getValueOrDefaultValue());
+        assertFalse(((CheckboxElement) elements.get(1)).isChecked());
+        assertEquals("True", ((TextElement)elements.get(2)).getValueOrDefaultValue());
+        assertEquals("False", ((TextElement)elements.get(3)).getValueOrDefaultValue());
+
+    }
 }

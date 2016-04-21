@@ -5,7 +5,7 @@ import com.pungwe.cms.core.field.services.FieldTypeManagementService;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.SingleSelectListElement;
-import com.pungwe.cms.core.form.element.StringElement;
+import com.pungwe.cms.core.form.element.TextElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
@@ -21,7 +21,7 @@ public abstract class AbstractFieldEditController<T> extends AbstractFormControl
 
 	@Override
 	public void build(FormElement<T> element) {
-		StringElement label = new StringElement();
+		TextElement<String> label = new TextElement<>();
 		label.setLabel("Label");
 		label.setName("label");
 		element.addContent(label);

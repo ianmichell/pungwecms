@@ -45,32 +45,15 @@ public class CheckboxElementTest extends AbstractWebTest {
         element.setChecked(true);
         element.setName("string");
         element.addContent("Label");
+        element.setDefaultValue("Test");
 
         String output = functions.render(new MockHttpServletRequest(), element);
         Document doc = Jsoup.parse(output);
         assertEquals("Attributes has content", "", element.getAttributesAsString());
         assertEquals("Name does not match", "string[0].value", doc.select("input[type=checkbox]").first().attr("name"));
         assertEquals("String Value does not match", "Test", doc.select("input[type=checkbox]").first().attr("value"));
-    }
-
-    @Test
-    public void testCheckboxElementWithDefaultValue() throws Exception {
-
-        TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
-
-        CheckboxElement element = new CheckboxElement();
-        element.setHtmlId("string");
-        element.setDefaultValue("Default Value");
-        element.setName("string");
-        element.addContent(new LabelElement("String"));
-        element.setRequired(true);
-
-        String output = functions.render(new MockHttpServletRequest(), element);
-        Document doc = Jsoup.parse(output);
-        assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
-        assertEquals("String Value does not match", "Default Value", doc.getElementById("string").attr("value"));
-        assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
-        assertEquals("Label value does not match", "String", doc.select("label").first().text());
+        assertEquals("Label", doc.select("label").text());
+        assertEquals(1, doc.select("input[checked]").size());
     }
 
     @Test
@@ -79,38 +62,17 @@ public class CheckboxElementTest extends AbstractWebTest {
         TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
         CheckboxElement element = new CheckboxElement();
-        element.setHtmlId("string");
         element.setDefaultValue("Default Value");
         element.setName("string");
-        element.addContent(new LabelElement("String"));
+        element.addContent("Label");
         element.setRequired(true);
         element.setDelta(1);
 
         String output = functions.render(new MockHttpServletRequest(), element);
         Document doc = Jsoup.parse(output);
-        assertEquals("Name does not match", "string[1].value", doc.getElementById("string").attr("name"));
-        assertEquals("String Value does not match", "Default Value", doc.getElementById("string").attr("value"));
-        assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
-        assertEquals("Label value does not match", "String", doc.select("label").first().text());
-    }
-
-    @Test
-    public void testCheckboxElementWithValue() throws Exception {
-
-        TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
-
-        CheckboxElement element = new CheckboxElement();
-        element.setHtmlId("string");
-        element.setDefaultValue("Default Value");
-        element.setName("string");
-        element.addContent("String");
-        element.setValue("not default");
-
-        String output = functions.render(new MockHttpServletRequest(), element);
-        Document doc = Jsoup.parse(output);
-        assertEquals("Name does not match", "string[0].value", doc.getElementById("string").attr("name"));
-        assertEquals("String Value does not match", "not default", doc.getElementById("string").attr("value"));
-        assertEquals("Label for attribute does not match element id", element.getHtmlId(), doc.select("label").first().attr("for"));
-        assertEquals("Label value does not match", "String", doc.select("label").first().text());
+        assertEquals("Name does not match", "string[1].value", doc.select("input[type=checkbox]").first().attr("name"));
+        assertEquals("String Value does not match", "Default Value", doc.select("input[type=checkbox]").first().attr("value"));
+        assertEquals("Label", doc.select("label").text());
+        assertEquals(0, doc.select("input[checked]").size());
     }
 }

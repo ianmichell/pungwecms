@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration({TestConfig.class, BaseApplicationConfig.class})
 @WebAppConfiguration("src/main/resources")
-public class StringElementTest extends AbstractWebTest {
+public class TextElementTest extends AbstractWebTest {
 
 	@Autowired
 	ApplicationContext applicationContext;
@@ -41,7 +41,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		TextElement element = new TextElement();
 		element.setValue("Test");
 		element.setName("string");
 		element.setLabel("Label");
@@ -59,7 +59,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		TextElement element = new TextElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -80,7 +80,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		TextElement element = new TextElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -102,7 +102,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		TextElement element = new TextElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
@@ -123,7 +123,7 @@ public class StringElementTest extends AbstractWebTest {
 
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		StringElement element = new StringElement();
+		TextElement element = new TextElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("Default Value");
 		element.setName("string");
