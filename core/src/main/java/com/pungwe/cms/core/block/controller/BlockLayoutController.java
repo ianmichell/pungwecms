@@ -129,7 +129,7 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
                 regionSelect.setValue(b.getRegion());
 
                 // Block Weight
-                TextElement<Integer> weightField = new TextElement<>("blockWeight", b.getWeight());
+                TextElement weightField = new TextElement("blockWeight", String.valueOf(b.getWeight()));
                 weightField.setDelta(d);
                 weightField.setSize(5);
 

@@ -22,7 +22,7 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		fieldsetElement.setHtmlId(getFormId().concat("_details"));
 		element.addContent(fieldsetElement);
 		// Title field
-		TextElement<String> title = new TextElement<>();
+		TextElement title = new TextElement();
 		title.setSize(60);
 		title.setLabel("Title");
 		title.setName("title");
@@ -39,7 +39,7 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		description.setLabel("Description");
 		fieldsetElement.addContent(description);
 
-		TextElement<String> bundleName = new TextElement();
+		TextElement bundleName = new TextElement();
 		bundleName.setLabel("Bundle Name");
 		bundleName.setSize(60);
 		bundleName.setPlaceholder("Bundle Name");

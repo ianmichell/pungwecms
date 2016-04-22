@@ -10,14 +10,14 @@ import java.util.LinkedList;
  * Created by ian on 09/01/2016.
  */
 @ThemeInfo("form/string")
-public class TextElement<T> extends AbstractFormRenderedElement<T> {
+public class TextElement extends AbstractFormRenderedElement<String> {
 
 	protected int size = 60;
 
 	public TextElement() {
 	}
 
-	public TextElement(String name, T value) {
+	public TextElement(String name, String value) {
 		setName(name);
 		setValue(value);
 	}

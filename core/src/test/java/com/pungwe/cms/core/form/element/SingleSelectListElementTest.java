@@ -43,7 +43,7 @@ public class SingleSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		SingleSelectListElement<String> element = new SingleSelectListElement<>();
+		SingleSelectListElement element = new SingleSelectListElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("default value");
 		element.setName("string");
@@ -71,7 +71,7 @@ public class SingleSelectListElementTest extends AbstractWebTest {
 		// Get the ability to render stuff
 		TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
 
-		SingleSelectListElement<String> element = new SingleSelectListElement<>();
+		SingleSelectListElement element = new SingleSelectListElement();
 		element.setHtmlId("string");
 		element.setDefaultValue("default value");
 		element.setName("string");

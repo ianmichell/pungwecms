@@ -9,11 +9,11 @@ import java.util.*;
  * Created by ian on 09/01/2016.
  */
 @ThemeInfo("form/select")
-public class SingleSelectListElement<T> extends AbstractFormRenderedElement<T> {
+public class SingleSelectListElement extends AbstractFormRenderedElement<String> {
 
-	protected Map<T, String> options;
+	protected Map<String, String> options;
 
-	public Map<T, String> getOptions() {
+	public Map<String, String> getOptions() {
 		if (options == null) {
 			options = new LinkedHashMap<>();
 		}
@@ -21,11 +21,11 @@ public class SingleSelectListElement<T> extends AbstractFormRenderedElement<T> {
 	}
 
 	@ModelAttribute("options")
-	public Set<Map.Entry<T, String>> getOptionsSet() {
+	public Set<Map.Entry<String, String>> getOptionsSet() {
 		return options.entrySet();
 	}
 
-	public void addOption(String label, T value) {
+	public void addOption(String label, String value) {
 		this.getOptions().putIfAbsent(value, label);
 	}
 }

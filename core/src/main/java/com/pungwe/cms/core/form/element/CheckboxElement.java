@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ThemeInfo("form/checkbox")
-public class CheckboxElement<T> extends AbstractFormRenderedElement<T> {
+public class CheckboxElement extends AbstractFormRenderedElement<String> {
 
     private boolean checked;
     protected List<RenderedElement> content;
@@ -38,12 +38,12 @@ public class CheckboxElement<T> extends AbstractFormRenderedElement<T> {
     public CheckboxElement() {
     }
 
-    public CheckboxElement(String name, T value, RenderedElement... content) {
+    public CheckboxElement(String name, String value, RenderedElement... content) {
         setName(name);
         setValue(value);
     }
 
-    public CheckboxElement(String name, T value, boolean checked, RenderedElement... content) {
+    public CheckboxElement(String name, String value, boolean checked, RenderedElement... content) {
         setName(name);
         setValue(value);
         setContent(content);

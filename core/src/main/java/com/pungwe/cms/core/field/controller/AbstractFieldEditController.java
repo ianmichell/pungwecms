@@ -21,7 +21,7 @@ public abstract class AbstractFieldEditController<T> extends AbstractFormControl
 
 	@Override
 	public void build(FormElement<T> element) {
-		TextElement<String> label = new TextElement<>();
+		TextElement label = new TextElement();
 		label.setLabel("Label");
 		label.setName("label");
 		element.addContent(label);
