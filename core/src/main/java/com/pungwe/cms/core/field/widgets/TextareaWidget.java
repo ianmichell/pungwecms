@@ -8,8 +8,11 @@ import com.pungwe.cms.core.form.element.TextElement;
 import com.pungwe.cms.core.form.element.TextareaElement;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.pungwe.cms.core.utils.Utils.translate;
 
 /**
  * Created by ian on 08/01/2016.
@@ -19,7 +22,9 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
 
 	@Override
 	public Map<String, Object> getDefaultSettings() {
-		return new HashMap<>();
+		Map<String, Object> settings = new LinkedHashMap<>();
+        settings.put("rows", "10");
+        return settings;
 	}
 
 	@Override
@@ -27,11 +32,12 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
 
 		// Text Field is a type of String element
 		TextareaElement element = new TextareaElement();
-		element.setLabel(field.getLabel());
+		element.setLabel(translate(field.getLabel()));
 		element.setName("value");
 		element.setRequired(field.isRequired());
-		element.setDefaultValue((String) ((List<String>) field.getSettings().getOrDefault("defaultValue", "")).get(delta));
-		element.setRows((int) field.getSettings().getOrDefault("rows", 10));
+		element.setDefaultValue((String) field.getSettings().get("default_value"));
+		element.setRows(field.getSettings().get("rows") != null ? Integer
+                .valueOf((String) field.getSettings().get("rows")) : 10);
 		element.setSize(-1); // unlimted
 
 		elements.add(element);
@@ -42,12 +48,22 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
 
 		TextElement rows = new TextElement();
 		rows.setName("rows");
-		rows.setLabel("Rows");
-		rows.setDefaultValue(5 + "");
+		rows.setLabel(translate("Rows"));
+		rows.setDefaultValue((String) settings.get("rows"));
 		rows.setRequired(true);
 		rows.setWeight(6);
 
 		elements.add(rows);
+
+        // Text Field is a type of String element
+        TextElement defaultValue = new TextElement();
+        defaultValue.setLabel(translate("Default Value"));
+        defaultValue.setName("default_value");
+        defaultValue.setDefaultValue("");
+        defaultValue.setSize(60);
+        defaultValue.setWeight(5);
+
+        elements.add(defaultValue);
 	}
 
 }

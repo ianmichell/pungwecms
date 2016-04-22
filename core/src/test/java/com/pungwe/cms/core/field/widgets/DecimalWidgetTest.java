@@ -59,21 +59,6 @@ public class DecimalWidgetTest extends AbstractWebTest {
     }
 
     @Test
-    public void testWidgetFormHalfPoint() throws Exception {
-        List<RenderedElement> elements = new ArrayList<>();
-
-        FieldConfig config = new FieldConfig();
-        config.setName("decimal");
-        config.setCardinality(1);
-        config.setSettings(decimalWidget.getDefaultSettings());
-
-        decimalWidget.buildWidgetForm(elements, config, 1234.575, 0);
-
-        assertEquals(1, elements.size());
-        assertEquals("1234.58", ((TextElement)elements.get(0)).getValue());
-    }
-
-    @Test
     public void testWidgetFormDefaultValue() throws Exception {
         List<RenderedElement> elements = new ArrayList<>();
 

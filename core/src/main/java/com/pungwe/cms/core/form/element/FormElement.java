@@ -2,10 +2,12 @@ package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractContentElement;
+import com.pungwe.cms.core.form.ElementValidator;
 import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.handler.FormSubmitHandler;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.*;
@@ -24,6 +26,7 @@ public class FormElement<T> extends AbstractContentElement {
 	private T targetObject;
 	private Errors errors;
 	private List<FormSubmitHandler> submitHandlers;
+    private List<ElementValidator> validators;
 
 	public void setEnctype(String enctype) {
 		addAttribute("enctype", enctype);
@@ -201,14 +204,31 @@ public class FormElement<T> extends AbstractContentElement {
 	}
 
 	public void setSubmitHandlers(List<FormSubmitHandler> submitHandlers) {
-		this.submitHandlers = submitHandlers;
+		this.submitHandlers = new ArrayList<>();
+        this.submitHandlers.addAll(submitHandlers);
 	}
 
 	public void addSubmitHandler(FormSubmitHandler<T> handler) {
 		getSubmitHandlers().add(handler);
 	}
 
-	public T getTargetObject() {
+    public List<ElementValidator> getValidators() {
+        if (validators == null) {
+            validators = new ArrayList<>();
+        }
+        return validators;
+    }
+
+    public void setValidators(List<ElementValidator> validators) {
+        this.validators = new ArrayList<>();
+        this.validators.addAll(validators);
+    }
+
+    public void addValidator(ElementValidator... validators) {
+        this.getValidators().addAll(Arrays.asList(validators));
+    }
+
+    public T getTargetObject() {
 		return targetObject;
 	}
 

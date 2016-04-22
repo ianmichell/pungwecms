@@ -8,6 +8,7 @@ import com.pungwe.cms.core.field.FieldWidgetDefinition;
 import com.pungwe.cms.core.form.element.TextElement;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,9 @@ public class TextfieldWidget implements FieldWidgetDefinition<String> {
 
 	@Override
 	public Map<String, Object> getDefaultSettings() {
-		return new HashMap<>();
+		Map<String, Object> settings = new LinkedHashMap<>();
+        settings.put("field_size", 60);
+        return settings;
 	}
 
 	@Override
@@ -30,7 +33,9 @@ public class TextfieldWidget implements FieldWidgetDefinition<String> {
 		element.setLabel(field.getLabel());
 		element.setName("value");
 		element.setRequired(field.isRequired());
-		element.setDefaultValue((String) ((List<String>) field.getSettings().getOrDefault("defaultValue", "")).get(delta));
+		element.setDefaultValue((String)field.getSettings().get("default_value"));
+        element.setValue(value);
+        element.setDelta(delta);
 		element.setSize((int) field.getSettings().getOrDefault("size", 60));
 
 		elements.add(element);
@@ -51,8 +56,8 @@ public class TextfieldWidget implements FieldWidgetDefinition<String> {
 		// Text Field is a type of String element
 		TextElement defaultValue = new TextElement();
 		defaultValue.setLabel("Default Value");
-		defaultValue.setName("defaultValue");
-		defaultValue.setDefaultValue("");
+		defaultValue.setName("default_value");
+		defaultValue.setDefaultValue((String)settings.get("default_value"));
 		defaultValue.setSize(60);
 		defaultValue.setWeight(5);
 

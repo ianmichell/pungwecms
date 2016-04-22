@@ -5,6 +5,8 @@ import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.field.FieldWidgetDefinition;
 import com.pungwe.cms.core.form.element.TextElement;
+import com.pungwe.cms.core.form.validation.DecimalValidator;
+import com.pungwe.cms.core.form.validation.NumberValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.LocaleResolver;
@@ -67,11 +69,13 @@ public class DecimalWidget implements FieldWidgetDefinition<Double> {
 				(String)settings.getOrDefault("decimal_places", "2"));
         decimalPlaces.setLabel(translate("Decimal Places"));
         decimalPlaces.setDefaultValue((String) settings.get("decimal_places"));
+        decimalPlaces.addValidator(new NumberValidator());
         elements.add(decimalPlaces);
 
         TextElement defaultValue = new TextElement();
         defaultValue.setName("default_value");
         defaultValue.setLabel(translate("Default Value"));
+        defaultValue.addValidator(new DecimalValidator());
 
         String value = (String)settings.get("default_value");
 

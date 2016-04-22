@@ -1,11 +1,15 @@
 package com.pungwe.cms.core.form.element;
 
 import com.pungwe.cms.core.element.AbstractRenderedElement;
+import com.pungwe.cms.core.form.ElementValidator;
 import com.pungwe.cms.core.form.FormRenderedElement;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by ian on 09/01/2016.
@@ -20,6 +24,7 @@ public abstract class AbstractFormRenderedElement<T> extends AbstractRenderedEle
 	protected int delta;
 	protected boolean required;
 	protected boolean error;
+    private List<ElementValidator> validators;
 
 	public String getName() {
 		return name;
@@ -112,4 +117,23 @@ public abstract class AbstractFormRenderedElement<T> extends AbstractRenderedEle
 	public void setError(boolean error) {
 		this.error = error;
 	}
+
+    @Override
+    public List<ElementValidator> getValidators() {
+        if (validators == null) {
+            this.validators = new ArrayList<>();
+        }
+        return validators;
+    }
+
+    @Override
+    public void setValidators(List<ElementValidator> validators) {
+        this.validators = new ArrayList<>();
+        validators.addAll(validators);
+    }
+
+    @Override
+    public void addValidator(ElementValidator... validators) {
+        this.getValidators().addAll(Arrays.asList(validators));
+    }
 }
