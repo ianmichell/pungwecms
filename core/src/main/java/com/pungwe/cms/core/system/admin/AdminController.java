@@ -19,6 +19,8 @@ import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 16/03/2016.
  */
@@ -41,8 +43,9 @@ public class AdminController {
 
     @MenuItem(menu = "system", parent = "admin", name = "dashboard", description = "Administration Dashboard", title = "Dashboard", weight = -300)
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public Callable<String> dashboard() {
+    public Callable<String> dashboard(Model model) {
         return () -> {
+            model.addAttribute("title", translate("Dashboard"));
             return "admin/index";
         };
     }

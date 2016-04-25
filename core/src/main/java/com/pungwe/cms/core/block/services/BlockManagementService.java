@@ -158,7 +158,7 @@ public class BlockManagementService {
         final List<BlockDefinition> blocks = new LinkedList<>();
         // Main Context
         Map<String, Object> mainContextBlocks = moduleManagementService.getModuleContext().getBeansWithAnnotation(Block.class);
-        mainContextBlocks.entrySet().parallelStream().filter(b -> b != null && b instanceof BlockDefinition).forEach(b -> {
+        mainContextBlocks.values().parallelStream().filter(b -> b != null && b instanceof BlockDefinition).forEach(b -> {
             blocks.add((BlockDefinition) b);
         });
         return blocks;
@@ -285,10 +285,10 @@ public class BlockManagementService {
             adminMenuSettings.put("parent_menu_item", "admin");
 
             Map<String, Object> taskBlockSettings = new LinkedHashMap<>();
-            adminMenuSettings.put("menu", "system");
+            taskBlockSettings.put("menu", "system");
 
             Map<String, Object> breadcrumbBlockSettings = new LinkedHashMap<>();
-            adminMenuSettings.put("menu", "system");
+            breadcrumbBlockSettings.put("menu", "system");
 
             // Create a list of the default blocks that will be used...
             addBlockToTheme("system_admin_page_title_block", "system.admin", "header", "page_title_block", -100, new HashMap<>());

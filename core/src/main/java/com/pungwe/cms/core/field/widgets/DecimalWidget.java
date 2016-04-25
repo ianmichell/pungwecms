@@ -43,7 +43,7 @@ public class DecimalWidget implements FieldWidgetDefinition<Double> {
 
 		if (StringUtils.isNotBlank(defaultValue)) {
             BigDecimal bigDecimal = new BigDecimal(defaultValue);
-            bigDecimal = bigDecimal.setScale(Integer.valueOf((String)widgetSettings.get("decimal_places")), BigDecimal.ROUND_HALF_EVEN);
+            bigDecimal = bigDecimal.setScale(Integer.parseInt((String)widgetSettings.get("decimal_places")), BigDecimal.ROUND_HALF_EVEN);
             defaultValue = bigDecimal.toPlainString();
 		}
 
@@ -81,7 +81,7 @@ public class DecimalWidget implements FieldWidgetDefinition<Double> {
 
         if (StringUtils.isNotBlank(value)) {
             BigDecimal bigDecimal = new BigDecimal(value);
-            bigDecimal = bigDecimal.setScale(Integer.valueOf((String)settings.get("decimal_places")), BigDecimal.ROUND_HALF_EVEN);
+            bigDecimal = bigDecimal.setScale(Integer.parseInt((String)settings.get("decimal_places")), BigDecimal.ROUND_HALF_EVEN);
             defaultValue.setDefaultValue(bigDecimal.toPlainString());
         }
         elements.add(defaultValue);

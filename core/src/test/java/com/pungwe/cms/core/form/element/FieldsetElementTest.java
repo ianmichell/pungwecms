@@ -48,6 +48,8 @@ public class FieldsetElementTest extends AbstractWebTest {
 
 		String output = templateFunctions.render(new MockHttpServletRequest(), fieldsetElement);
 		Document doc = Jsoup.parse(output);
+
+		assertEquals(0, fieldsetElement.excludedAttributes().size());
 		assertEquals("Fieldset element text does not match", "Fieldset", doc.select("fieldset legend").first().text());
 		assertEquals("Fieldset element class is not correct", "myclass", doc.select("fieldset").first().attr("class"));
 	}

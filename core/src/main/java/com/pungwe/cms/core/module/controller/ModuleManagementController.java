@@ -32,6 +32,7 @@ import com.pungwe.cms.core.form.element.LabelElement;
 import com.pungwe.cms.core.module.ModuleConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
+import com.pungwe.cms.core.utils.services.StatusMessageService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,15 +40,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -67,6 +67,9 @@ public class ModuleManagementController extends AbstractFormController {
 
     @Autowired
     protected ModuleConfigService moduleConfigService;
+
+    @Autowired
+    protected StatusMessageService statusMessageService;
 
     /**
      * Page title model attribute
@@ -88,6 +91,20 @@ public class ModuleManagementController extends AbstractFormController {
     public Callable<String> get(final Model model) {
         return () -> {
             return "admin/modules/index";
+        };
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public Callable<String> post(final Model model, @ModelAttribute("form") FormElement form,
+                                 BindingResult result, RedirectAttributes redirectAttributes) {
+        return () -> {
+            if (result.hasErrors()) {
+                return "admin/modules/index";
+            }
+            form.submit(model.asMap());
+            // FIXME: This message could be better
+            statusMessageService.addSuccessStatusMessage(translate("Success! You've enabled new modules"));
+            return "redirect:/admin/modules";
         };
     }
 
@@ -130,7 +147,9 @@ public class ModuleManagementController extends AbstractFormController {
             final Module annotation = annotations.get(moduleConfig.getName());
 
             // Checkbox
-            final CheckboxElement checkboxElement = new CheckboxElement("name", moduleConfig.getName());
+            final CheckboxElement checkboxElement = new CheckboxElement();
+            checkboxElement.setName("name");
+            checkboxElement.setDefaultValue(moduleConfig.getName());
             checkboxElement.setHtmlId("module_enabled_" + moduleConfig.getName());
             checkboxElement.setDelta(delta.getAndIncrement());
             checkboxElement.setChecked(moduleConfig.isEnabled());
@@ -161,12 +180,18 @@ public class ModuleManagementController extends AbstractFormController {
             );
         });
 
-        element.addContent(tableElement, new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, translate("Save")));
+        element.addContent(tableElement, new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT, translate("Save and Install")));
+
+        element.addSubmitHandler((form, variables) -> {
+            List<String> modulesToEnable = form.getValues("name");
+            moduleManagementService.setEnabledModules(modulesToEnable);
+            moduleManagementService.reloadModules();
+        });
     }
 
 
     @Override
     public void validate(FormElement form, Errors errors) {
-
+        // do nothing here
     }
 }

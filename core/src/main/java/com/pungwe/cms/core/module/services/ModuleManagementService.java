@@ -14,12 +14,14 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,6 +117,10 @@ public class ModuleManagementService {
 	public boolean disable(String module) {
 		return false;
 	}
+
+    public boolean disable(ModuleConfig moduleConfig) {
+        return false;
+    }
 
 	public void startEnabledModules() {
 
@@ -256,4 +262,35 @@ public class ModuleManagementService {
 			return AnnotationUtils.findAnnotation(o.getClass(), Module.class);
 		}).collect(Collectors.toList());
 	}
+
+	/**
+	 * Sets the relevant modules to enabled, disabling everything else.
+	 * Used in conjunction with a form post, to set which modules are enabled
+	 *
+	 * @param modulesToEnable the list of modules that are to be enabled disabled
+	 *
+	 */
+	public void setEnabledModules(List<String> modulesToEnable) {
+        Set<ModuleConfig> modules = getModuleConfigService().listAllModules();
+        modules.forEach(moduleConfig -> {
+            if (modulesToEnable.contains(moduleConfig.getName()) && !moduleConfig.isEnabled()) {
+                enable(moduleConfig);
+            } else if (!modulesToEnable.contains(moduleConfig.getName())) {
+                disable(moduleConfig);
+            }
+        });
+	}
+
+    /**
+     * Refreshes the application context if that is allowed
+     */
+    public void reloadModules() {
+        Environment env = moduleContext.getEnvironment();
+        if (env.getProperty("modules.reloadable", Boolean.class, false)) {
+            if (moduleContext instanceof ConfigurableApplicationContext) {
+                startEnabledModules();
+                ((ConfigurableApplicationContext) moduleContext).refresh();
+            }
+        }
+    }
 }

@@ -19,10 +19,19 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,6 +66,7 @@ public class ModuleManagementControllerTest extends AbstractControllerTest {
         assertEquals("Description", doc.select("table thead th:nth-child(3)").html());
 
         assertEquals("test_module", doc.select("#module_enabled_test_module").val());
+        assertEquals("name[0].value", doc.select("#module_enabled_test_module").attr("name"));
         assertEquals("Test Module", doc.select("label[for=module_enabled_test_module]").html());
         assertEquals("Module Name:", doc.select("tbody tr:nth-child(1) dl dt:nth-child(1)").html());
         assertEquals("test_module", doc.select("tbody tr:nth-child(1) dl dd:nth-child(2)").html());
@@ -69,5 +79,29 @@ public class ModuleManagementControllerTest extends AbstractControllerTest {
         assertEquals("module_with_dependency", doc.select("tbody tr:nth-child(2) dl dd:nth-child(2)").html());
         assertEquals("Dependencies:", doc.select("tbody tr:nth-child(2) dl dt:nth-child(3)").html());
         assertEquals("Test Module", doc.select("tbody tr:nth-child(2) dl dd:nth-child(4)").html());
+    }
+
+    @Test
+    public  void testPost() throws Exception {
+
+        moduleConfigService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
+        moduleConfigService.registerModule(ModuleWithDependency.class, ModuleWithDependency.class.getProtectionDomain().getCodeSource().getLocation());
+
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        parameters.put("name[0].value", Arrays.asList("test_module"));
+
+        MvcResult result = mockMvc.perform(post("/admin/modules").params(parameters)).andExpect(request().asyncStarted()).andReturn();
+        result.getAsyncResult();
+
+        MvcResult finalResult = mockMvc.perform(asyncDispatch(result)).andExpect(status().isFound())
+                .andExpect(redirectedUrl("/admin/modules")).andReturn();
+
+        // Ensure module that we just enabled was found
+        assertTrue(moduleConfigService.isEnabled("test_module"));
+        // Ensure that the module we did not enable is not enabled
+        assertFalse(moduleConfigService.isEnabled("module_with_dependency"));
+
+        // Ensure that the module we just enabled was found
+        TestModule module = moduleManagementService.getModuleContext().getBean(TestModule.class);
     }
 }

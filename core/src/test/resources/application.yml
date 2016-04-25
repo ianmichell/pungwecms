@@ -1,2 +1,4 @@
 # Database
 cms.data.type: mock
+modules:
+  reloadable: true

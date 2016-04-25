@@ -36,8 +36,9 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
 		element.setName("value");
 		element.setRequired(field.isRequired());
 		element.setDefaultValue((String) field.getSettings().get("default_value"));
+		element.setValue(value);
 		element.setRows(field.getSettings().get("rows") != null ? Integer
-                .valueOf((String) field.getSettings().get("rows")) : 10);
+                .parseInt((String) field.getSettings().get("rows")) : 10);
 		element.setSize(-1); // unlimted
 
 		elements.add(element);
@@ -59,7 +60,7 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
         TextElement defaultValue = new TextElement();
         defaultValue.setLabel(translate("Default Value"));
         defaultValue.setName("default_value");
-        defaultValue.setDefaultValue("");
+        defaultValue.setDefaultValue((String)settings.get("default_value"));
         defaultValue.setSize(60);
         defaultValue.setWeight(5);
 

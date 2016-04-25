@@ -37,10 +37,10 @@ public class TextfieldWidgetTest extends AbstractWebTest {
         Map<String, Object> settings = new LinkedHashMap<>();
         settings.putAll(textfieldWidget.getDefaultSettings());
         settings.put("default_value", "text");
-        settings.put("size", "20");
+        settings.put("field_size", "20");
         textfieldWidget.buildWidgetSettingsForm(elements, settings);
         assertEquals(2, elements.size());
-        assertEquals("60", ((TextElement)elements.get(0)).getValueOrDefaultValue());
+        assertEquals("20", ((TextElement)elements.get(0)).getValueOrDefaultValue());
         assertEquals("text", ((TextElement)elements.get(1)).getValueOrDefaultValue());
     }
 
@@ -50,6 +50,7 @@ public class TextfieldWidgetTest extends AbstractWebTest {
 
         FieldConfig config = new FieldConfig();
         config.setName("textfield");
+        config.setLabel("Textfield");
         config.setCardinality(1);
         config.setSettings(textfieldWidget.getDefaultSettings());
 
@@ -65,6 +66,7 @@ public class TextfieldWidgetTest extends AbstractWebTest {
 
         FieldConfig config = new FieldConfig();
         config.setName("textfield");
+        config.setLabel("Textfield");
         config.setCardinality(1);
 
         Map<String, Object> settings = new LinkedHashMap<>();

@@ -75,4 +75,24 @@ public class CheckboxElementTest extends AbstractWebTest {
         assertEquals("Label", doc.select("label").text());
         assertEquals(0, doc.select("input[checked]").size());
     }
+
+    @Test
+    public void setChecked() throws Exception {
+        TemplateFunctions functions = new TemplateFunctions(applicationContext, viewResolver, localeResolver);
+
+        CheckboxElement element = new CheckboxElement();
+        element.setDefaultValue("Default Value");
+        element.setValue("Default Value");
+        element.setName("string");
+        element.addContent("Label");
+        element.setRequired(true);
+        element.setDelta(1);
+
+        String output = functions.render(new MockHttpServletRequest(), element);
+        Document doc = Jsoup.parse(output);
+        assertEquals("Name does not match", "string[1].value", doc.select("input[type=checkbox]").first().attr("name"));
+        assertEquals("String Value does not match", "Default Value", doc.select("input[type=checkbox]").first().attr("value"));
+        assertEquals("Label", doc.select("label").text());
+        assertEquals(1, doc.select("input[checked]").size());
+    }
 }

@@ -40,12 +40,12 @@ public class CheckboxElement extends AbstractFormRenderedElement<String> {
 
     public CheckboxElement(String name, String value, RenderedElement... content) {
         setName(name);
-        setValue(value);
+        setDefaultValue(value);
     }
 
     public CheckboxElement(String name, String value, boolean checked, RenderedElement... content) {
         setName(name);
-        setValue(value);
+        setDefaultValue(value);
         setContent(content);
         this.checked = checked;
     }
@@ -56,6 +56,17 @@ public class CheckboxElement extends AbstractFormRenderedElement<String> {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    @Override
+    public void setValue(String value) {
+        if (getDefaultValue() != null && getDefaultValue().equals(value)) {
+            checked = true;
+            super.setValue(value);
+        } else {
+            checked = false;
+            super.setValue(null);
+        }
     }
 
     @ModelAttribute("checked")

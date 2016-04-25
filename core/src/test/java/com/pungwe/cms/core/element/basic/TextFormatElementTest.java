@@ -113,5 +113,12 @@ public class TextFormatElementTest extends AbstractWebTest {
         for (TextFormatElement.Type type : TextFormatElement.Type.values()) {
             assertEquals(type.name().toLowerCase(), type.getTagName());
         }
+
+        assertEquals(TextFormatElement.Type.I, TextFormatElement.Type.valueOf("I"));
+        assertEquals(TextFormatElement.Type.STRONG, TextFormatElement.Type.valueOf("STRONG"));
+        assertEquals(TextFormatElement.Type.CITE, TextFormatElement.Type.valueOf("CITE"));
+        assertEquals(TextFormatElement.Type.MARK, TextFormatElement.Type.valueOf("MARK"));
+        assertEquals(TextFormatElement.Type.P, TextFormatElement.Type.valueOf("P"));
+
     }
 }

@@ -86,6 +86,14 @@ public class TableElement extends AbstractRenderedElement {
 		addHeader(row);
 	}
 
+	public void addHeaderRow(String... headers) {
+        Row row = new Row();
+		for (String header : headers) {
+			row.addColumn(new Header(header));
+		}
+        addHeader(row);
+	}
+
 	public void addFooter(Row... header) {
 		for (Row h : header) {
 			this.getFooter().add(h);

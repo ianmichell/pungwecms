@@ -28,9 +28,54 @@ import static org.junit.Assert.assertEquals;
 @WebAppConfiguration("src/main/resources")
 public class EmailWidgetTest extends AbstractWebTest {
 
-    @Test
-    public void testWidgetForm() {
+    @Autowired
+    EmailWidget emailWidget;
 
+    @Test
+    public void testSettingsFormDefaultValue() throws Exception {
+        List<RenderedElement> elements = new ArrayList<>();
+        Map<String, Object> settings = new LinkedHashMap<>();
+        settings.putAll(emailWidget.getDefaultSettings());
+        settings.put("default_value", "test@test.com");
+        emailWidget.buildWidgetSettingsForm(elements, settings);
+        assertEquals(1, elements.size());
+        assertEquals("test@test.com", ((TextElement)elements.get(0)).getValueOrDefaultValue());
     }
 
+    @Test
+    public void testWidgetForm() throws Exception {
+        List<RenderedElement> elements = new ArrayList<>();
+
+        FieldConfig config = new FieldConfig();
+        config.setName("email");
+        config.setLabel("Email Address");
+        config.setCardinality(1);
+        config.setSettings(emailWidget.getDefaultSettings());
+
+        emailWidget.buildWidgetForm(elements, config, "example@example.com", 0);
+
+        assertEquals(1, elements.size());
+        assertEquals("example@example.com", ((TextElement)elements.get(0)).getValue());
+    }
+
+    @Test
+    public void testWidgetFormDefaultValue() throws Exception {
+        List<RenderedElement> elements = new ArrayList<>();
+
+        FieldConfig config = new FieldConfig();
+        config.setName("email");
+        config.setLabel("Email Address");
+        config.setCardinality(1);
+
+        Map<String, Object> settings = new LinkedHashMap<>();
+        settings.putAll(emailWidget.getDefaultSettings());
+        settings.put("default_value", "example@example.com");
+
+        config.setSettings(settings);
+
+        emailWidget.buildWidgetForm(elements, config, null, 0);
+
+        assertEquals(1, elements.size());
+        assertEquals("example@example.com", ((TextElement)elements.get(0)).getValueOrDefaultValue());
+    }
 }

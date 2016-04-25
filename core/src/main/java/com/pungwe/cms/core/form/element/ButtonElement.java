@@ -26,6 +26,10 @@ public class ButtonElement extends AbstractFormRenderedElement implements Conten
 
 	protected ButtonType type;
 
+	public ButtonElement() {
+
+	}
+
 	public ButtonElement(ButtonType type) {
 		this.type = type;
 	}
@@ -66,12 +70,17 @@ public class ButtonElement extends AbstractFormRenderedElement implements Conten
 
 
 	public ButtonType getType() {
+
+        if (type == null) {
+            type = ButtonType.BUTTON;
+        }
+
 		return type;
 	}
 
 	@ModelAttribute("type")
 	public String getTypeAsString() {
-		return type != null ? type.name().toLowerCase() : ButtonType.BUTTON.name().toLowerCase();
+		return getType().name().toLowerCase();
 	}
 
 	public void setType(ButtonType type) {

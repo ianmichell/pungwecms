@@ -81,6 +81,9 @@ public class SystemTasksBlock implements BlockDefinition {
 		List<String> activeIds = activeItems.stream().map(menuConfig -> menuConfig.getId()).collect(Collectors.toList());
 		List<MenuConfig> menuItemsWithoutTasks = activeItems.stream().filter(mc -> !mc.isTask()).collect(Collectors.toList());
 
+        if (menuItemsWithoutTasks.size() == 0) {
+            return;
+        }
 		// Get the last menu item
 		MenuConfig bottom = Iterables.getLast(menuItemsWithoutTasks);
 

@@ -141,6 +141,10 @@ public class AdminLTE {
         if (element instanceof TableElement) {
             ((TableElement) element).addClass("table", "table-striped");
         }
+
+        if (element instanceof AnchorElement && element.getClasses().contains("button")) {
+            element.addClass("btn btn-default");
+        }
     }
 
     @Hook("preprocess_template")

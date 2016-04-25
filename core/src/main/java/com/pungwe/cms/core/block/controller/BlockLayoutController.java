@@ -4,9 +4,7 @@ import com.pungwe.cms.core.annotations.stereotypes.Block;
 import com.pungwe.cms.core.annotations.ui.MenuItem;
 import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.services.BlockManagementService;
-import com.pungwe.cms.core.element.basic.SpanElement;
-import com.pungwe.cms.core.element.basic.TableElement;
-import com.pungwe.cms.core.element.basic.TextFormatElement;
+import com.pungwe.cms.core.element.basic.*;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.HiddenElement;
@@ -87,10 +85,18 @@ public class BlockLayoutController extends AbstractFormController<BlockConfig> {
         regions.forEach((k, v) -> {
             // Add Region Header
             final TableElement.Header regionHeader = new TableElement.Header();
-            regionHeader.setContent(v);
-            regionHeader.addAttribute("colspan", "5");
+            regionHeader.setContent(translate(v));
+            regionHeader.addAttribute("colspan", "4");
             regionHeader.addAttribute("data-region", k);
-            tableElement.addRow(regionHeader);
+
+            final AnchorElement placeBlockButton = new AnchorElement(translate("Place block"),
+                    "/admin/structure/block_layout/select_block/" + k, new PlainTextElement(translate("Place Block")));
+            placeBlockButton.addClass("button");
+
+            final TableElement.Header placeBlockColumn = new TableElement.Header();
+            placeBlockColumn.addContent(placeBlockButton);
+
+            tableElement.addRow(regionHeader, placeBlockColumn);
             final List<BlockConfig> blocksForRegion = blocks.stream().filter(b -> k.equals(b.getRegion())).sorted(
                     (o1, o2) -> {
                 if (o1 == null) {

@@ -81,9 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Get the application context
         ApplicationContext context = event.getApplicationContext();
 
-        final Map<String, Object> permissionDefinitions = new LinkedHashMap<>();
-        final Map<String, Object> permissionCategories = new LinkedHashMap<>();
-        final Map<String, Object> defaultRoles = new LinkedHashMap<>();
+        Map<String, Object> permissionDefinitions = new LinkedHashMap<>();
+        Map<String, Object> permissionCategories = new LinkedHashMap<>();
+        Map<String, Object> defaultRoles = new LinkedHashMap<>();
 
                 // Get parent context permissions too
         ApplicationContext parentContext = context;

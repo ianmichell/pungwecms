@@ -17,7 +17,8 @@ jpa:
 
 modules:
   startup:
-    scan: true
+    scan: false
+  reloadable: false
   enabled:
     - actuator
     - node
@@ -31,4 +32,4 @@ themes:
 
 menu:
   startup:
-    scan: false
+    scan: true
