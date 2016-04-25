@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfigImpl> {
 
     // Set of modules detected on the classpath
-    static Set<ModuleConfig> modules = new HashSet<>();
+    public static Set<ModuleConfig> modules = new HashSet<>();
 
     static {
         ModuleConfigImpl missing = new ModuleConfigImpl();
@@ -51,7 +51,10 @@ public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfig
 
     @Override
     public boolean isEnabled(String module) {
-        return listEnabledModules().parallelStream().filter(m -> m.getName().equalsIgnoreCase(module)).findFirst().isPresent();
+        if (StringUtils.isEmpty(module)) {
+            return false;
+        }
+        return listEnabledModules().parallelStream().filter(m -> m != null && module.equals(m.getName())).findFirst().isPresent();
     }
 
     @Override
@@ -67,7 +70,7 @@ public class ModuleConfigServiceImpl implements ModuleConfigService<ModuleConfig
     @Override
     public void setModuleEnabled(String moduleName, boolean enabled) {
         modules.stream().filter(m -> m.getName().equalsIgnoreCase(moduleName)).forEach(m -> {
-            m.setEnabled(true);
+            m.setEnabled(enabled);
         });
     }
 

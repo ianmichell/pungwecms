@@ -7,11 +7,13 @@ package com.pungwe.cms.core.module.controller;
 import com.pungwe.cms.config.TestConfig;
 import com.pungwe.cms.core.config.BaseApplicationConfig;
 import com.pungwe.cms.core.module.services.ModuleConfigService;
+import com.pungwe.cms.core.module.services.impl.ModuleConfigServiceImpl;
 import com.pungwe.cms.modules.dependency.ModuleWithDependency;
 import com.pungwe.cms.modules.test.TestModule;
 import com.pungwe.cms.test.AbstractControllerTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ModuleManagementControllerTest extends AbstractControllerTest {
 
     @Autowired
-    ModuleConfigService moduleConfigService;
+    ModuleConfigServiceImpl moduleConfigService;
 
     @Test
     public void testGetAndList() throws Exception {
@@ -86,6 +88,8 @@ public class ModuleManagementControllerTest extends AbstractControllerTest {
 
         moduleConfigService.registerModule(TestModule.class, TestModule.class.getProtectionDomain().getCodeSource().getLocation());
         moduleConfigService.registerModule(ModuleWithDependency.class, ModuleWithDependency.class.getProtectionDomain().getCodeSource().getLocation());
+        moduleConfigService.setModuleEnabled("text_module", false);
+        moduleConfigService.setModuleEnabled("module_with_dependency", false);
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.put("name[0].value", Arrays.asList("test_module"));
