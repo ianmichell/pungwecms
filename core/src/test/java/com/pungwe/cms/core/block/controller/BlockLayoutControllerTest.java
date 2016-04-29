@@ -50,7 +50,7 @@ public class BlockLayoutControllerTest extends AbstractControllerTest {
         assertEquals("Operations", doc.select("table thead th:nth-child(5)").html());
 
         // Check the number of rows:
-        assertEquals(PageElement.DEFAULT_REGIONS.size(), doc.select("table tbody tr th[data-region]").size());
+        assertEquals(PageElement.DEFAULT_REGIONS.size() + 1, doc.select("table tbody tr th[data-region]").size());
         assertEquals(PageElement.DEFAULT_REGIONS.get("header"), doc.select("table tbody tr th[data-region=header]").html());
         assertEquals(PageElement.DEFAULT_REGIONS.get("help"), doc.select("table tbody tr th[data-region=help]").html());
         assertEquals(PageElement.DEFAULT_REGIONS.get("breadcrumb"), doc.select("table tbody tr th[data-region=breadcrumb]").html());
