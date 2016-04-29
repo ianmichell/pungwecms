@@ -2,6 +2,7 @@ package com.pungwe.cms.core.element.services;
 
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.system.element.templates.PageElement;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Created by ian on 03/03/2016.
@@ -46,7 +48,7 @@ public class RenderedElementService {
 			}
 			ModelAttribute attr = m.getAnnotation(ModelAttribute.class);
 			Object v = m.invoke(o);
-			map.addAttribute(attr.value(), v);
+            map.addAttribute(attr.value(), v);
 		}
 		return map;
 	}

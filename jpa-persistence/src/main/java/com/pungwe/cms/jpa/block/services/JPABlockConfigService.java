@@ -1,5 +1,6 @@
 package com.pungwe.cms.jpa.block.services;
 
+import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.services.BlockConfigService;
 import com.pungwe.cms.jpa.block.BlockConfigImpl;
 import com.pungwe.cms.jpa.block.repository.BlockConfigRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by ian on 05/03/2016.
@@ -49,4 +51,19 @@ public class JPABlockConfigService implements BlockConfigService<BlockConfigImpl
 		// Save the block, don't delete it
 		blockConfigRepository.save(config);
 	}
+
+	@Override
+	public void updateBlocks(List<BlockConfig> blocks) {
+		blockConfigRepository.save(blocks.stream().map(blockConfig -> (BlockConfigImpl)blockConfig).collect(Collectors.toList()));
+	}
+
+    @Override
+    public BlockConfigImpl newInstance() {
+        return new BlockConfigImpl();
+    }
+
+    @Override
+    public BlockConfigImpl getBlockConfigById(String blockId) {
+        return blockConfigRepository.findOne(blockId);
+    }
 }

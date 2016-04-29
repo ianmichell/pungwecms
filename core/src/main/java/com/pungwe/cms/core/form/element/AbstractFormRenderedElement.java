@@ -1,8 +1,10 @@
 package com.pungwe.cms.core.form.element;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pungwe.cms.core.element.AbstractRenderedElement;
 import com.pungwe.cms.core.form.ElementValidator;
 import com.pungwe.cms.core.form.FormRenderedElement;
+import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -23,8 +25,8 @@ public abstract class AbstractFormRenderedElement<T> extends AbstractRenderedEle
 	protected T value;
 	protected int delta;
 	protected boolean required;
-	protected boolean error;
     private List<ElementValidator> validators;
+    private List<String> errors;
 
 	public String getName() {
 		return name;
@@ -110,14 +112,23 @@ public abstract class AbstractFormRenderedElement<T> extends AbstractRenderedEle
 	@ModelAttribute("error")
 	@Override
 	public boolean hasError() {
-		return error;
+		return !getErrors().isEmpty();
 	}
 
-	@Override
-	public void setError(boolean error) {
-		this.error = error;
-	}
+    @Override
+    public List<String> getErrors() {
+        if (errors == null) {
+            errors = new ArrayList<>();
+        }
+        return errors;
+    }
 
+    @Override
+    public void addError(String... error) {
+        getErrors().addAll(Arrays.asList(error));
+    }
+
+    @JsonIgnore
     @Override
     public List<ElementValidator> getValidators() {
         if (validators == null) {
@@ -136,4 +147,11 @@ public abstract class AbstractFormRenderedElement<T> extends AbstractRenderedEle
     public void addValidator(ElementValidator... validators) {
         this.getValidators().addAll(Arrays.asList(validators));
     }
+
+	@Override
+	public void validate() {
+		getValidators().forEach(elementValidator -> {
+            elementValidator.validate(this);
+        });
+	}
 }

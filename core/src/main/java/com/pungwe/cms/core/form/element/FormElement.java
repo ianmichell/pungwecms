@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.form.element;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.AbstractContentElement;
 import com.pungwe.cms.core.element.RenderedElement;
@@ -135,28 +136,6 @@ public class FormElement<T> extends AbstractContentElement {
         });
     }
 
-    /*public List<FormRenderedElement<?>> getFields() {
-        final List<FormRenderedElement<?>> elements = new LinkedList<>();
-        getContent().stream().forEach(renderedElement -> {
-            if (renderedElement instanceof FormRenderedElement) {
-                elements.add((FormRenderedElement<?>) renderedElement);
-            } else if (renderedElement instanceof AbstractContentElement) {
-                findProperties(elements, (AbstractContentElement) renderedElement);
-            }
-        });
-        return elements;
-    }
-
-    private void findProperties(final List<FormRenderedElement<?>> elements, AbstractContentElement element) {
-        element.getContent().stream().forEach(renderedElement -> {
-            if (renderedElement instanceof FormRenderedElement) {
-                elements.add((FormRenderedElement<?>) renderedElement);
-            } else if (renderedElement instanceof AbstractContentElement) {
-                findProperties(elements, (AbstractContentElement) renderedElement);
-            }
-        });
-    } */
-
     public FormRenderedElement<?> getField(String name, int delta) {
         int index = getFormFieldIndex(name, delta);
         if (index < 0) {
@@ -245,10 +224,12 @@ public class FormElement<T> extends AbstractContentElement {
         this.errors = errors;
     }
 
+    @JsonIgnore
     public Errors getErrors() {
         return errors;
     }
 
+    @JsonIgnore
     public List<FormSubmitHandler> getSubmitHandlers() {
         if (submitHandlers == null) {
             submitHandlers = new ArrayList<>();
@@ -271,22 +252,6 @@ public class FormElement<T> extends AbstractContentElement {
         });
     }
 
-    public List<ElementValidator> getValidators() {
-        if (validators == null) {
-            validators = new ArrayList<>();
-        }
-        return validators;
-    }
-
-    public void setValidators(List<ElementValidator> validators) {
-        this.validators = new ArrayList<>();
-        this.validators.addAll(validators);
-    }
-
-    public void addValidator(ElementValidator... validators) {
-        this.getValidators().addAll(Arrays.asList(validators));
-    }
-
     public T getTargetObject() {
         return targetObject;
     }
@@ -306,5 +271,17 @@ public class FormElement<T> extends AbstractContentElement {
     public void hideField(String name, int delta) {
         FormRenderedElement element = getField(name, delta);
         element.setVisible(false);
+    }
+
+    public void validate(final Errors errors) {
+        getFields().forEach(formRenderedElement -> {
+            formRenderedElement.validate();
+            if (formRenderedElement.hasError()) {
+                for (String error : formRenderedElement.getErrors()) {
+                    errors.rejectValue("fields[" + getFormFieldIndex(formRenderedElement.getName(),
+                            formRenderedElement.getDelta()) + "].value", "field.error", error);
+                }
+            }
+        });
     }
 }

@@ -6,11 +6,13 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UriTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.Collator;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -65,6 +67,17 @@ public class Utils {
 		return variables.getOrDefault(variableName, null);
 	}
 
+    public static Map<String, String> getRequestPathVariables() {
+        String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        String bestMatchPattern = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        if (bestMatchPattern == null) {
+            return new LinkedHashMap<>();
+        }
+        AntPathMatcher apm = new AntPathMatcher();
+        Map<String, String> variables = apm.extractUriTemplateVariables(bestMatchPattern, path);
+        return variables;
+    }
+
 	/** Expands the url template to a url using the most appropriate variables */
 	public static String processUrlVariables(String url, Map<String, Object> variables) {
 		UriTemplate template = new UriTemplate(url);
@@ -100,10 +113,6 @@ public class Utils {
         return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    public static <T> void setFlashAttribute(String key, T value) {
-        RequestContextUtils.getOutputFlashMap(getRequest()).put(key, value);
-    }
-
     public static Map<String, ?> getFlashMap() {
         return RequestContextUtils.getInputFlashMap(getRequest());
     }
@@ -113,25 +122,23 @@ public class Utils {
         return flashMap != null ? flashMap.get(key) : null;
     }
 
-
-    public static Object getOutputFlashAttribute(String key) {
-        Map<String, ?> flashMap = RequestContextUtils.getOutputFlashMap(getRequest());
-        return flashMap != null ? flashMap.get(key) : null;
-    }
-
     public static boolean containsFlashAttribute(String key) {
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(getRequest());
         return flashMap == null ? false : flashMap.containsKey(key);
-    }
-
-    public static boolean containsOutputFlashAttribute(String key) {
-        FlashMap map = RequestContextUtils.getOutputFlashMap(getRequest());
-        return map == null ? false : map.containsKey(key);
     }
 
     public static String getRequestPath() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String currentPath = request.getRequestURI().substring(request.getContextPath().length());
         return currentPath;
+    }
+
+    public static void saveFlashMap(FlashMap flashMap) {
+        FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(getRequest());
+        flashMapManager.saveOutputFlashMap(flashMap, getRequest(), getResponse());
+    }
+
+    public static HttpServletResponse getResponse() {
+        return ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getResponse();
     }
 }

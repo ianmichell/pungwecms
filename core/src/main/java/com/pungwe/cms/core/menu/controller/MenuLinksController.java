@@ -23,7 +23,7 @@ import static com.pungwe.cms.core.utils.Utils.translate;
  * Created by 917903 on 22/03/2016.
  */
 @Controller
-@RequestMapping("/admin/structure/menu/links/{menuInfoId}")
+@RequestMapping("/admin/structure/menu/links/{menuInfoId}/{language}")
 @MenuItem(
         menu = "system",
         parent = "admin.structure.menus",

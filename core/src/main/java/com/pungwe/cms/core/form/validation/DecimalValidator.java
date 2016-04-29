@@ -1,7 +1,9 @@
 package com.pungwe.cms.core.form.validation;
 
 import com.pungwe.cms.core.form.ElementValidator;
+import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
+import com.pungwe.cms.core.form.element.FormElement;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.Errors;
 
@@ -13,12 +15,12 @@ import static com.pungwe.cms.core.utils.Utils.translate;
 public class DecimalValidator implements ElementValidator {
 
     @Override
-    public <T extends AbstractFormRenderedElement> void validate(T element, Errors errors, int delta) {
+    public void validate(FormRenderedElement element) {
         if (StringUtils.isNotBlank((String) element.getValue())) {
             try {
                 Double.valueOf((String)element.getValue());
             } catch (NumberFormatException ex) {
-                errors.rejectValue(element.getElementName(), "invalid.number", translate("Please provide a valid number"));
+                element.addError(translate("Please provide a valid number"));
             }
         }
     }

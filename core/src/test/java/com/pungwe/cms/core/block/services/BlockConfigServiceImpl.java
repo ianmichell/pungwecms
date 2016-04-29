@@ -47,4 +47,19 @@ public class BlockConfigServiceImpl implements BlockConfigService<BlockConfigImp
 		}
 		block.get().setRegion(null);
 	}
+
+	@Override
+	public void updateBlocks(List<BlockConfig> blocks) {
+
+	}
+
+    @Override
+    public BlockConfigImpl newInstance() {
+        return new BlockConfigImpl();
+    }
+
+    @Override
+    public BlockConfigImpl getBlockConfigById(String blockId) {
+        return blocks.stream().filter(blockConfig -> blockConfig.getId().equals(blockId)).findFirst().orElseGet(null);
+    }
 }

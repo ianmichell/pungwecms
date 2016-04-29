@@ -61,6 +61,11 @@ public class SystemTasksBlock implements BlockDefinition {
             uriVariables.putAll(variables);
         }
 
+        Map<String, String> pathVaribles = Utils.getRequestPathVariables();
+        if (pathVaribles != null) {
+            uriVariables.putAll(pathVaribles);
+        }
+
 		String menu = null;
 		if (settings.containsKey("menu")) {
 			menu = settings.get("menu").toString();
@@ -116,7 +121,7 @@ public class SystemTasksBlock implements BlockDefinition {
             }
         } catch (IllegalArgumentException ex) {
             // do nothing... If all the arguments are not there, then don't display it
-            log.warn("Tasks for menu item: " + bottom.getName() + " are missing their uriVariables", ex);
+            log.debug("Tasks for menu item: " + bottom.getName() + " are missing their uriVariables", ex);
         }
 
 	}

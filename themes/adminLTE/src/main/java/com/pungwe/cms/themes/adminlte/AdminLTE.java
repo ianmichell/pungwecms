@@ -160,7 +160,7 @@ public class AdminLTE {
             anchorElement.getContent().forEach(child -> {
                 if (child instanceof HeaderElement) {
                     ((HeaderElement) child).addClass("list-group-item-heading");
-                } else if (child instanceof TextFormatElement && ((TextFormatElement)child).getType() == TextFormatElement.Type.P) {
+                } else if (child instanceof TextFormatElement && ((TextFormatElement) child).getType() == TextFormatElement.Type.P) {
                     ((TextFormatElement) child).addClass("list-group-item-text");
                 }
             });
@@ -207,11 +207,15 @@ public class AdminLTE {
         final List<RenderedElement> elements = (List<RenderedElement>)blockModel.getModel().get("content");
         final List<RenderedElement> wrapped = new ArrayList<>(elements.size());
         elements.forEach(element -> {
-            if (element instanceof ListElement && element.getClasses().contains("status-message")) {
+            if (element.getClasses().contains("status-message")) {
                 DivElement wrapper = new DivElement();
                 wrapper.addClass("alert", "alert-dismissable");
                 if (element.getClasses().contains("error-message")) {
                     wrapper.addClass("alert-danger");
+                } else if (element.getClasses().contains("warning-message")) {
+                    wrapper.addClass("alert-warning");
+                } else if (element.getClasses().contains("success-message")) {
+                    wrapper.addClass("alert-success");
                 }
                 wrapper.addAttribute("role", "alert");
                 SpanElement buttonDismissContent = new SpanElement("&times;");
@@ -220,11 +224,18 @@ public class AdminLTE {
                 dismissButton.addAttribute("data-dismiss", "alert");
                 dismissButton.addAttribute("aria-label", "Close");
                 dismissButton.addClass("close");
-                wrapper.addContent(
-                        dismissButton,
-                        new TextFormatElement(TextFormatElement.Type.P, new TextFormatElement(TextFormatElement.Type.STRONG, "Sorry, but there was a problem!")),
-                        element
-                );
+                wrapper.addContent(dismissButton);
+
+                if (element.getClasses().contains("error-message")) {
+                    wrapper.addContent(
+                            new TextFormatElement(TextFormatElement.Type.P, new TextFormatElement(TextFormatElement.Type.STRONG, "Sorry, but there was a problem!"))
+                    );
+                }
+                if (element instanceof DivElement) {
+                    wrapper.addContent(((DivElement)element).getContent());
+                } else {
+                    wrapper.addContent(element);
+                }
                 wrapped.add(wrapper);
             }
         });

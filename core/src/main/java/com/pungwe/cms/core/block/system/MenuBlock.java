@@ -12,13 +12,17 @@ import com.pungwe.cms.core.element.basic.AnchorElement;
 import com.pungwe.cms.core.element.basic.ListElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
 import com.pungwe.cms.core.element.basic.UnorderedListElement;
+import com.pungwe.cms.core.form.element.SingleSelectListElement;
+import com.pungwe.cms.core.form.element.TextElement;
 import com.pungwe.cms.core.menu.MenuConfig;
+import com.pungwe.cms.core.menu.MenuInfo;
 import com.pungwe.cms.core.menu.services.MenuManagementService;
 import com.pungwe.cms.core.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
@@ -27,12 +31,18 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.pungwe.cms.core.utils.Utils.getRequest;
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 @Block(value="menu_block", label="Primary Menu Block", category = "System")
 @ThemeInfo("blocks/menu_block")
 public class MenuBlock implements BlockDefinition {
 
     @Autowired
     private MenuManagementService menuManagementService;
+
+    @Autowired
+    private LocaleResolver localeResolver;
 
     @Override
     public Map<String, Object> getDefaultSettings() {
@@ -101,6 +111,22 @@ public class MenuBlock implements BlockDefinition {
 
     @Override
     public void buildSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
+        SingleSelectListElement menu = new SingleSelectListElement();
+        menu.setName("menu");
+        menu.setHtmlId("menu_block_menu_name");
+        menu.setLabel(translate("Menu"));
+        menu.setRequired(true);
+        menu.setDefaultValue((String) settings.getOrDefault("menu", ""));
+        List<MenuInfo> menuList = menuManagementService.listMenusByLanguage(localeResolver.resolveLocale(getRequest()).getLanguage());
+        menuList.forEach(menuInfo -> menu.addOption(menuInfo.getTitle(), menuInfo.getId()));
+        elements.add(menu);
 
+        TextElement menuClass = new TextElement();
+        menuClass.setName("menu");
+        menuClass.setHtmlId("menu_block_menu_class");
+        menuClass.setLabel(translate("Menu Class"));
+        menuClass.setRequired(false);
+        menuClass.setDefaultValue((String)settings.getOrDefault("menu_class", ""));
+        elements.add(menuClass);
     }
 }

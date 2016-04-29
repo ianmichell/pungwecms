@@ -6,6 +6,7 @@ package com.pungwe.cms.core.block.config;
 
 import com.pungwe.cms.core.block.builder.AdminPageBuilder;
 import com.pungwe.cms.core.block.builder.BlockPageBuilder;
+import com.pungwe.cms.core.block.controller.BlockAddController;
 import com.pungwe.cms.core.block.controller.BlockLayoutController;
 import com.pungwe.cms.core.block.controller.BlockPlacementController;
 import com.pungwe.cms.core.block.controller.BlockSettingsController;
@@ -52,6 +53,11 @@ public class BlockSystemConfig {
     @Bean
     public BlockSettingsController blockSettingsController() {
         return new BlockSettingsController();
+    }
+
+    @Bean
+    BlockAddController blockAddController() {
+        return new BlockAddController();
     }
 
     @Bean

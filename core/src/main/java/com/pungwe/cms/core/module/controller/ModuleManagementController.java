@@ -103,7 +103,7 @@ public class ModuleManagementController extends AbstractFormController {
             }
             form.submit(model.asMap());
             // FIXME: This message could be better
-            statusMessageService.addSuccessStatusMessage(translate("Success! You've enabled new modules"));
+            statusMessageService.addSuccessStatusMessage(redirectAttributes, translate("Success! You've enabled new modules"));
             return "redirect:/admin/modules";
         };
     }

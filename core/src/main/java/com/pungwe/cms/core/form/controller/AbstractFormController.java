@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.form.controller;
 
+import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.form.Form;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.utils.services.HookService;
@@ -42,8 +43,13 @@ public abstract class AbstractFormController<T> implements Form<T> {
 
 			@Override
 			public void validate(Object target, Errors errors) {
-				AbstractFormController.this.validate(((FormElement)target), errors);
+				AbstractFormController.this.validate(((FormElement) target), errors);
 			}
 		});
+	}
+
+	@Override
+	public void validate(FormElement<T> form, Errors errors) {
+		form.validate(errors);
 	}
 }

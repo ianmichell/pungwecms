@@ -7,6 +7,7 @@ import com.pungwe.cms.core.menu.MenuInfo;
 import com.pungwe.cms.core.menu.services.MenuManagementService;
 import com.pungwe.cms.core.system.exceptions.ResourceNotFoundException;
 import com.pungwe.cms.core.utils.Utils;
+import com.pungwe.cms.core.utils.services.StatusMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,9 @@ public class MenuEditController extends AbstractMenuInfoController {
 
     @Autowired
     protected MenuManagementService menuManagementService;
+
+    @Autowired
+    protected StatusMessageService statusMessageService;
 
     @Override
     public String getFormId() {
@@ -81,6 +85,11 @@ public class MenuEditController extends AbstractMenuInfoController {
         return menuInfoId;
     }
 
+    @ModelAttribute("language")
+    public String language(@PathVariable("language") String language) {
+        return language;
+    }
+
     @ModelAttribute("title")
     public String title() {
         return translate("Edit Menu");
@@ -102,7 +111,7 @@ public class MenuEditController extends AbstractMenuInfoController {
             form.getSubmitHandlers().forEach(f -> {
                 f.submit(form, model);
             });
-            redirectAttributes.addFlashAttribute("status.message.success", translate("Success! You've updated a new menu: ", form.getValue("title", 0)));
+            statusMessageService.addSuccessStatusMessage(redirectAttributes, translate("Success! You've updated menu: %s", form.getValue("title", 0)));
             redirectAttributes.addAttribute("menuInfoId", id);
             redirectAttributes.addAttribute("language", language);
             return "redirect:/admin/structure/menu/edit/{menuInfoId}/{language}";

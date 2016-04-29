@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.form;
 
 import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
+import com.pungwe.cms.core.form.element.FormElement;
 import org.springframework.validation.Errors;
 
 /**
@@ -8,6 +9,6 @@ import org.springframework.validation.Errors;
  */
 public interface ElementValidator {
 
-	<T extends AbstractFormRenderedElement> void validate(T element, Errors errors, int delta);
+	void validate(FormRenderedElement element);
 
 }

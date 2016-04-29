@@ -1,12 +1,7 @@
 package com.pungwe.cms.core.module.config;
 
-import com.pungwe.cms.core.block.builder.AdminPageBuilder;
-import com.pungwe.cms.core.block.builder.BlockPageBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pungwe.cms.core.block.config.BlockSystemConfig;
-import com.pungwe.cms.core.block.controller.BlockLayoutController;
-import com.pungwe.cms.core.block.controller.BlockSettingsController;
-import com.pungwe.cms.core.block.services.BlockManagementService;
-import com.pungwe.cms.core.block.system.*;
 import com.pungwe.cms.core.element.services.RenderedElementService;
 import com.pungwe.cms.core.field.config.FieldAPIConfig;
 import com.pungwe.cms.core.form.processors.FormHandlerMappingPostProcessor;
@@ -51,6 +46,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.MultipartConfigElement;
 import java.util.Arrays;
@@ -126,8 +122,21 @@ public class ModuleContextConfig extends WebMvcAutoConfiguration.WebMvcAutoConfi
         ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
         contentNegotiatingViewResolver.setContentNegotiationManager(beanFactory.getBean(ContentNegotiationManager.class));
         contentNegotiatingViewResolver.setViewResolvers(Arrays.asList(pungweViewResolver()));
+        contentNegotiatingViewResolver.setDefaultViews(Arrays.asList(mappingJackson2JsonView()));
         contentNegotiatingViewResolver.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return contentNegotiatingViewResolver;
+    }
+
+    @Bean
+    public ObjectMapper jsonObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper;
+    }
+
+    @Bean
+    public MappingJackson2JsonView mappingJackson2JsonView() {
+        MappingJackson2JsonView mappingJackson2JsonView = new MappingJackson2JsonView(jsonObjectMapper());
+        return mappingJackson2JsonView;
     }
 
     @Bean

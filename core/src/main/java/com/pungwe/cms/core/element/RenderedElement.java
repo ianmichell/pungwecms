@@ -1,6 +1,8 @@
 package com.pungwe.cms.core.element;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
+import com.pungwe.cms.core.rest.RenderedElementConverter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Created by ian on 09/01/2016.
  */
+@JsonSerialize(converter = RenderedElementConverter.class)
 public interface RenderedElement {
 
 	String getHtmlId();

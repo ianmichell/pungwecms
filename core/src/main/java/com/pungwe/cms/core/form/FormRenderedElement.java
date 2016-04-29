@@ -1,7 +1,9 @@
 package com.pungwe.cms.core.form;
 
 import com.pungwe.cms.core.element.RenderedElement;
+import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.LabelElement;
+import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.List;
@@ -30,10 +32,12 @@ public interface FormRenderedElement<T> extends RenderedElement {
 	void setRequired(boolean required);
 
 	boolean hasError();
-	void setError(boolean error);
+	List<String> getErrors();
+	void addError(String... error);
 
     List<ElementValidator> getValidators();
     void setValidators(List<ElementValidator> validators);
     void addValidator(ElementValidator... validators);
 
+	void validate();
 }

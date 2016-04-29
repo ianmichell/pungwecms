@@ -59,6 +59,7 @@ public class BlockPlacementController {
                 anchorElement.setTitle(translate("Place this block"));
                 anchorElement.addContent(translate("Place block"));
                 anchorElement.setHref("/admin/structure/block_layout/add_block/" + region + "/" + info.value());
+                anchorElement.addClass("button");
 
                 element.addRow(
                         new TableElement.Column(translate(info.label())),

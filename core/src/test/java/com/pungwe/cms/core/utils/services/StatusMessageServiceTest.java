@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +27,11 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration({TestConfig.class, BaseApplicationConfig.class})
@@ -38,12 +44,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddSuccessMessage() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addSuccessStatusMessage("Success!");
-        statusMessageService.addSuccessStatusMessage("Success2");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success!");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator();
 
@@ -54,12 +66,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddWarningMessage() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addWarningStatusMessage("Warning!");
-        statusMessageService.addWarningStatusMessage("Warning2");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning!");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator();
 
@@ -69,13 +87,19 @@ public class StatusMessageServiceTest extends AbstractWebTest {
 
     @Test
     public void testAddErrorMessage() {
-        FlashMap flashMap = new FlashMap();
+        final FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addErrorStatusMessage("Error!");
-        statusMessageService.addErrorStatusMessage("Error2");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error!");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator();
 
@@ -86,12 +110,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddSuccessMessageWithExistingString() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         flashMap.put(StatusMessageService.SUCCESS_MESSAGE_KEY, "Success!");
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addSuccessStatusMessage("Success2");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator();
 
@@ -102,12 +132,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddWarningMessageWithExistingString() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         flashMap.put(StatusMessageService.WARNING_MESSAGE_KEY, "Warning!");
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addWarningStatusMessage("Warning2");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator();
 
@@ -118,12 +154,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddErrorMessageWithExistingString() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         flashMap.put(StatusMessageService.ERROR_MESSAGE_KEY, "Error!");
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addErrorStatusMessage("Error2");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator();
 
@@ -134,13 +176,19 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddSuccessMessageWithExistingNull() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         flashMap.put(StatusMessageService.SUCCESS_MESSAGE_KEY, null);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addSuccessStatusMessage("Success!");
-        statusMessageService.addSuccessStatusMessage("Success2");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success!");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.SUCCESS_MESSAGE_KEY)).iterator();
 
@@ -151,13 +199,19 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddWarningMessageWithExistingNull() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         flashMap.put(StatusMessageService.WARNING_MESSAGE_KEY, null);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addWarningStatusMessage("Warning!");
-        statusMessageService.addWarningStatusMessage("Warning2");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning!");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.WARNING_MESSAGE_KEY)).iterator();
 
@@ -168,13 +222,19 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testAddErrorMessageWithExistingNull() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         flashMap.put(StatusMessageService.ERROR_MESSAGE_KEY, null);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addErrorStatusMessage("Error!");
-        statusMessageService.addErrorStatusMessage("Error2");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error!");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error2");
 
         Iterator<String> it = ((Set)flashMap.get(StatusMessageService.ERROR_MESSAGE_KEY)).iterator();
 
@@ -292,12 +352,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testGetSuccessMessagesSet() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addSuccessStatusMessage("Success!");
-        statusMessageService.addSuccessStatusMessage("Success2");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success!");
+        statusMessageService.addSuccessStatusMessage(redirectAttributes, "Success2");
 
         request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
@@ -313,12 +379,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testGetWarningMessagesSet() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addWarningStatusMessage("Warning!");
-        statusMessageService.addWarningStatusMessage("Warning2");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning!");
+        statusMessageService.addWarningStatusMessage(redirectAttributes, "Warning2");
 
         request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
@@ -334,12 +406,18 @@ public class StatusMessageServiceTest extends AbstractWebTest {
     @Test
     public void testGetErrorMessagesSet() {
         FlashMap flashMap = new FlashMap();
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        when(redirectAttributes.addFlashAttribute(anyObject(), anyObject())).then(invocation -> {
+            flashMap.put((String)invocation.getArguments()[0], invocation.getArguments()[1]);
+            return invocation.getMock();
+        });
+        when(redirectAttributes.getFlashAttributes()).then(invocation -> flashMap);
         MockHttpServletRequest request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
         request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        statusMessageService.addErrorStatusMessage("Error!");
-        statusMessageService.addErrorStatusMessage("Error2");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error!");
+        statusMessageService.addErrorStatusMessage(redirectAttributes, "Error2");
 
         request = new MockHttpServletRequest(RequestMethod.GET.name(), "/");
         request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);

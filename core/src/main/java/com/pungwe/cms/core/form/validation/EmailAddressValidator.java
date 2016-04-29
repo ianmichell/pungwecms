@@ -1,7 +1,9 @@
 package com.pungwe.cms.core.form.validation;
 
 import com.pungwe.cms.core.form.ElementValidator;
+import com.pungwe.cms.core.form.FormRenderedElement;
 import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
+import com.pungwe.cms.core.form.element.FormElement;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.validation.Errors;
 
@@ -13,8 +15,8 @@ import static com.pungwe.cms.core.utils.Utils.translate;
 public class EmailAddressValidator implements ElementValidator {
 
     @Override
-    public <T extends AbstractFormRenderedElement> void validate(T element, Errors errors, int delta) {
-        String value = (String)element.getValueOrDefaultValue();
+    public void validate(FormRenderedElement element) {
+        String value = (String)element.getValue();
         if (value == null) {
             return;
         }
@@ -23,7 +25,7 @@ public class EmailAddressValidator implements ElementValidator {
         boolean valid = new EmailValidator().isValid(value, null);
 
         if (!valid) {
-            errors.rejectValue(element.getElementName(), "email.invalid", translate("Please provide a valid email address"));
+            element.addError(translate("Please provide a valid email address"));
         }
     }
 }

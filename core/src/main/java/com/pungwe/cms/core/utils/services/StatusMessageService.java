@@ -4,11 +4,8 @@
 
 package com.pungwe.cms.core.utils.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.FlashMap;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -23,15 +20,15 @@ public class StatusMessageService {
     public static final String WARNING_MESSAGE_KEY = "status.message.warning";
     public static final String ERROR_MESSAGE_KEY = "status.message.error";
 
-    public void addSuccessStatusMessage(String message, Object... args) {
+    public void addSuccessStatusMessage(RedirectAttributes redirectAttributes, String message, Object... args) {
         Set<String> messages = new LinkedHashSet<>();
         String messageToAdd = translate(message, args);
-        if (!containsOutputFlashAttribute(SUCCESS_MESSAGE_KEY)) {
+        if (!redirectAttributes.getFlashAttributes().containsKey(SUCCESS_MESSAGE_KEY)) {
             messages.add(messageToAdd);
-            setFlashAttribute(SUCCESS_MESSAGE_KEY, messages);
+            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE_KEY, messages);
             return;
         }
-        Object messagesFromMap = getOutputFlashAttribute(SUCCESS_MESSAGE_KEY);
+        Object messagesFromMap = redirectAttributes.getFlashAttributes().get(SUCCESS_MESSAGE_KEY);
         if (messagesFromMap instanceof Collection) {
             messages.addAll((Collection) messagesFromMap);
         } else if (messagesFromMap != null) {
@@ -39,18 +36,18 @@ public class StatusMessageService {
         }
         messages.add(messageToAdd);
         // Set the new attribute...
-        setFlashAttribute(SUCCESS_MESSAGE_KEY, messages);
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE_KEY, messages);
     }
 
-    public void addErrorStatusMessage(String message, Object... args) {
+    public void addErrorStatusMessage(RedirectAttributes redirectAttributes, String message, Object... args) {
         Set<String> messages = new LinkedHashSet<>();
         String messageToAdd = translate(message, args);
-        if (!containsOutputFlashAttribute(ERROR_MESSAGE_KEY)) {
+        if (!redirectAttributes.getFlashAttributes().containsKey(ERROR_MESSAGE_KEY)) {
             messages.add(messageToAdd);
-            setFlashAttribute(ERROR_MESSAGE_KEY, messages);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, messages);
             return;
         }
-        Object messagesFromMap = getOutputFlashAttribute(ERROR_MESSAGE_KEY);
+        Object messagesFromMap = redirectAttributes.getFlashAttributes().get(ERROR_MESSAGE_KEY);
         if (messagesFromMap instanceof Collection) {
             messages.addAll((Collection) messagesFromMap);
         } else if (messagesFromMap != null) {
@@ -58,18 +55,18 @@ public class StatusMessageService {
         }
         messages.add(messageToAdd);
         // Set the new attribute...
-        setFlashAttribute(ERROR_MESSAGE_KEY, messages);
+        redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, messages);
     }
 
-    public void addWarningStatusMessage(String message, Object... args) {
+    public void addWarningStatusMessage(RedirectAttributes redirectAttributes, String message, Object... args) {
         Set<String> messages = new LinkedHashSet<>();
         String messageToAdd = translate(message, args);
-        if (!containsOutputFlashAttribute(WARNING_MESSAGE_KEY)) {
+        if (!redirectAttributes.getFlashAttributes().containsKey(WARNING_MESSAGE_KEY)) {
             messages.add(messageToAdd);
-            setFlashAttribute(WARNING_MESSAGE_KEY, messages);
+            redirectAttributes.addFlashAttribute(WARNING_MESSAGE_KEY, messages);
             return;
         }
-        Object messagesFromMap = getOutputFlashAttribute(WARNING_MESSAGE_KEY);
+        Object messagesFromMap = redirectAttributes.getFlashAttributes().get(WARNING_MESSAGE_KEY);
         if (messagesFromMap instanceof Collection) {
             messages.addAll((Collection) messagesFromMap);
         } else if (messagesFromMap != null) {
@@ -77,7 +74,7 @@ public class StatusMessageService {
         }
         messages.add(messageToAdd);
         // Set the new attribute...
-        setFlashAttribute(WARNING_MESSAGE_KEY, messages);
+        redirectAttributes.addFlashAttribute(WARNING_MESSAGE_KEY, messages);
     }
 
     public Set<String> getSuccessStatusMessages() {

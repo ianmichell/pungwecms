@@ -275,6 +275,10 @@ public class BlockManagementService {
         blockConfigService.removeBlock(theme, blockName);
     }
 
+    public void updateBlocks(List<BlockConfig> blocks) {
+        blockConfigService.updateBlocks(blocks);
+    }
+
     @EventListener
     public void installAdminBlocks(ContextRefreshedEvent event) {
         if (event.getApplicationContext().getId().equals("module-application-context")) {
@@ -298,5 +302,13 @@ public class BlockManagementService {
             addBlockToTheme("system_admin_system_tasks_block", "system.admin", "content", "system_tasks_block", -101, taskBlockSettings);
             addBlockToTheme("system_admin_main_content_block", "system.admin", "content", "main_content_block", -100, new HashMap<>());
         }
+    }
+
+    public BlockConfig newInstance() {
+        return blockConfigService.newInstance();
+    }
+
+    public BlockConfig getBlockConfigById(String blockId) {
+        return blockConfigService.getBlockConfigById(blockId);
     }
 }

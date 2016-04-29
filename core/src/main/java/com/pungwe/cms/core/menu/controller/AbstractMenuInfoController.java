@@ -35,6 +35,12 @@ public abstract class AbstractMenuInfoController extends AbstractFormController<
         title.setPlaceholder(translate("Menu Title"));
         title.setSize(20);
         title.setRequired(true);
+        title.addValidator(e -> {
+            // Validate title and language regardless if the required flag is set...
+            if (StringUtils.isEmpty(e.getValue())) {
+                e.addError(translate("Please provide a menu title"));
+            }
+        });
 
         TextElement description = new TextElement();
         description.setHtmlId(getFormId() + "_description");
@@ -49,6 +55,11 @@ public abstract class AbstractMenuInfoController extends AbstractFormController<
         language.setLabel(translate("Language"));
         language.setName("language");
         language.setRequired(true);
+        language.addValidator(e -> {
+            if (StringUtils.isEmpty(e.getValue())) {
+                e.addError(translate("Please select a language"));
+            }
+        });
         final Locale currentLocale = LocaleContextHolder.getLocale();
         List<Locale> locales = Utils.getSortedLocales(currentLocale);
         locales.stream().forEach(locale -> {
@@ -69,15 +80,7 @@ public abstract class AbstractMenuInfoController extends AbstractFormController<
 
     @Override
     public void validate(FormElement form, Errors errors) {
-        // Validate title and language regardless if the required flag is set...
-        if (StringUtils.isEmpty(form.getValue("title", 0))) {
-            errors.rejectValue("fields[" + form.getFormFieldIndex("title", 0) + "].value", "empty_title", translate("Please provide a menu title"));
-            form.getField("title", 0).setError(true);
-        }
-        if (StringUtils.isEmpty(form.getValue("language", 0))) {
-            errors.rejectValue("fields[" + form.getFormFieldIndex("language", 0) + "].value", "empty_language", translate("Please select a language"));
-            form.getField("language", 0).setError(true);
-        }
+        form.validate(errors);
     }
 
     @ResponseStatus(HttpStatus.OK)
