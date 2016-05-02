@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath 'org.springframework:springloaded:1.2.4.RELEASE'
+        classpath 'org.springframework:springloaded:1.2.5.RELEASE'
     }
 }
 
@@ -27,7 +27,12 @@ allprojects {
 //    apply plugin: 'findbugs'
 //    apply plugin: 'checkstyle'
 //    apply plugin: 'pmd'
-
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir = file("$buildDir/classes/main/")
+        }
+    }
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
