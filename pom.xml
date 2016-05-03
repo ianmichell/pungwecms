@@ -16,7 +16,7 @@ jacksonVersion = "2.6.3"
   <properties>
     <spring.boot.version>1.3.3.RELEASE</spring.boot.version>
     <spring.platform.version>2.0.1.RELEASE</spring.platform.version>
-    <hibernte.version>5.0.5.Final</hibernation.version>
+    <hibernate.version>5.0.5.Final</hibernate.version>
     <jackson.version>2.6.3</jackson.version>
   </properties>
 
@@ -169,6 +169,19 @@ jacksonVersion = "2.6.3"
     </dependencies>
 
   </dependencyManagement>
+
+	<build>
+		<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+	</build>
 
   <modules>
     <module>core</module>
