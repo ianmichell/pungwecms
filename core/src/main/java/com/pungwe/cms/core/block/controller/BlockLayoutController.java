@@ -178,6 +178,7 @@ public class BlockLayoutController extends AbstractFormController {
                 settings.setHref("/admin/structure/block_layout/" + b.getId() + "/settings");
                 settings.setTitle(translate("Configure block settings"));
                 settings.setContent(translate("Settings"));
+                settings.addClass("operation");
 
                 TableElement.Column ops = new TableElement.Column(settings);
 
