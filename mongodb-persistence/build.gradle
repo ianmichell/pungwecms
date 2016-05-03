@@ -1,3 +1,0 @@
-dependencies {
-    compile "org.mongodb:mongodb-driver"
-}
