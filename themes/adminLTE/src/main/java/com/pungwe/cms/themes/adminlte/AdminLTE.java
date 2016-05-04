@@ -122,7 +122,9 @@ public class AdminLTE {
             element.addClass("form");
         }
 
-        if (element instanceof FormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
+        if (element instanceof FormRenderedElement &&
+                !(element instanceof InputButtonElement || element instanceof ButtonElement
+                        || element instanceof CheckboxElement || element instanceof RadioElement)) {
             element.addClass("form-control");
         }
 
