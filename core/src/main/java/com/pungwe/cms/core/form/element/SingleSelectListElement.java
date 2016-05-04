@@ -22,7 +22,7 @@ public class SingleSelectListElement extends AbstractFormRenderedElement<String>
 
 	@ModelAttribute("options")
 	public Set<Map.Entry<String, String>> getOptionsSet() {
-		return options.entrySet();
+		return getOptions().entrySet();
 	}
 
 	public void addOption(String label, String value) {

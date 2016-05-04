@@ -48,4 +48,6 @@ public interface UserManagementService extends UserDetailsService {
     default PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    List<UserRole> listRoles();
 }

@@ -105,4 +105,9 @@ public class UserManagementServiceImpl implements UserManagementService {
         return new PageImpl<UserProfile>(users.getContent().stream()
                 .map(userProfile -> (UserProfile)userProfile).collect(Collectors.toList()), pageable, users.getTotalElements());
     }
+
+    @Override
+    public List<UserRole> listRoles() {
+        return userRoleRepository.findAll().stream().map(role -> (UserRole)role).collect(Collectors.toList());
+    }
 }

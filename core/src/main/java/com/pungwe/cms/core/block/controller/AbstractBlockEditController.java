@@ -12,14 +12,12 @@ import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.form.element.TextElement;
+import com.pungwe.cms.core.security.forms.VisibilityFormBuilder;
 import com.pungwe.cms.core.system.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.pungwe.cms.core.utils.Utils.getRequestPathVariable;
 import static com.pungwe.cms.core.utils.Utils.translate;
@@ -28,6 +26,9 @@ public abstract class AbstractBlockEditController extends AbstractFormController
 
     @Autowired
     protected BlockManagementService blockManagementService;
+
+    @Autowired
+    protected VisibilityFormBuilder visibilityFormBuilder;
 
     @Override
     public void build(FormElement<BlockConfig> element) {
@@ -61,6 +62,15 @@ public abstract class AbstractBlockEditController extends AbstractFormController
         blockDefinition.get().buildSettingsForm(settingsForm, blockConfig.getSettings());
 
         element.addContent(settingsForm);
+
+        Map<String, Object> visibilitySettings = (Map<String, Object>)blockConfig.getSettings()
+                .get("visibility");
+
+        // Build visibility form
+        RenderedElement visibility = visibilityFormBuilder.buildVisibilityForm(visibilitySettings == null
+                ? new LinkedHashMap<>() : visibilitySettings);
+
+        element.addContent(visibility);
 
     }
 

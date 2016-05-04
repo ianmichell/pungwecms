@@ -73,6 +73,16 @@ subprojects {
         jacksonVersion = "2.6.3"
     }
 
+//    task copyDependencies(type: Copy) {
+//        from configurations.runtime
+//        from configurations.testRuntime
+//        into new File(buildDir, "dependencies")
+//    }
+//
+//    task writeAtomClasspath {
+//      new File("${projectDir}/.atom-classpath").text = "${buildDir}/classes/main:${buildDir}/classes/test:${buildDir}/dependencies/*"
+//    }
+
     dependencyManagement {
         imports {
             mavenBom "io.spring.platform:platform-bom:${springPlatformVersion}"

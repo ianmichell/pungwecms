@@ -1,8 +1,12 @@
-<div {{ printAttribute("class", join(classes, ' ')) }}{{ attributes }}>
 {%  for option in options %}
+<div {{ printAttribute("class", join(classes, ' ')) }}{{ attributes }}>
     <label>
-        <input type="checkbox" {{ printAttribute("name", name) }} value="{{ option.key }}" {{ checked }} />
+        {% if (value == option.key) %}
+            <input type="radio" {{ printAttribute("name", name) }} value="{{ option.key }}" checked />
+        {% else %}
+            <input type="radio" {{ printAttribute("name", name) }} value="{{ option.key }}" />
+        {% endif %}
         {{ option.value }}
     </label>
-{% endfor %}
 </div>
+{% endfor %}
