@@ -330,6 +330,7 @@ public class AdminLTE {
                 wrapper.addContent(checkboxWrapper);
             } else if (element instanceof RadioElement) {
                 element.addClass("radio");
+                wrapper.addContent(element);
             } else {
                 wrapper.addContent(element);
             }
