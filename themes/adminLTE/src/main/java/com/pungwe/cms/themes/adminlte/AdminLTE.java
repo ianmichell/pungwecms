@@ -144,6 +144,8 @@ public class AdminLTE {
 
         if (element instanceof AnchorElement && element.getClasses().contains("button")) {
             element.addClass("btn btn-default");
+        } else if (element instanceof AnchorElement && element.hasClass("operation")) {
+            element.addClass("btn btn-default btn-sm");
         }
     }
 

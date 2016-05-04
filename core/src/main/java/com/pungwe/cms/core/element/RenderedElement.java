@@ -56,4 +56,8 @@ public interface RenderedElement {
 	}
 
 	void setClasses(List<String> classes);
+
+	default boolean hasClass(String operation) {
+		return getClasses().contains(operation);
+	}
 }
