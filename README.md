@@ -600,5 +600,3 @@ TODO - At the moment none of the binaries are not published into maven repositor
 - Look into app packaging, so that desktop class apps can be built and run locally
 - Finish entity type definition system
 - Change / revision system for entities
-
-More to come...
