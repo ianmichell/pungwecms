@@ -4,6 +4,7 @@ import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import com.pungwe.cms.core.form.controller.AbstractFormController;
 import com.pungwe.cms.core.form.element.*;
+import com.pungwe.cms.core.form.validation.MachineNameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
@@ -45,6 +46,7 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		bundleName.setPlaceholder("Bundle Name");
 		bundleName.setRequired(true);
 		bundleName.setName("bundle");
+        bundleName.addValidator(new MachineNameValidator());
 		fieldsetElement.addContent(bundleName);
 
 		buildInternal(element);
@@ -58,13 +60,9 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		formActions.addContent(submit);
 
 		element.addContent(formActions);
+
 	}
 
 	protected abstract void buildInternal(FormElement<EntityDefinition> element);
 
-
-	@Override
-	public void validate(FormElement form, Errors errors) {
-
-	}
 }

@@ -29,9 +29,7 @@ import com.pungwe.cms.core.element.HeaderRenderedElement;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.*;
 import com.pungwe.cms.core.form.FormRenderedElement;
-import com.pungwe.cms.core.form.element.AbstractFormRenderedElement;
-import com.pungwe.cms.core.form.element.ButtonElement;
-import com.pungwe.cms.core.form.element.InputButtonElement;
+import com.pungwe.cms.core.form.element.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -124,7 +122,9 @@ public class AdminLTE {
             element.addClass("form");
         }
 
-        if (element instanceof FormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
+        if (element instanceof FormRenderedElement &&
+                !(element instanceof InputButtonElement || element instanceof ButtonElement
+                        || element instanceof CheckboxElement || element instanceof RadioElement)) {
             element.addClass("form-control");
         }
 
@@ -320,15 +320,27 @@ public class AdminLTE {
             return wrapper;
         }
 
-        if (element instanceof AbstractFormRenderedElement && !(element instanceof InputButtonElement || element instanceof ButtonElement)) {
+        if (element instanceof AbstractFormRenderedElement && !(element instanceof InputButtonElement
+                || element instanceof ButtonElement)) {
             DivElement wrapper = new DivElement();
             wrapper.addClass("form-group");
-            wrapper.addContent(element);
             if (((AbstractFormRenderedElement) element).hasError()) {
                 wrapper.addClass("has-error");
             }
+            if (element instanceof CheckboxElement) {
+                DivElement checkboxWrapper = new DivElement();
+                checkboxWrapper.addClass("checkbox");
+                checkboxWrapper.addContent(element);
+                wrapper.addContent(checkboxWrapper);
+            } else if (element instanceof RadioElement) {
+                element.addClass("radio");
+                wrapper.addContent(element);
+            } else {
+                wrapper.addContent(element);
+            }
             return wrapper;
         }
+
         return element;
     }
 

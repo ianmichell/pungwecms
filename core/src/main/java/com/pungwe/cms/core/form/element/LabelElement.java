@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.Arrays;
 import java.util.Collection;
 
+// FIXME: Find a way of pulling out the text name
 /**
  * Created by ian on 24/02/2016.
  */

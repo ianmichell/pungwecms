@@ -145,7 +145,7 @@ public class MenuAddControllerTest extends AbstractControllerTest {
         assertEquals("My Menu Description", doc.select("#add_menu_form_description").val());
 
         // Check for the error block!
-        assertEquals("Please provide a menu title", doc.select(".status-message.error-message li:nth-child(1)").html());
+        assertEquals("Field is required", doc.select(".status-message.error-message li:nth-child(1)").html());
     }
 
     @Test
@@ -213,6 +213,6 @@ public class MenuAddControllerTest extends AbstractControllerTest {
         assertEquals("My Menu Description", doc.select("#add_menu_form_description").val());
 
         // Check for the error block!
-        assertEquals("Please select a language", doc.select(".status-message.error-message li:nth-child(1)").html());
+        assertEquals("Field is required", doc.select(".status-message.error-message li:nth-child(1)").html());
     }
 }

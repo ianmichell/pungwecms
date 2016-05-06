@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by ian on 09/01/2016.
  */
-@EntityType(value = "node_entity_type", label = "Content Type", description = "Content Types")
+@EntityType(value = "node_entity_type", type = "node", label = "Content Type", description = "Content Types")
 public class NodeEntityTypeDefinition implements EntityTypeDefinition {
 
 	@Override

@@ -33,7 +33,7 @@ public class JPAEntityDefinitionService implements EntityDefinitionService<Entit
 	@Override
 	public EntityDefinitionImpl newInstance(EntityTypeDefinition type, String bundle) {
 		EntityType typeInfo = AnnotationUtils.findAnnotation(type.getClass(), EntityType.class);
-		EntityDefinitionImpl entityDefinition = new EntityDefinitionImpl(new EntityTypeInfoImpl(typeInfo.value(), bundle));
+		EntityDefinitionImpl entityDefinition = new EntityDefinitionImpl(new EntityTypeInfoImpl(typeInfo.type(), bundle));
 		entityDefinition.addField(type.getBaseFields().toArray(new FieldConfig[0]));
 		return entityDefinition;
 	}

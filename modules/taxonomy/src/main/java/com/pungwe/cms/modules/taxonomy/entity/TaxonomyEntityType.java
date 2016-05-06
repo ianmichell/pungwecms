@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@EntityType(value = "taxonomy_entity_type", label = "Taxonomy", description = "Create and manage taxonomy definitions")
+@EntityType(value = "taxonomy_entity_type", type = "taxonomy", label = "Taxonomy", description = "Create and manage taxonomy definitions")
 public class TaxonomyEntityType implements EntityTypeDefinition {
 
     @Override

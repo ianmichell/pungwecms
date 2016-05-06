@@ -122,7 +122,7 @@ public class MenuBlock implements BlockDefinition {
         elements.add(menu);
 
         TextElement menuClass = new TextElement();
-        menuClass.setName("menu");
+        menuClass.setName("menu_class");
         menuClass.setHtmlId("menu_block_menu_class");
         menuClass.setLabel(translate("Menu Class"));
         menuClass.setRequired(false);

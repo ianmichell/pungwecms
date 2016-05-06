@@ -1,7 +1,9 @@
 package com.pungwe.cms.core.entity.services;
 
+import com.pungwe.cms.core.annotations.stereotypes.EntityType;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.EntityTypeDefinition;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -29,4 +31,11 @@ public interface EntityDefinitionService<ED extends EntityDefinition> {
 
 	void remove(String type, String bundle);
 
+	default String getEntityTypeName(EntityTypeDefinition type) {
+        EntityType typeInfo = AnnotationUtils.findAnnotation(type.getClass(), EntityType.class);
+        if (typeInfo == null) {
+            throw new IllegalArgumentException("Entity type not annotated with @EntityType");
+        }
+        return typeInfo.type();
+	}
 }

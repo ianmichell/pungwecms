@@ -28,6 +28,15 @@ public class Utils {
 		return locales.stream().sorted((o1, o2) -> collator.compare(o1.getDisplayName(currentLocale), o2.getDisplayName(currentLocale))).collect(Collectors.toList());
 	}
 
+    public static boolean isOfType(Class<?> is, Class<?>... of) {
+        for (Class<?> c : of) {
+            if (c.isAssignableFrom(is)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Comparator<String> pathPatternComparator() {
         String path = (String)RequestContextHolder.getRequestAttributes().getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
         if (StringUtils.isEmpty(path)) {

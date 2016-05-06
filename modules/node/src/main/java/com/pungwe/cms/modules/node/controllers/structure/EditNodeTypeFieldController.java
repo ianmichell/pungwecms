@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 25/03/2016.
  */
@@ -54,7 +56,7 @@ public class EditNodeTypeFieldController extends AbstractFieldEditController<Ent
 
 	@ModelAttribute("title")
 	public String title() {
-		return "Edit";
+		return translate("Edit");
 	}
 
 	@ModelAttribute("nodeType")

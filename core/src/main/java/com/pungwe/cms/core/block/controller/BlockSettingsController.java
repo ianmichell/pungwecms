@@ -5,16 +5,21 @@ import com.pungwe.cms.core.block.BlockConfig;
 import com.pungwe.cms.core.block.services.BlockManagementService;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.theme.services.ThemeManagementService;
+import com.pungwe.cms.core.utils.services.StatusMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 import static com.pungwe.cms.core.utils.Utils.getRequestPathVariable;
@@ -41,15 +46,14 @@ public class BlockSettingsController extends AbstractBlockEditController {
     @Autowired
     protected BlockManagementService blockManagementService;
 
+    @Autowired
+    protected StatusMessageService statusMessageService;
+
     @Override
     protected BlockConfig blockConfig() {
         return blockManagementService.getBlockConfigById(getRequestPathVariable("blockId"));
     }
 
-    @Override
-    protected void submit(FormElement<BlockConfig> form, Errors errors) {
-
-    }
 
     @ModelAttribute("title")
     public String title() {
@@ -62,9 +66,25 @@ public class BlockSettingsController extends AbstractBlockEditController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Callable<String> index(@PathVariable("blockId") final String blockId, final Model model) {
+    public Callable<String> get() {
         return () -> {
             return "admin/block/settings";
+        };
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public Callable<String> post(@PathVariable("blockId") final String blockId,
+                                 @Valid @ModelAttribute("form") final FormElement<BlockConfig> form,
+                                 final BindingResult result, final RedirectAttributes redirectAttributes) {
+        return () -> {
+            if (result.hasErrors()) {
+                return "admin/block/settings";
+            }
+            form.submit(new HashMap<>());
+            statusMessageService.addSuccessStatusMessage(redirectAttributes, translate("Success you have updated: %s",
+                    form.getTargetObject().getAdminTitle()));
+            redirectAttributes.addAttribute("blockId", blockId);
+            return "redirect:/admin/structure/block_layout/{blockId}/settings";
         };
     }
 }

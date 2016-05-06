@@ -9,6 +9,7 @@ import com.pungwe.cms.core.element.basic.TableElement;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.controller.AbstractEntityTypeListController;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
+import com.pungwe.cms.modules.node.entity.NodeEntityTypeDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,9 @@ public class ManageNodeTypesController extends AbstractEntityTypeListController 
 	@Autowired
 	protected EntityDefinitionService entityDefinitionService;
 
+	@Autowired
+	protected NodeEntityTypeDefinition nodeEntityTypeDefinition;
+
 	// FIXME: Inject a hook service, this will allow module developers to modify this module
 	@MenuItem(
 			menu = "system",
@@ -50,7 +54,7 @@ public class ManageNodeTypesController extends AbstractEntityTypeListController 
 
 	@Override
 	protected String getEntityType() {
-		return "node";
+		return entityDefinitionService.getEntityTypeName(nodeEntityTypeDefinition);
 	}
 
 	@Override

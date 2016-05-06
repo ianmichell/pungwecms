@@ -28,6 +28,7 @@ import com.pungwe.cms.core.annotations.security.Roles;
 import com.pungwe.cms.core.security.field.UserCredentialsField;
 import com.pungwe.cms.core.security.field.formatter.UserCredentialsFormatter;
 import com.pungwe.cms.core.security.field.widget.UserCredentialsWidget;
+import com.pungwe.cms.core.security.forms.VisibilityFormBuilder;
 import com.pungwe.cms.core.security.service.PermissionService;
 import com.pungwe.cms.core.security.service.UserManagementService;
 import com.pungwe.cms.core.utils.services.HookService;
@@ -196,5 +197,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean(name = "user_credentials_field")
     public UserCredentialsField userCredentialsField() {
         return new UserCredentialsField();
+    }
+
+    @Bean
+    public VisibilityFormBuilder visibilityFormBuilder() {
+        return new VisibilityFormBuilder();
     }
 }

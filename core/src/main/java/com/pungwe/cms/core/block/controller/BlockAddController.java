@@ -61,11 +61,6 @@ public class BlockAddController extends AbstractBlockEditController {
         return config;
     }
 
-    @Override
-    protected void submit(FormElement<BlockConfig> form, Errors errors) {
-
-    }
-
     @RequestMapping(method = RequestMethod.GET)
     public Callable<String> get() {
         return () -> "admin/block/add";

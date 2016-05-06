@@ -25,6 +25,8 @@ public @interface EntityType {
     @AliasFor(annotation = Component.class, attribute = "value")
     String value();
 
+    String type();
+
     /**
      * The entity type label.
      * @return the specified label

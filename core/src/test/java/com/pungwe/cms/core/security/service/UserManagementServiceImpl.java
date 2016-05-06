@@ -94,4 +94,9 @@ public class UserManagementServiceImpl implements UserManagementService {
                 roles.stream().flatMap(userRole -> userRole.getAuthorities().stream()).collect(Collectors.toList())
         );
     }
+
+    @Override
+    public List<UserRole> listRoles() {
+        return roles;
+    }
 }

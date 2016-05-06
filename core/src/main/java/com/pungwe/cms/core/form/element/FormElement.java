@@ -21,6 +21,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 24/02/2016.
  */
@@ -93,6 +95,10 @@ public class FormElement<T> extends AbstractContentElement {
         findFields(fields, this);
         // Return a unique list of fields
         return fields.stream().collect(Collectors.toList());
+    }
+
+    public Map<String, List<FormRenderedElement<?>>> getGroupedFields() {
+        return getFields().stream().collect(Collectors.groupingBy(FormRenderedElement::getName));
     }
 
     private void findFields(final Set<FormRenderedElement<?>> fields, Object o) {
@@ -275,6 +281,13 @@ public class FormElement<T> extends AbstractContentElement {
 
     public void validate(final Errors errors) {
         getFields().forEach(formRenderedElement -> {
+            // Check required fields
+            if (!formRenderedElement.isVisible()) {
+                return;
+            }
+            if (formRenderedElement.isRequired() && StringUtils.isEmpty(formRenderedElement.getValue())) {
+                formRenderedElement.addError(translate("Field is required"));
+            }
             formRenderedElement.validate();
             if (formRenderedElement.hasError()) {
                 for (String error : formRenderedElement.getErrors()) {
