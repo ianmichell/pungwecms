@@ -1,6 +1,7 @@
 package com.pungwe.cms.jpa.entity.services;
 
 import com.pungwe.cms.core.annotations.stereotypes.EntityType;
+import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.EntityTypeDefinition;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
@@ -67,4 +68,9 @@ public class JPAEntityDefinitionService implements EntityDefinitionService<Entit
 	public void remove(String type, String bundle) {
 		entityDefinitionRepository.delete(new EntityTypeInfoImpl(type, bundle));
 	}
+
+    @Override
+    public void update(EntityDefinitionImpl entityDefinition) {
+        entityDefinitionRepository.save(entityDefinition);
+    }
 }

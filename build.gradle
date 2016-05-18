@@ -121,6 +121,7 @@ subprojects {
         // Include joda in everything!
         compile 'joda-time:joda-time:2.9.2'
 
+        compile("org.springframework.boot:spring-boot-devtools")
         // Test stuff
         testCompile 'junit:junit:4.12'
         testCompile 'org.springframework:spring-test'

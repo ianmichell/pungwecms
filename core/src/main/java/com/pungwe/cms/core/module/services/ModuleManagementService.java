@@ -173,7 +173,7 @@ public class ModuleManagementService {
 			try {
 				Class<?> c = Class.forName(config.getEntryPoint());
 				// Execute hook install
-				hookService.executeHook(applicationContext, c, CommonHooks.INSTALL);
+				hookService.executeHook(moduleContext, c, CommonHooks.INSTALL);
 
 				moduleConfigService.setInstalled(config.getName(), true);
 

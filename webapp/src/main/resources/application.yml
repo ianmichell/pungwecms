@@ -17,7 +17,7 @@ jpa:
 
 modules:
   startup:
-    scan: false
+    scan: true
   reloadable: false
   enabled:
     - actuator

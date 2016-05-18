@@ -1,0 +1,21 @@
+{
+  "name": "pungwe-cms-jquery",
+  "homepage": "https://github.com/thunderbird/pungwecms",
+  "authors": [
+    "Ian Michell <ianmichell@me.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.2"
+  }
+}

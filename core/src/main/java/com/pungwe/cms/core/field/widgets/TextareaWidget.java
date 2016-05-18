@@ -67,4 +67,8 @@ public class TextareaWidget implements FieldWidgetDefinition<String> {
         elements.add(defaultValue);
 	}
 
+	@Override
+	public String extractValueFromForm(FieldConfig field, Map<String, Object> values, int delta) {
+		return null;
+	}
 }

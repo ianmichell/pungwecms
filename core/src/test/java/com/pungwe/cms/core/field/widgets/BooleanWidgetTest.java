@@ -43,7 +43,7 @@ public class BooleanWidgetTest extends AbstractWebTest {
         settings.put("type", "radio");
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
-        settings.put("checked_by_default", "true");
+        settings.put("value", "true");
 
         List<RenderedElement> elements = new ArrayList<>();
         FieldConfig config = new FieldConfig();
@@ -87,7 +87,7 @@ public class BooleanWidgetTest extends AbstractWebTest {
         settings.put("type", "select");
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
-        settings.put("checked_by_default", "true");
+        settings.put("value", "true");
 
         List<RenderedElement> elements = new ArrayList<>();
         FieldConfig config = new FieldConfig();
@@ -131,7 +131,7 @@ public class BooleanWidgetTest extends AbstractWebTest {
         settings.put("type", "checkbox");
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
-        settings.put("checked_by_default", "true");
+        settings.put("value", "true");
 
         List<RenderedElement> elements = new ArrayList<>();
         FieldConfig config = new FieldConfig();
@@ -153,7 +153,7 @@ public class BooleanWidgetTest extends AbstractWebTest {
         settings.put("type", "random");
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
-        settings.put("checked_by_default", "true");
+        settings.put("value", "true");
 
         List<RenderedElement> elements = new ArrayList<>();
         FieldConfig config = new FieldConfig();
@@ -175,7 +175,7 @@ public class BooleanWidgetTest extends AbstractWebTest {
         settings.put("type", null);
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
-        settings.put("checked_by_default", "true");
+        settings.put("value", "true");
 
         List<RenderedElement> elements = new ArrayList<>();
         FieldConfig config = new FieldConfig();
@@ -197,7 +197,7 @@ public class BooleanWidgetTest extends AbstractWebTest {
         settings.put("type", "checkbox");
         settings.put("true_label", "Yes");
         settings.put("false_label", "No");
-        settings.put("checked_by_default", "true");
+        settings.put("value", "true");
 
         List<RenderedElement> elements = new ArrayList<>();
         FieldConfig config = new FieldConfig();
@@ -216,11 +216,10 @@ public class BooleanWidgetTest extends AbstractWebTest {
 
         List<RenderedElement> elements = new ArrayList<>();
         booleanWidget.buildWidgetSettingsForm(elements, booleanWidget.getDefaultSettings());
-        assertEquals(4, elements.size());
+        assertEquals(3, elements.size());
         assertEquals("checkbox", ((SingleSelectListElement)elements.get(0)).getValueOrDefaultValue());
-        assertFalse(((CheckboxElement) elements.get(1)).isChecked());
-        assertEquals("True", ((TextElement) elements.get(2)).getValueOrDefaultValue());
-        assertEquals("False", ((TextElement)elements.get(3)).getValueOrDefaultValue());
+        assertEquals("True", ((TextElement) elements.get(1)).getValueOrDefaultValue());
+        assertEquals("False", ((TextElement)elements.get(2)).getValueOrDefaultValue());
 
     }
 }

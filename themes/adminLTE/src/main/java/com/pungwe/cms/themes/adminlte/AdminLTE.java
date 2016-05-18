@@ -101,7 +101,6 @@ public class AdminLTE {
 
     @Hook("html_js_top")
     public void hookJSTop(List<ScriptElement> js) {
-        js.add(new ScriptElement("/bower_components/jquery/dist/jquery.min.js", "text/javascript"));
         js.add(new ScriptElement("/bower_components/html5shiv/dist/html5shiv.min.js", "text/javascript"));
         js.add(new ScriptElement("/bower_components/respond/dest/respond.min.js", "text/javascript"));
     }

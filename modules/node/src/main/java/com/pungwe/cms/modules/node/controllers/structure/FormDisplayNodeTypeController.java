@@ -1,6 +1,9 @@
 package com.pungwe.cms.modules.node.controllers.structure;
 
 import com.pungwe.cms.core.annotations.ui.MenuItem;
+import com.pungwe.cms.core.element.basic.TableElement;
+import com.pungwe.cms.core.entity.EntityDefinition;
+import com.pungwe.cms.core.entity.controller.AbstractEntityTypeFormDisplayController;
 import com.pungwe.cms.core.utils.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +27,7 @@ import java.util.concurrent.Callable;
 )
 @Controller
 @RequestMapping("/admin/structure/content-types/{nodeType}/form_display")
-public class FormDisplayNodeTypeController {
+public class FormDisplayNodeTypeController extends AbstractEntityTypeFormDisplayController {
 
 	@ModelAttribute("title")
 	public String title() {
@@ -32,14 +35,24 @@ public class FormDisplayNodeTypeController {
 	}
 
 	@ModelAttribute("nodeType")
-	public String nodeType() {
+	public String bundle() {
 		return Utils.getRequestPathVariable("nodeType");
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+    @Override
+    protected String entityType() {
+        return "node";
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
 	public Callable<String> get(@PathVariable("nodeType") String nodeType, Model model) {
 		return () -> {
 			return "node_type/form";
 		};
+	}
+
+	@Override
+	public String getFormId() {
+		return "node-form-display";
 	}
 }

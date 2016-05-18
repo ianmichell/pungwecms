@@ -1,5 +1,6 @@
 dependencies {
     compile project(':core')
+    compile project(':modules:entity_relations')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

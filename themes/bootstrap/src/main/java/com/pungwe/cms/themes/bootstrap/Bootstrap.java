@@ -2,6 +2,7 @@ package com.pungwe.cms.themes.bootstrap;
 
 import com.pungwe.cms.core.annotations.stereotypes.Theme;
 import com.pungwe.cms.core.annotations.stereotypes.ThemeRegion;
+import com.pungwe.cms.core.annotations.system.ModuleDependency;
 import com.pungwe.cms.core.annotations.util.Hook;
 import com.pungwe.cms.core.block.services.BlockManagementService;
 import com.pungwe.cms.core.element.HeaderRenderedElement;
@@ -35,7 +36,8 @@ import java.util.Map;
                 @ThemeRegion(name = "content", label = "Content"),
                 @ThemeRegion(name = "sidebar_second", label = "Second sidebar"),
                 @ThemeRegion(name = "footer", label = "Footer")
-        }
+        },
+        dependencies = {@ModuleDependency(value = "jquery")}
 )
 public class Bootstrap {
 
@@ -78,11 +80,6 @@ public class Bootstrap {
     public void attachCSS(List<HeaderRenderedElement> css) {
         css.add(new LinkElement("stylesheet", "/bower_components/bootstrap/dist/css/bootstrap.min.css", "text/css"));
         css.add(new LinkElement("stylesheet", "/css/overrides.css", "text/css"));
-    }
-
-    @Hook("html_js_top")
-    public void hookJSTop(List<ScriptElement> js) {
-        js.add(new ScriptElement("/bower_components/jquery/dist/jquery.min.js", "text/javascript"));
     }
 
     @Hook("html_js_bottom")

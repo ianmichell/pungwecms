@@ -1,10 +1,14 @@
 package com.pungwe.cms.modules.node.controllers.structure;
 
 import com.pungwe.cms.core.annotations.ui.MenuItem;
+import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
+import com.pungwe.cms.core.field.FieldWidgetDefinition;
 import com.pungwe.cms.core.field.controller.AbstractFieldEditController;
+import com.pungwe.cms.core.field.services.FieldTypeManagementService;
+import com.pungwe.cms.core.form.element.FieldsetElement;
 import com.pungwe.cms.core.form.element.FormElement;
 import com.pungwe.cms.core.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -32,26 +38,41 @@ import static com.pungwe.cms.core.utils.Utils.translate;
 )
 @Controller
 @RequestMapping("/admin/structure/content-types/{nodeType}/fields/{fieldName}/edit")
-public class EditNodeTypeFieldController extends AbstractFieldEditController<EntityDefinition> {
-
-	@Autowired
-	EntityDefinitionService entityDefinitionService;
+public class EditNodeTypeFieldController extends AbstractFieldEditController<FieldConfig> {
 
 	@Override
-	protected void buildInternal(FormElement<EntityDefinition> element) {
+	protected void buildInternal(FormElement<FieldConfig> element) {
 		// Can't change the field type once it's set as this can cause issues in the db!
-		element.hideField("fieldType", 0);
+		element.hideField("field_type", 0);
 
 		String nodeType = Utils.getRequestPathVariable("nodeType");
 		String field = Utils.getRequestPathVariable("fieldName");
 
 		EntityDefinition entityDefinition = entityDefinitionService.get("node", nodeType);
 		Optional<FieldConfig> fieldConfig = entityDefinition.getFieldByName(field);
-		if (fieldConfig.isPresent()) {
-			element.setValue("label", 0, fieldConfig.get().getLabel());
+		if (!fieldConfig.isPresent()) {
+            return;
 		}
 
-		// Add the other options potentially... Like widget
+        element.setTargetObject(fieldConfig.get());
+
+        element.setValue("label", 0, fieldConfig.get().getLabel());
+		// Add the other options potentially... Like widget form
+        final FieldWidgetDefinition<?> widgetDefinition = fieldTypeManagementService.getWidgetDefinition(fieldConfig.get().getWidget());
+        // Build the widget form
+        List<RenderedElement> elements = new ArrayList<>();
+        widgetDefinition.buildWidgetForm(elements, fieldConfig.get(), null, 0);
+
+        FieldsetElement widgetForm = new FieldsetElement();
+        widgetForm.setLegend(translate("Default Value"));
+        widgetForm.addContent(elements);
+
+        element.addContent(widgetForm);
+
+        // Add submit handler
+        element.addSubmitHandler(((form, variables) -> {
+
+        }));
 	}
 
 	@ModelAttribute("title")

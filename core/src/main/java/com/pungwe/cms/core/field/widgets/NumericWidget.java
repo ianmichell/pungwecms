@@ -52,4 +52,8 @@ public class NumericWidget implements FieldWidgetDefinition<Number> {
         elements.add(defaultValue);
     }
 
+    @Override
+    public Number extractValueFromForm(FieldConfig field, Map<String, Object> values, int delta) {
+        return null;
+    }
 }

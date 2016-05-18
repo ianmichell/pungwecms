@@ -68,11 +68,6 @@ public abstract class AbstractMenuInfoController extends AbstractFormController<
 
     protected abstract void buildInternal(FormElement<MenuInfo> element);
 
-    @Override
-    public void validate(FormElement form, Errors errors) {
-        form.validate(errors);
-    }
-
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = BindException.class)
     public void bindException() {

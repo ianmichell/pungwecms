@@ -11,6 +11,7 @@ final public class FieldGroupConfig implements Comparable<FieldGroupConfig> {
 
 	private int weight;
 	private String name;
+	private String label;
 	private Map<String, ?> settings;
 	private String fieldGroupType;
 	private Set<String> children;
@@ -99,4 +100,12 @@ final public class FieldGroupConfig implements Comparable<FieldGroupConfig> {
 		int weight = Integer.compare(this.getWeight(), o.getWeight());
 		return weight == 0 ? name : weight;
 	}
+
+	public String getLabel() {
+		return label;
+	}
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }

@@ -32,13 +32,16 @@ public class BooleanWidget implements FieldWidgetDefinition<Boolean> {
 	@Override
 	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, final Boolean value, int delta) {
         Map<String, Object> widgetSettings = (Map<String, Object>)field.getSettings();
+        if (widgetSettings == null) {
+            widgetSettings = getDefaultSettings();
+        }
         String type = (String)widgetSettings.getOrDefault("type", "checkbox");
         if (type == null) {
             type = "checkbox";
         }
         String labelTrue = (String)widgetSettings.getOrDefault("true_label", translate("True"));
         String labelFalse = (String)widgetSettings.getOrDefault("false_label", translate("False"));
-        String defaultValue = value != null ? String.valueOf(value) : (String)widgetSettings.getOrDefault("checked_by_default", "false");
+        String defaultValue = value != null ? String.valueOf(value) : (String)widgetSettings.get("value");
         FormRenderedElement<String> element = null;
         switch (type) {
             case "radio":
@@ -53,17 +56,19 @@ public class BooleanWidget implements FieldWidgetDefinition<Boolean> {
         }
         // Setup defaults
         element.setDelta(delta);
-        element.setDefaultValue(defaultValue);
         element.setName(field.getName());
 
         if (element instanceof SingleSelectListElement) {
             SingleSelectListElement select = (SingleSelectListElement)element;
             select.addOption(labelTrue, "true");
             select.addOption(labelFalse, "false");
+            select.setDefaultValue(defaultValue);
         } else {
             CheckboxElement checkbox = (CheckboxElement)element;
-            checkbox.addContent(field.getLabel());
-            checkbox.setChecked(Boolean.valueOf(defaultValue));
+            checkbox.addContent(labelTrue);
+            checkbox.setValue(defaultValue);
+            checkbox.setDefaultValue("true");
+            checkbox.setChecked((String)defaultValue != null && ((String)defaultValue).equals("true"));
         }
 
         elements.add(element);
@@ -81,13 +86,6 @@ public class BooleanWidget implements FieldWidgetDefinition<Boolean> {
         control.setLabel(translate("Control"));
         elements.add(control);
 
-        CheckboxElement checkboxElement = new CheckboxElement();
-        checkboxElement.addContent(translate("True by default"));
-        checkboxElement.setDefaultValue("true");
-        checkboxElement.setName("checked_by_default");
-        checkboxElement.setChecked(Boolean.valueOf((String)settings.getOrDefault("checked_by_default", "false")));
-        elements.add(checkboxElement);
-
         TextElement trueLabel = new TextElement();
         trueLabel.setLabel(translate("Label for \"True\""));
         trueLabel.setName("true_label");
@@ -101,4 +99,8 @@ public class BooleanWidget implements FieldWidgetDefinition<Boolean> {
         elements.add(falseLabel);
 	}
 
+    @Override
+    public Boolean extractValueFromForm(FieldConfig field, Map<String, Object> values, int delta) {
+        return null;
+    }
 }

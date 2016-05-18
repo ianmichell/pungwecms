@@ -1,6 +1,7 @@
 package com.pungwe.cms.core.theme.services;
 
 import com.pungwe.cms.core.annotations.stereotypes.Theme;
+import com.pungwe.cms.core.annotations.system.ModuleDependency;
 import com.pungwe.cms.core.module.services.ModuleManagementService;
 import com.pungwe.cms.core.system.element.templates.PageElement;
 import com.pungwe.cms.core.theme.ThemeConfig;
@@ -43,6 +44,9 @@ public class ThemeManagementService {
     @Autowired
     private ModuleManagementService moduleManagementService;
 
+    @Autowired
+    private ApplicationContext rootContext;
+
     private Map<String, AnnotationConfigApplicationContext> themeContexts = new TreeMap<>();
 
     public ApplicationContext getThemeContext(String name) {
@@ -64,6 +68,10 @@ public class ThemeManagementService {
                 LOG.error("Could not enabled parent theme: " + parent + " for theme: " + theme);
                 return false;
             }
+            // Enable dependencies
+            moduleManagementService.enable(Arrays.asList(info.dependencies()).stream().map(moduleDependency -> {
+                return moduleDependency.value();
+            }).collect(Collectors.toList()));
             themeConfigService.setThemeEnabled(theme, true);
             return true;
         } catch (ClassNotFoundException ex) {
@@ -181,8 +189,8 @@ public class ThemeManagementService {
         // Remove the themes missing from the classpath
         removeMissingThemes();
 
-        String defaultTheme = moduleManagementService.getModuleContext().getEnvironment().getProperty("themes.default", "");
-        String defaultAdminTheme = moduleManagementService.getModuleContext().getEnvironment().getProperty("themes.defaultAdmin", defaultTheme);
+        String defaultTheme = rootContext.getEnvironment().getProperty("themes.default", "");
+        String defaultAdminTheme = rootContext.getEnvironment().getProperty("themes.defaultAdmin", defaultTheme);
 
         ThemeConfig defaultThemeConfig = themeConfigService.getDefaultTheme();
         ThemeConfig defaultAdminThemeConfig = themeConfigService.getDefaultAdminTheme();

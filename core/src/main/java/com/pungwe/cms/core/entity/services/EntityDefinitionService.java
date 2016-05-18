@@ -3,6 +3,7 @@ package com.pungwe.cms.core.entity.services;
 import com.pungwe.cms.core.annotations.stereotypes.EntityType;
 import com.pungwe.cms.core.entity.EntityDefinition;
 import com.pungwe.cms.core.entity.EntityTypeDefinition;
+import com.pungwe.cms.core.entity.FieldConfig;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,4 +39,6 @@ public interface EntityDefinitionService<ED extends EntityDefinition> {
         }
         return typeInfo.type();
 	}
+
+	void update(ED entityDefinition);
 }

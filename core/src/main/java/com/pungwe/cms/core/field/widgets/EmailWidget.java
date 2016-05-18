@@ -30,11 +30,15 @@ public class EmailWidget implements FieldWidgetDefinition<String> {
 	@Override
 	public void buildWidgetForm(List<RenderedElement> elements, FieldConfig field, String value, int delta) {
 
+        Map<String, Object> settings = field.getSettings();
+        if (settings == null) {
+            settings = getDefaultSettings();
+        }
         EmailElement emailElement = new EmailElement();
         emailElement.setLabel(field.getLabel());
         emailElement.setName(field.getName());
         emailElement.setDelta(delta);
-        emailElement.setDefaultValue((String)field.getSettings().get("default_value"));
+        emailElement.setDefaultValue((String)settings.get("default_value"));
         emailElement.setValue(value);
 
         // Set validator
@@ -57,4 +61,8 @@ public class EmailWidget implements FieldWidgetDefinition<String> {
         elements.add(emailElement);
 	}
 
+    @Override
+    public String extractValueFromForm(FieldConfig field, Map<String, Object> values, int delta) {
+        return null;
+    }
 }

@@ -13,8 +13,15 @@ dependencies {
     runtime project(':modules:text')
     runtime project(':modules:actuator')
     runtime project(':modules:taxonomy')
+    runtime project(':modules:autocomplete')
+    runtime project(':modules:jquery')
+    runtime project(':modules:entity_relations')
 
     // Theme
     runtime project(':themes:bootstrap')
     runtime project(':themes:adminLTE')
+}
+
+bootRun {
+    addResources = true
 }

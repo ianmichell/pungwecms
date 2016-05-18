@@ -1,5 +1,6 @@
 package com.pungwe.cms.core.annotations.stereotypes;
 
+import com.pungwe.cms.core.annotations.system.ModuleDependency;
 import com.pungwe.cms.core.system.element.templates.PageElement;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,4 +31,6 @@ public @interface Theme {
 	String parent() default "";
 
 	ThemeRegion[] regions() default {};
+
+	ModuleDependency[] dependencies() default {};
 }

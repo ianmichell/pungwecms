@@ -48,4 +48,9 @@ public class UserCredentialsWidget implements FieldWidgetDefinition<User> {
     @Override
     public void buildWidgetSettingsForm(List<RenderedElement> elements, Map<String, Object> settings) {
     }
+
+    @Override
+    public User extractValueFromForm(FieldConfig field, Map<String, Object> values, int delta) {
+        return null;
+    }
 }

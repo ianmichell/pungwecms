@@ -22,6 +22,7 @@ package com.pungwe.cms.core.form.element;
 import com.pungwe.cms.core.annotations.ui.ThemeInfo;
 import com.pungwe.cms.core.element.RenderedElement;
 import com.pungwe.cms.core.element.basic.PlainTextElement;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class CheckboxElement extends AbstractFormRenderedElement<String> {
         setName(name);
         setDefaultValue(value);
         setContent(content);
-        this.checked = checked;
+        setChecked(checked);
     }
 
     public boolean isChecked() {

@@ -23,20 +23,23 @@ import com.pungwe.cms.core.annotations.stereotypes.Module;
 import com.pungwe.cms.core.annotations.system.ModuleDependency;
 import com.pungwe.cms.core.annotations.util.Hook;
 import com.pungwe.cms.core.entity.EntityDefinition;
+import com.pungwe.cms.core.entity.FieldConfig;
 import com.pungwe.cms.core.entity.services.EntityDefinitionService;
 import com.pungwe.cms.modules.taxonomy.entity.TaxonomyEntityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Module(
         name = "taxonomy",
         description = "Taxonomy module for tagging content and creating categories",
         label = "Taxonomy",
-        dependencies = {@ModuleDependency(
-                "text"
-        )}
+        dependencies = {
+                @ModuleDependency("text"),
+                @ModuleDependency("entity_relations")
+        }
 )
 @ComponentScan(value = "com.pungwe.cms.modules.taxonomy")
 public class TaxonomyModule {
@@ -56,6 +59,22 @@ public class TaxonomyModule {
         tags.setTitle("Tags");
         tags.setDescription("A vocabulary of keywords / tags used in content");
         tags.setDateCreated(new Date());
+
+        /* Add Parent Entity Relation */
+        FieldConfig parent = new FieldConfig();
+        parent.setName("parent");
+        parent.setWeight(100);
+        parent.setLabel("Parent");
+        parent.setCardinality(1);
+        parent.setWidget("entity_relation_widget");
+        parent.setFormatter("entity_relation_formatter");
+        parent.setFieldType("entity_relation_field");
+        parent.addSetting("control_type", "select");
+        parent.addSetting("entity_type", "taxonomy");
+        parent.addSetting("entity_bundle", "tags");
+
+        tags.addField(parent);
+
         // Create the entity definition
         entityDefinitionService.create(tags);
     }

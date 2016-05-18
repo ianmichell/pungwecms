@@ -36,12 +36,11 @@ public class TextfieldWidgetTest extends AbstractWebTest {
         List<RenderedElement> elements = new ArrayList<>();
         Map<String, Object> settings = new LinkedHashMap<>();
         settings.putAll(textfieldWidget.getDefaultSettings());
-        settings.put("default_value", "text");
+        settings.put("value", "text");
         settings.put("field_size", "20");
         textfieldWidget.buildWidgetSettingsForm(elements, settings);
-        assertEquals(2, elements.size());
+        assertEquals(1, elements.size());
         assertEquals("20", ((TextElement)elements.get(0)).getValueOrDefaultValue());
-        assertEquals("text", ((TextElement)elements.get(1)).getValueOrDefaultValue());
     }
 
     @Test
@@ -71,7 +70,7 @@ public class TextfieldWidgetTest extends AbstractWebTest {
 
         Map<String, Object> settings = new LinkedHashMap<>();
         settings.putAll(textfieldWidget.getDefaultSettings());
-        settings.put("default_value", "text");
+        settings.put("value", "text");
 
         config.setSettings(settings);
 

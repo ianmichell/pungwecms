@@ -8,6 +8,8 @@ import com.pungwe.cms.core.form.validation.MachineNameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
+import static com.pungwe.cms.core.utils.Utils.translate;
+
 /**
  * Created by ian on 22/03/2016.
  */
@@ -54,7 +56,7 @@ public abstract class AbstractEntityTypeEditController extends AbstractFormContr
 		FieldsetElement formActions = new FieldsetElement();
 		formActions.setHtmlId(getFormId().concat("_actions"));
 		InputButtonElement submit = new InputButtonElement(InputButtonElement.InputButtonType.SUBMIT);
-		submit.setValue("Submit");
+		submit.setValue(translate("Save"));
 		submit.setName("submit");
 
 		formActions.addContent(submit);

@@ -87,4 +87,12 @@ public class DecimalWidget implements FieldWidgetDefinition<Double> {
         elements.add(defaultValue);
 	}
 
+    @Override
+    public Double extractValueFromForm(FieldConfig field, Map<String, Object> values, int delta) {
+        if (!values.containsKey(field.getName())) {
+            return null;
+        }
+
+        return null;
+    }
 }
