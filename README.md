@@ -118,7 +118,7 @@ public class HelloWorldBlock implements BlockDefinition {
 
 Blocks are configured through the "Structure" admin page, under block layout.
 
-###Hooks
+###Hooks - Deprecated (I will be replacing with Spring events as they are more flexible)
 Hooks are fairly similar to events, in that they are executed by name. Hook implementations are declared using the @Hook annotation.
 
 ```java
