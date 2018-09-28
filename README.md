@@ -158,7 +158,7 @@ Or without a block:
 ```java
 hookService.executeHook("my_hook", (c, o) -> someVariable::method);
 ```
-###Controllers
+### Controllers
 Controllers take advantage of spring's existing @Controller and @RequestMapping annotations:
 
 ```java
