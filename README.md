@@ -572,11 +572,11 @@ TODO
 - Cassandra
 - Couchbase
 
-##Search
+## Search
 
 Elastic Search is the primary indexing method being employed in the  CMS. Elastic Search was chosen simply because it offers a flexible document oriented design that fits into the object model being used. This will be the only supported search engine for the time being (at least until it can be abstracted away enough to hide it).
 
-##Caching
+## Caching
 Caching is a fundamental part of any CMS. It doesn't matter how fast your database is. There are times when database queries will be heavy. A good example of this is fetching information on the default theme; in that each time a template is rendered, you need to fetch the current them context, theme configuration (ThemeConfig). This can add precious time to any request.
 
 Caching in spring has been made very easy thanks to the addition of the @EnableCaching annotation. This is enabled by default on the CMS.
@@ -585,10 +585,10 @@ In order to apply caching to your module or theme, simply add the @Cachable("&lt
 
 The ability to tune parts of the cache will be configurable within the application.yml in your application and to some degree, there will be statistics and settings that you can apply from the administration interface: /admin/configuration/cache
 
-##Build Tools
+## Build Tools
 TODO - At the moment none of the binaries are not published into maven repositories. When I feel that things have moved on enough to actually do stuff with the CMS, I will publish a release snapshot!
 
-##Things to do
+## Things to do
 - Should probably start populating the wiki with documentation
 - Design how Rest API will work with everything (pretty much, should run headless if need be)
 - Rest API should override views, so that developers can use pure client side apps
