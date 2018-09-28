@@ -5,12 +5,12 @@ I wanted to create a CMS that I can use as a base for other projects and given r
 
 Pungwe CMS is heavily influenced by drupal 7 and 8. I want to build something that takes the best of what drupal has to offer and provide something similar based on java. This doesn't mean that it's a Drupal clone... This just means it's similar and heavily based on my point of view (which means lost of type safety, spring oriented design and of course denormalised data, without JCR).
 
-##Modules / Themes
+## Modules / Themes
 For the time being, it has been decided that we will not support a plugin system like OSGI, due to how it complicates lives
 for the developers... It is for this reason that modules have to be included on the classpath as part of your project builds.
 When time permits we will look into alternative methods of dynamically loading these...
 
-###Modules
+### Modules
 Modules are loaded into their own shared context, this allows for restarting of the relevant application context to turn modules on and off. There is no dependency management or plugin system as such. Modules are added to the gradle build file as
 runtime dependencies and used for a build:
 
@@ -35,7 +35,7 @@ public class MyModule {
 }
 ```
 
-###Themes
+### Themes
 As with modules, themes work in a very similar fashion with one major difference. Themes are hierarchical and as such run in their own application contexts; with the parent theme's context being the parent application context for that theme. This is to guarantee hook and bean isolation between completely different themes.
 
 Themes are added as runtime dependencies to the project build in the same way as modules:
@@ -68,12 +68,12 @@ public class MyTheme {
 }
 ```
 
-####Status
+#### Status
 The theme system is almost complete... Themes can be created using the @Theme annotation, hooks work and the relevant template overrides will work as well.
 
-##Components & Hooks
+## Components & Hooks
 
-###Block System
+### Block System
 Blocks are used to render content within regions on a page. These are usually placed by the BlockPageBuilder class, into regions determined by the current default theme.
 
 Blocks are declared using the @Block annotation and are / should be singleton scoped beans in spring terms. They are fairly easy to declare and are instantiated at system startup.
@@ -118,7 +118,7 @@ public class HelloWorldBlock implements BlockDefinition {
 
 Blocks are configured through the "Structure" admin page, under block layout.
 
-###Hooks - Deprecated (I will be replacing with Spring events as they are more flexible)
+### Hooks - Deprecated (I will be replacing with Spring events as they are more flexible)
 Hooks are fairly similar to events, in that they are executed by name. Hook implementations are declared using the @Hook annotation.
 
 ```java
@@ -196,10 +196,10 @@ public Callable<String> index(Model model) {
 
 The menu annotation should only really be used for system menus as this menu is static and used to generate the administration section menu and breadcrumbs. By declaring this you are expecting the menu and any declared parents to exist. This can be forced via a module or theme where a custom menu is needed.
 
-#####Status
+##### Status
 This is not fully fleshed out yet. The remaining part of the design is to specify how content based controllers work with entities for display purposes. Whilst the @MenuItem annotation is useful for admin functionality, there has to be a way of controlling how URL's are created for entity instances.
 
-###Services
+### Services
 Services take advantage of existing @Service stereotype annotations provided by spring.
 
 ```java
@@ -209,12 +209,12 @@ public class MyService {
 }
 ```
 
-###Field Widgets & Formatters
+### Field Widgets & Formatters
 Fields are rendered using widgets and formatters.
 
 Widgets are used to render the actual form entry component and formatters are used to render a field for display.
 
-####Field Widgets
+#### Field Widgets
 Field Widgets are used to render form elements for a specific widget. These classes should be annotated with the @FieldWidget stereotype and implement the FieldWidgetDefinition interface. 
 
 Theses should be treated as singleton beans and should not be used like a traditional object instance.
@@ -242,14 +242,14 @@ public MyWidget implements FieldWidgetDefinition {
 
 ```
 
-####Field Formatters
+#### Field Formatters
 Field Formatters are used to render fields. These classes like their widget counterparts should be declared with the @FieldFormatter stereotype annotation and implement the FieldFormatterDefinition interface. 
 
 These should be treated as singleton beans and should not be used a like traditional object instance.
 
 TODO: Create an example.
 
-###Entities
+### Entities
 You can also create and define entities... Entities are the only true database agnostic way of storing data within the CMS and should be used for any custom modules.
 
 Definition is straight forward in the spirit of this CMS and there are a number of ways you can do this. The preferred method is to define your entity in a custom module with default fields, leaving the definition of your entity types to the admin interface (It should be noted that an admin interface for your entity definition is optional).
@@ -432,10 +432,10 @@ public class MyEntityTypeModule {
 
 ```
 
-#####Note
+##### Note
 Entity definitions are stored in the database and at present there is no plan to make that optional. I'm not a big fan of storing lots of config data in the database, but in order to be editable via the admin interface, this is the best place for it right now.
 
-###Elements
+### Elements
 Elements are probably the most straight forward set of classes to use. These are essentially models to be used for rendering their templates.
 
 To create a RenderableElement, you should do the following:
@@ -473,10 +473,10 @@ Then create the template on the class path (/templates/my\_module/my\_element.tw
 </div>
 ```
 
-##Security
+## Security
 TODO
 
-##Persistence
+## Persistence
 Persistence is always a difficult subject to design software around. A lot of people will try over design this area using a specific type of database then get stuck when support for a entirely different database is required.
 
 The persistence layer within the CMS is done using two specific persistence engines, based on top of Spring Data. If Spring Data supports a persistence type, then the CMS will support it too at some point.
@@ -491,13 +491,10 @@ Drupal has tried to create a persistence model based around relational datastore
 
 A good example of this is how the entity framework stores data and configuration:
 
-```
-+-------------------------------------------------------------------------------+
-|	TYPE	|	BUNDLE		|	TITLE		|	DESCRIPTION		|	CONFIG		|
-+-------------------------------------------------------------------------------+
-|	node	|	page		|	Basic Page	|	Basic Page		| { ... }		|
-+-------------------------------------------------------------------------------+
-```
+| TYPE  | BUNDLE    | TITLE       | Description | Config   |
+|:-----:|:---------:|:-----------:|:-----------:|:--------:|
+| node  | page      | Basic Page  | Basic Page. | { ... }  |
+
 
 The above example is not a full definition of an entity definition, but should relay the design from a relation database perspective.
 
@@ -527,13 +524,13 @@ With MongoDB you can directly query the data as it's not stored as binary; howev
 
 Document size for entities will be limited to that of the maximum size permitted by the datastore. In the case of relation databases, this could be gigabytes, so they will be limited to the maximum document size in MongoDB, which currently stands at 16MB (to be honest when you store field data, why would you ever need more? Then again why would you need to use any other database other than MongoDB)?
 
-####JPA Persistence
+#### JPA Persistence
 JPA persistence is implemented on hibernate, this works great for mapping object model to tables. It's very poor when relational; so with that in mind, there are no joins anywhere!
 
-####MongoDB Persistence
+#### MongoDB Persistence
 MongoDB Persistence is the preferred method of persistence within the CMS. It's naturally denormalised document orientated storage and sharding capabilities make it a perfect fit for managing data.
 
-####Roll your own persistence layer
+#### Roll your own persistence layer
 Developers are free to roll their own persistence layer. It's relatively straight forward.
 
 ```java
